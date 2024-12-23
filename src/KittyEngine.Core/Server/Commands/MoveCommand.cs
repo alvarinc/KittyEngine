@@ -1,4 +1,5 @@
-﻿using KittyEngine.Core.State;
+﻿using KittyEngine.Core.Server.Model;
+using KittyEngine.Core.State;
 
 namespace KittyEngine.Core.Server.Commands
 {
@@ -20,9 +21,9 @@ namespace KittyEngine.Core.Server.Commands
                 float.TryParse(dzString, out _dz);
         }
 
-        public override GameCommandResult Execute(GameState gameState, Player player, int peerId)
+        public override GameCommandResult Execute(GameState gameState, Player player)
         {
-            var playerState = gameState.Players[peerId];
+            var playerState = gameState.Players[player.PeerId];
             var results = new GameCommandResult();
             if (_dx != 0 && playerState.Position.X + _dx >= gameState.Map.MinX && playerState.Position.X + _dx <= gameState.Map.MaxX)
             {
@@ -44,7 +45,7 @@ namespace KittyEngine.Core.Server.Commands
 
             if (results.StateUpdated)
             {
-                Console.WriteLine($"[Server] Player {playerState.PeerId} : {playerState.Name} moved to: {playerState.Position.X}:{playerState.Position.Y}:{playerState.Position.Z}");
+                Console.WriteLine($"[Server] Player {player.PeerId} : {playerState.Name} moved to: {playerState.Position.X}:{playerState.Position.Y}:{playerState.Position.Z}");
             }
 
             return results;

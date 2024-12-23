@@ -1,4 +1,5 @@
-﻿using KittyEngine.Core.State;
+﻿using KittyEngine.Core.Server.Model;
+using KittyEngine.Core.State;
 
 namespace KittyEngine.Core.Server.Commands
 {
@@ -14,16 +15,16 @@ namespace KittyEngine.Core.Server.Commands
             return true;
         }
 
-        public override GameCommandResult Execute(GameState gameState, Player player, int peerId)
+        public override GameCommandResult Execute(GameState gameState, Player player)
         {
             player.Guid = _guid;
             player.Name = _name;
 
-            gameState.Players.Add(peerId, new PlayerState(peerId));
-            gameState.Players[peerId].Name = player.Name;
-            gameState.Players[peerId].Guid = player.Guid;
+            gameState.Players.Add(player.PeerId, new PlayerState(player.PeerId));
+            gameState.Players[player.PeerId].Name = player.Name;
+            gameState.Players[player.PeerId].Guid = player.Guid;
 
-            Console.WriteLine($"[Server] Player {peerId} : {player.Name} has joined the game");
+            Console.WriteLine($"[Server] Player {player.PeerId} : {player.Name} joined the game");
 
             return new GameCommandResult
             {
