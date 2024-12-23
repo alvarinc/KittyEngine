@@ -2,9 +2,9 @@
 {
     internal interface ILightFactory<TInterface>
     {
-        ILightFactory<TInterface> Register<TImplementation>(string name)
-            where TImplementation : TInterface, new();
+        ILightFactory<TInterface> Add<TImplementation>(string name)
+            where TImplementation : class, TInterface;
 
-        TInterface Create(string name);
+        TInterface Get(string name);
     }
 }

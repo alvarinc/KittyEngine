@@ -1,4 +1,5 @@
 ﻿using KittyEngine.Core.Server;
+using KittyEngine.Core.Services.Logging;
 using KittyEngine.Core.State;
 using Microsoft.AspNetCore.JsonPatch;
 using Newtonsoft.Json;
@@ -7,9 +8,16 @@ namespace KittyEngine.Core.Client.Commands
 {
     internal class SynchronizeCommand : IGameCommand
     {
+        private ILogger _logger;
+
         private string _entity;
         private string _mode;
         private string _value;
+
+        public SynchronizeCommand(ILogger logger)
+        {
+            _logger = logger;
+        }
 
         public bool ValidateParameters(GameCommandInput cmd)
         {
@@ -37,11 +45,11 @@ namespace KittyEngine.Core.Client.Commands
             var player = context.GameState?.Players.Values.FirstOrDefault(x => x.Guid == context.PlayerId);
             if (player != null)
             {
-                Console.WriteLine($"[Client] Connected. Position: {player.Position.X}, {player.Position.Y}, {player.Position.Z}");
+                _logger.Log(LogLevel.Info, $"[Client] {player.PeerId} ({player.Name}) : Position: {player.Position.X}, {player.Position.Y}, {player.Position.Z}");
             }
             else
             {
-                Console.WriteLine($"[Client] Connected. No position yet.");
+                _logger.Log(LogLevel.Info, $"[Client] Connected. No position yet.");
             }
         }
     }

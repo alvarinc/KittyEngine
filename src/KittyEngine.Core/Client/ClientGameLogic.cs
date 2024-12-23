@@ -5,6 +5,7 @@
     using KittyEngine.Core.Client.Output;
     using KittyEngine.Core.Server;
     using KittyEngine.Core.Services.IoC;
+    using KittyEngine.Core.Services.Logging;
     using KittyEngine.Core.State;
 
     public interface IClientGameLogic
@@ -26,12 +27,14 @@
 
         private NetworkAdapter _networkAdapter;
 
+        private ILogger _logger;
         private ILightFactory<IGameCommand> _commandFactory;
         private IRenderer _renderer;
         private IInputHandler _inputHandler;
 
-        public ClientGameLogic(ILightFactory<IGameCommand> commandFactory, IRenderer renderer, IInputHandler inputHandler)
+        public ClientGameLogic(ILogger logger, ILightFactory<IGameCommand> commandFactory, IRenderer renderer, IInputHandler inputHandler)
         {
+            _logger = logger;
             _commandFactory = commandFactory;
             _renderer = renderer;
             _inputHandler = inputHandler;
@@ -75,7 +78,7 @@
         {
             EnsureIsConnected();
 
-            var cmd = _commandFactory.Create(input.Command);
+            var cmd = _commandFactory.Get(input.Command);
 
             if (cmd != null)
             {

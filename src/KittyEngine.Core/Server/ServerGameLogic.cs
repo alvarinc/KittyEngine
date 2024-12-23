@@ -3,6 +3,7 @@
     using KittyEngine.Core.Server.Commands;
     using KittyEngine.Core.Server.Model;
     using KittyEngine.Core.Services.IoC;
+    using KittyEngine.Core.Services.Logging;
     using KittyEngine.Core.State;
     using LiteNetLib;
     using System;
@@ -45,11 +46,13 @@
         private readonly Dictionary<int, Player> _connectedUsers = new();
         private readonly GameState _gameState = new();
 
+        private ILogger _logger;
         private readonly ILightFactory<IGameCommand> _commandFactory;
         private readonly Queue<GameCommandRequest> _gameCommmandRequests = new();
 
-        public ServerGameLogic(ILightFactory<IGameCommand> commandFactory)
+        public ServerGameLogic(ILogger logger, ILightFactory<IGameCommand> commandFactory)
         {
+            _logger = logger;
             _commandFactory = commandFactory;
         }
 
@@ -69,7 +72,7 @@
 
             // Register a new player for the client
             _connectedUsers.Add(peer.Id, new Player(peer.Id));
-            Console.WriteLine($"[Server] Player {peer.Id} : connected.");
+            _logger.Log(LogLevel.Info, $"[Server] Player {peer.Id} : connected.");
         }
 
         public void OnMessageReceived(NetPeer peer, GameCommandInput input)
@@ -131,22 +134,22 @@
         {
             if (!_connectedUsers.TryGetValue(request.PeerId, out Player player))
             {
-                Console.WriteLine($"[Server] Player {request.PeerId} : Received a message from an unknown player.");
+                _logger.Log(LogLevel.Info, $"[Server] Player {request.PeerId} : Received a message from an unknown player.");
                 return new GameCommandResult();
             }
 
             if (request.Input.Command != "join" && string.IsNullOrEmpty(player.Guid))
             {
-                Console.WriteLine($"[Server] Player {request.PeerId} joined no games.");
+                _logger.Log(LogLevel.Info, $"[Server] Player {request.PeerId} joined no games.");
                 return new GameCommandResult();
             }
 
             var synchronizer = new StateSynchronizer<GameState>(_gameState);
-            var command = _commandFactory.Create(request.Input.Command);
+            var command = _commandFactory.Get(request.Input.Command);
 
             if (command == null)
             {
-                Console.WriteLine($"Command not registered : {request.Input.Command}");
+                _logger.Log(LogLevel.Info, $"Command not registered : {request.Input.Command}");
             }
             else if (command.ValidateParameters(request.Input))
             {
@@ -185,12 +188,12 @@
                     }
                 }
 
-                Console.WriteLine($"[Server] Player {connectedPeer.Id} : {mode} synchronize");
+                _logger.Log(LogLevel.Info, $"[Server] Player {connectedPeer.Id} : {mode} synchronize");
                 _networkAdapter.SendMessage(connectedPeer, mode == PeerSynchronizationMode.Full ? fullCmd : patchCmd);
 
                 if (!_gameState.Players.ContainsKey(connectedPeer.Id))
                 {
-                    Console.WriteLine($"[Server] Player {connectedPeer.Id} : Disconnect");
+                    _logger.Log(LogLevel.Info, $"[Server] Player {connectedPeer.Id} : Disconnect");
                     connectedPeer.Disconnect();
                     _connectedUsers.Remove(connectedPeer.Id);
                 }

@@ -14,11 +14,17 @@ namespace KittyEngine.Core.Client.Output
             var player = _gameState.Players.Values.FirstOrDefault(x => x.Guid == playerId);
             if (player == null)
             {
-                Console.WriteLine("Not on map yet.");
+                Console.WriteLine(">  Not on map yet.");
                 return;
             }
 
-            Console.WriteLine($"connection {player.PeerId} : {player.Name}");
+            Console.WriteLine($">  connection {player.PeerId} : {player.Name}");
+            Console.WriteLine(">>>>");
+            Console.WriteLine(">>>>");
+            Console.WriteLine(">>>>");
+            Console.WriteLine(">>>>");
+            Console.WriteLine(">>>>");
+            Console.WriteLine(">>>>");
 
             for (int column = _gameState.Map.MinZ; column <= _gameState.Map.MaxZ; column++)
             {
@@ -50,6 +56,8 @@ namespace KittyEngine.Core.Client.Output
                     }
                 }
             }
+
+            Console.WriteLine(">>>>");
         }
     }
 }

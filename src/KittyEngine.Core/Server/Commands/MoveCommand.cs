@@ -1,13 +1,21 @@
 ﻿using KittyEngine.Core.Server.Model;
+using KittyEngine.Core.Services.Logging;
 using KittyEngine.Core.State;
 
 namespace KittyEngine.Core.Server.Commands
 {
     internal class MoveCommand : GameCommandBase
     {
+        private ILogger _logger;
+
         private float _dx;
         private float _dy;
         private float _dz;
+
+        public MoveCommand(ILogger logger)
+        {
+            _logger = logger;
+        }
 
         public override bool ValidateParameters(GameCommandInput input)
         {
@@ -45,7 +53,7 @@ namespace KittyEngine.Core.Server.Commands
 
             if (results.StateUpdated)
             {
-                Console.WriteLine($"[Server] Player {player.PeerId} : {playerState.Name} moved to: {playerState.Position.X}:{playerState.Position.Y}:{playerState.Position.Z}");
+                _logger.Log(LogLevel.Info, $"[Server] Player {player.PeerId} : {playerState.Name} moved to: {playerState.Position.X}:{playerState.Position.Y}:{playerState.Position.Z}");
             }
 
             return results;
