@@ -2,7 +2,7 @@
 {
     using KittyEngine.Core.Client.Commands;
     using KittyEngine.Core.Client.Input;
-    using KittyEngine.Core.Client.Output;
+    using KittyEngine.Core.Graphics;
     using KittyEngine.Core.Server;
     using KittyEngine.Core.Services.IoC;
     using KittyEngine.Core.Services.Logging;

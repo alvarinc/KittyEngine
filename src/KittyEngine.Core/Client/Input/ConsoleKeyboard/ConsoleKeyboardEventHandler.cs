@@ -2,11 +2,11 @@
 
 namespace KittyEngine.Core.Client.Input.Keyboard
 {
-    public class KeyboardEventHandler : IInputHandler
+    public class ConsoleKeyboardEventHandler : IInputHandler
     {
         private List<IKeyboardEventHandler> _handlers = new List<IKeyboardEventHandler>();
 
-        public KeyboardEventHandler() 
+        public ConsoleKeyboardEventHandler() 
         {
             _handlers.Add(new ExitEventHandler());
             _handlers.Add(new MoveEventHandler());
