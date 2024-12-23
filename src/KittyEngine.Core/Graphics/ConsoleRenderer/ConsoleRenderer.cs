@@ -1,13 +1,8 @@
 ﻿using KittyEngine.Core.State;
 
-namespace KittyEngine.Core.Client.Output
+namespace KittyEngine.Core.Graphics.ConsoleRenderer
 {
-    public interface IRenderer
-    {
-        void Render(GameState _gameState, string playerId);
-    }
-
-    internal class Renderer : IRenderer
+    internal class ConsoleRenderer : IRenderer
     {
         public void Render(GameState _gameState, string playerId)
         {

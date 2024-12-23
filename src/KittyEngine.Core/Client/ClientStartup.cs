@@ -1,11 +1,12 @@
 ﻿using KittyEngine.Core.Client.Commands;
 using KittyEngine.Core.Client.Input;
 using KittyEngine.Core.Client.Input.Keyboard;
-using KittyEngine.Core.Client.Output;
 using KittyEngine.Core.Services.IoC;
 using KittyEngine.Core.Services.Logging.Conenctors;
 using KittyEngine.Core.Services.Logging;
 using KittyEngine.Core.Services.Configuration;
+using KittyEngine.Core.Graphics.ConsoleRenderer;
+using KittyEngine.Core.Graphics;
 
 namespace KittyEngine.Core.Client
 {
@@ -31,8 +32,8 @@ namespace KittyEngine.Core.Client
             container.Register<ILightFactory<IGameCommand>, CommandFactory>(ServiceBehavior.Scoped);
 
             // Input / Output
-            container.Register<IRenderer, Renderer>(ServiceBehavior.Scoped);
-            container.Register<IInputHandler, KeyboardEventHandler>(ServiceBehavior.Scoped);
+            container.Register<IRenderer, ConsoleRenderer>(ServiceBehavior.Scoped);
+            container.Register<IInputHandler, ConsoleKeyboardEventHandler>(ServiceBehavior.Scoped);
 
             // Game logic
             container.Register<IClientGameLogic, ClientGameLogic>(ServiceBehavior.Scoped);
