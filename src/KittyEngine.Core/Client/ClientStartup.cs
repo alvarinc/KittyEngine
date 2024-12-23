@@ -5,6 +5,7 @@ using KittyEngine.Core.Client.Output;
 using KittyEngine.Core.Services.IoC;
 using KittyEngine.Core.Services.Logging.Conenctors;
 using KittyEngine.Core.Services.Logging;
+using KittyEngine.Core.Services.Configuration;
 
 namespace KittyEngine.Core.Client
 {
@@ -14,6 +15,9 @@ namespace KittyEngine.Core.Client
         {
             // IoC
             container.Register<IServiceContainer>(ServiceBehavior.Scoped, () => container);
+
+            // Configuration
+            container.Register<IConfigurationService, ConfigurationService>(ServiceBehavior.Scoped);
 
             // Logging
             var logManager = new LoggerManager();

@@ -18,6 +18,8 @@
         void OnMessageReceived(NetPeer peer, GameCommandInput input);
 
         void GameLoop();
+
+        void Terminate(CancellationToken token);
     }
 
     internal class ServerGameLogic : IServerGameLogic
@@ -98,6 +100,11 @@
             SynchronizeClients(commandResultByPeers, synchronizer);
 
             Thread.Sleep(15);
+        }
+
+        public void Terminate(CancellationToken token)
+        {
+
         }
 
         private void EnsureIsConnected()

@@ -10,13 +10,15 @@
 
     public interface IClientGameLogic
     {
-        void ViewAs(string playerId);
-
         void Bind(NetworkAdapter networkAdapter);
+
+        void ViewAs(string playerId);
 
         void HandleServerMessage(GameCommandInput input);
 
         void RenderLoop();
+
+        void Terminate(CancellationToken token);
     }
 
     internal class ClientGameLogic : IClientGameLogic
@@ -40,13 +42,6 @@
             _inputHandler = inputHandler;
         }
 
-        public void ViewAs(string playerId)
-        {
-            EnsureIsConnected();
-
-            _playerId = playerId;
-        }
-
         public void Bind(NetworkAdapter networkAdapter)
         {
             if (_networkAdapter != null)
@@ -57,21 +52,11 @@
             _networkAdapter = networkAdapter;
         }
 
-        public void RenderLoop()
+        public void ViewAs(string playerId)
         {
             EnsureIsConnected();
 
-            var inputs = HandleInputEvents();
-            foreach (var input in inputs)
-            {
-                _networkAdapter.SendMessage(input);
-            }
-
-            _networkAdapter.HandleServerEvents();
-
-            RenderOutput();
-
-            Thread.Sleep(15);
+            _playerId = playerId;
         }
 
         public void HandleServerMessage(GameCommandInput input)
@@ -94,6 +79,28 @@
                     }
                 }
             }
+        }
+
+        public void RenderLoop()
+        {
+            EnsureIsConnected();
+
+            var inputs = HandleInputEvents();
+            foreach (var input in inputs)
+            {
+                _networkAdapter.SendMessage(input);
+            }
+
+            _networkAdapter.HandleServerEvents();
+
+            RenderOutput();
+
+            Thread.Sleep(15);
+        }
+
+        public void Terminate(CancellationToken token)
+        {
+
         }
 
         private List<GameCommandInput> HandleInputEvents()

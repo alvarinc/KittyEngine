@@ -27,7 +27,12 @@
             ConfigureClient();
         }
 
-        public void Run(ServerInput server, PlayerInput player)
+        public void Run(PlayerInput player, ServerInput server)
+        {
+            Run(player, server, CancellationToken.None);
+        }
+
+        public void Run(PlayerInput player, ServerInput server, CancellationToken token)
         {
             _player = player;
 
@@ -39,10 +44,12 @@
             _logger.Log(LogLevel.Info, "[Client] Press keys to send to server. Press ESC to stop.");
 
             _inGame = true;
-            while (_inGame)
+            while (_inGame && !token.IsCancellationRequested)
             {
                 _gameLogic.RenderLoop();
             }
+
+            _gameLogic.Terminate(token);
 
             _client.Stop();
         }

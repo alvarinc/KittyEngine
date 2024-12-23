@@ -35,6 +35,8 @@
                 _gameLogic.GameLoop();
             }
 
+            _gameLogic.Terminate(token);
+
             _server.Stop();
         }
 

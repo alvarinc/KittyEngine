@@ -1,6 +1,5 @@
 ﻿
-using KittyEngine.Core.Server;
-using KittyEngine.Core.Services.IoC;
+using KittyEngine.Core;
 
 namespace KittyEngine.Server
 {
@@ -10,10 +9,7 @@ namespace KittyEngine.Server
         {
             Console.WriteLine("Starting server...");
 
-            ServiceContainer.Instance
-                .ConfigureGameServer()
-                .Get<Core.Server.Server>()
-                .Run(9050);
+            Engine.RunServer();
         }
     }
 }
