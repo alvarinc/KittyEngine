@@ -50,14 +50,13 @@
 
             _listener.PeerConnectedEvent += peer =>
             {
-                Console.WriteLine($"[Server] Client connected: {peer}");
                 _gameLogic.OnClientConnected(peer);
             };
 
             _listener.NetworkReceiveEvent += (fromPeer, dataReader, deliveryMethod, channel) =>
             {
                 string message = dataReader.GetString();
-                Console.WriteLine($"[Server] Received: {message}");
+                Console.WriteLine($"[Server] Player {fromPeer.Id} : command {message}");
                 GameCommandInput input = null;
 
                 try

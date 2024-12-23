@@ -23,7 +23,7 @@ namespace KittyEngine.Core.Server.Commands
             gameState.Players[peerId].Name = player.Name;
             gameState.Players[peerId].Guid = player.Guid;
 
-            Console.WriteLine($"[Server] Player {peerId} Logged as {player.Name}");
+            Console.WriteLine($"[Server] Player {peerId} : {player.Name} has joined the game");
 
             return new GameCommandResult
             {

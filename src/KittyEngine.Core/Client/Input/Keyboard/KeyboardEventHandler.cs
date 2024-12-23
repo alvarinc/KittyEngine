@@ -2,7 +2,7 @@
 
 namespace KittyEngine.Core.Client.Input.Keyboard
 {
-    public class KeyboardEventHandler
+    public class KeyboardEventHandler : IInputHandler
     {
         private List<IKeyboardEventHandler> _handlers = new List<IKeyboardEventHandler>();
 
