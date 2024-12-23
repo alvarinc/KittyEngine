@@ -1,17 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace KittyEngine.Core.State
 {
+    public enum GameStatus
+    {
+        Creating,
+        Created,
+        Play,
+        Terminated
+    }
+
     public class GameState
     {
         public GameState()
         {
             Map = MapDescription.DefaultMap;
+            Status = GameStatus.Creating;
         }
+
+        public GameStatus Status { get; set; }
 
         public Dictionary<int, PlayerState> Players { get; set; } = new();
 

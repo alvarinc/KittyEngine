@@ -1,8 +1,8 @@
 ﻿using KittyEngine.Core.State;
 
-namespace KittyEngine.Core.Client
+namespace KittyEngine.Core.Client.Output
 {
-    internal static class ClientRenderer
+    internal static class Renderer
     {
         public static void Render(GameState _gameState, string playerId)
         {

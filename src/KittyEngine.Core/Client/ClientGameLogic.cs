@@ -2,10 +2,22 @@
 {
     using KittyEngine.Core.Client.Commands;
     using KittyEngine.Core.Client.Input.Keyboard;
+    using KittyEngine.Core.Client.Output;
     using KittyEngine.Core.Server;
     using KittyEngine.Core.State;
 
-    internal class ClientGameLogic
+    public interface IClientGameLogic
+    {
+        void ViewAs(string playerId);
+
+        List<GameCommandInput> HandleInputEvents();
+
+        void HandleServerMessage(GameCommandInput input);
+
+        void RenderOutput();
+    }
+
+    internal class ClientGameLogic : IClientGameLogic
     {
         private string _playerId;
         private GameState _gameState = null;
@@ -51,11 +63,11 @@
             }
         }
 
-        public void RenderOutput(bool force = false)
+        public void RenderOutput()
         {
-            if (force || _gameStateUpdated)
+            if (_gameStateUpdated)
             {
-                ClientRenderer.Render(_gameState, _playerId);
+                Renderer.Render(_gameState, _playerId);
                 _gameStateUpdated = false;
             }
         }
