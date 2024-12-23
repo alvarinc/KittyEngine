@@ -11,34 +11,46 @@
     {
         private NetManager _client;
         private EventBasedNetListener _listener;
-        private ClientGameLogic _gameLogic;
+        private IClientGameLogic _gameLogic;
+        private Player _player;
         private bool _inGame = false;
 
-        public Client()
+        public Client(IClientGameLogic gameLogic)
         {
-            _listener = new EventBasedNetListener();
-            _client = new NetManager(_listener);
-            _gameLogic = new ClientGameLogic();
-        }
+            _gameLogic = gameLogic;
 
-        public void Run(string address, int port, string playerGuid, string playerName)
-        {
-            Run(
-                new GameServer { Address = address, Port = port }, 
-                new Player { Guid = playerGuid, Name = playerName });
+            ConfigureClient();
         }
 
         public void Run(GameServer gameServer, Player player)
         {
+            _player = player;
+
+            Console.WriteLine("[Client] Connecting...");
+
+            _client.Start();
+            _client.Connect(gameServer.Address, gameServer.Port, "Client=KittyEngine.Core.Client");
+
+            Console.WriteLine("[Client] Press keys to send to server. Press ESC to stop.");
+            GameLoop();
+
+            _client.Stop();
+        }
+
+        private void ConfigureClient()
+        {
+            _listener = new EventBasedNetListener();
+            _client = new NetManager(_listener);
+
             _listener.PeerConnectedEvent += peer =>
             {
                 Console.WriteLine($"Connected to server: {peer}");
-                _gameLogic.ViewAs(player.Guid);
+                _gameLogic.ViewAs(_player.Guid);
 
-                Console.WriteLine($"Join game as {player.Name}");
+                Console.WriteLine($"Join game as {_player.Name}");
                 var cmd = new GameCommandInput("join");
-                cmd.Args["guid"] = player.Guid;
-                cmd.Args["name"] = player.Name;
+                cmd.Args["guid"] = _player.Guid;
+                cmd.Args["name"] = _player.Name;
                 SendMessage(cmd);
             };
 
@@ -64,16 +76,6 @@
                 Console.WriteLine("[Client] Disconnected from server.");
                 _inGame = false;
             };
-
-            Console.WriteLine("[Client] Connecting...");
-
-            _client.Start();
-            _client.Connect(gameServer.Address, gameServer.Port, "Client=KittyEngine.Core.Client");
-
-            Console.WriteLine("[Client] Press keys to send to server. Press ESC to stop.");
-            GameLoop();
-
-            _client.Stop();
         }
 
         private void GameLoop()

@@ -5,6 +5,11 @@
         public string Command { get; set; }
         public Dictionary<string, string> Args { get; set; }
 
+        public GameCommandInput()
+        {
+
+        }
+
         public GameCommandInput(string commandName)
         {
             Command = commandName;

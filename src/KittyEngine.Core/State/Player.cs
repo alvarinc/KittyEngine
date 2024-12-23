@@ -6,6 +6,12 @@ namespace KittyEngine.Core.State
         public string Guid { get; set; }
         public string Name { get; set; }
 
-        public string ConnectionKey => $"{Guid}:{Name}";
+        public Player() { }
+
+        public Player(string guid, string name)
+        {
+            Guid = guid;
+            Name = name;
+        }
     }
 }

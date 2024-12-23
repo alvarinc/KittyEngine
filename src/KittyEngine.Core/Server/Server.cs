@@ -1,32 +1,44 @@
 ﻿namespace KittyEngine.Core.Server
 {
-    using KittyEngine.Core.Client;
     using LiteNetLib;
-    using LiteNetLib.Utils;
     using Newtonsoft.Json;
     using System;
-    using System.Text.Json;
-    using System.Text.Json.Nodes;
 
     public class Server
     {
         private NetManager _server;
         private EventBasedNetListener _listener;
-        private ServerGameLogic _gameLogic;
-        private bool _running = true;
+        private IServerGameLogic _gameLogic;
 
-        public IEnumerable<NetPeer> GetConnectedPeers() => _server.ConnectedPeerList;
-
-        public Server()
+        public Server(IServerGameLogic gameLogic)
         {
-            _listener = new EventBasedNetListener();
-            _server = new NetManager(_listener);
-            _gameLogic = new ServerGameLogic(this);
+            _gameLogic = gameLogic;
+
+            ConfigureServer();
         }
 
         public void Run(int port)
         {
+            Run(port, CancellationToken.None);
+        }
+
+        public void Run(int port, CancellationToken token)
+        {
             _server.Start(port);
+
+            while (!token.IsCancellationRequested)
+            {
+                _gameLogic.GameLoop();
+            }
+
+            _server.Stop();
+        }
+
+        private void ConfigureServer()
+        {
+            _listener = new EventBasedNetListener();
+            _server = new NetManager(_listener);
+            _gameLogic.Bind(new NetworkAdapter(_server));
 
             _listener.ConnectionRequestEvent += request =>
             {
@@ -63,42 +75,7 @@
                 }
 
                 dataReader.Recycle();
-
             };
-
-            GameLoop();
-
-            _server.Stop();
-        }
-
-        private void GameLoop()
-        {
-            while (_running)
-            {
-                // Update players
-                HandleClientEvents();
-
-                // Update AIs
-                // TODO
-
-                // Update physics
-                // TODO
-
-                Thread.Sleep(15);
-            }
-        }
-
-        public void SendMessage(NetPeer peer, GameCommandInput cmd)
-        {
-            var writer = new NetDataWriter();
-            var json = JsonConvert.SerializeObject(cmd);
-            writer.Put(json);
-            peer.Send(writer, DeliveryMethod.ReliableOrdered);
-        }
-
-        private void HandleClientEvents()
-        {
-            _server.PollEvents();
         }
     }
 }

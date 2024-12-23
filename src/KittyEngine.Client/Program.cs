@@ -1,16 +1,25 @@
-﻿namespace KittyEngine.Client
+﻿using KittyEngine.Core.Client;
+using KittyEngine.Core.Services.IoC;
+using KittyEngine.Core.State;
+
+namespace KittyEngine.Client
 {
     internal class Program
     {
         static void Main(string[] args)
         {
             Console.WriteLine("Player Name:");
-            var playerName = Console.ReadLine();
-            var playerId = Guid.NewGuid().ToString();
+
+            var player = new Player(Guid.NewGuid().ToString(), Console.ReadLine());
+            
+            var gameServer = new GameServer("localhost", 9050);
 
             Console.WriteLine("Starting client...");
-            var client = new KittyEngine.Core.Client.Client();
-            client.Run("localhost", 9050, playerId, playerName);
+
+            ServiceContainer.Instance
+                .ConfigureGameClient()
+                .Get<Core.Client.Client>()
+                .Run(gameServer, player);
         }
     }
 }
