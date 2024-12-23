@@ -3,7 +3,6 @@
     using KittyEngine.Core.Server;
     using KittyEngine.Core.State;
     using LiteNetLib;
-    using LiteNetLib.Utils;
     using Newtonsoft.Json;
     using System;
 
@@ -11,6 +10,7 @@
     {
         private NetManager _client;
         private EventBasedNetListener _listener;
+        private NetworkAdapter _networkAdapter;
         private IClientGameLogic _gameLogic;
         private Player _player;
         private bool _inGame = false;
@@ -32,7 +32,12 @@
             _client.Connect(gameServer.Address, gameServer.Port, "Client=KittyEngine.Core.Client");
 
             Console.WriteLine("[Client] Press keys to send to server. Press ESC to stop.");
-            GameLoop();
+
+            _inGame = true;
+            while (_inGame)
+            {
+                _gameLogic.RenderLoop();
+            }
 
             _client.Stop();
         }
@@ -41,6 +46,8 @@
         {
             _listener = new EventBasedNetListener();
             _client = new NetManager(_listener);
+            _networkAdapter = new NetworkAdapter(_client);
+            _gameLogic.Bind(_networkAdapter);
 
             _listener.PeerConnectedEvent += peer =>
             {
@@ -51,7 +58,7 @@
                 var cmd = new GameCommandInput("join");
                 cmd.Args["guid"] = _player.Guid;
                 cmd.Args["name"] = _player.Name;
-                SendMessage(cmd);
+                _networkAdapter.SendMessage(cmd);
             };
 
             _listener.NetworkReceiveEvent += (fromPeer, dataReader, deliveryMethod, channel) =>
@@ -76,41 +83,6 @@
                 Console.WriteLine("[Client] Disconnected from server.");
                 _inGame = false;
             };
-        }
-
-        private void GameLoop()
-        {
-            _inGame = true;
-            while (_inGame)
-            {
-                var inputs = _gameLogic.HandleInputEvents();
-                foreach (var input in inputs)
-                {
-                    SendMessage(input);
-                }
-
-                HandleServerEvents();
-
-                _gameLogic.RenderOutput();
-
-                Thread.Sleep(15);
-            }
-        }
-
-        private void HandleServerEvents()
-        {
-            _client.PollEvents();
-        }
-
-        public void SendMessage(GameCommandInput input)
-        {
-            if (input != null && _client != null && _client.FirstPeer != null && _client.FirstPeer.ConnectionState == ConnectionState.Connected)
-            {
-                var writer = new NetDataWriter();
-                var json = JsonConvert.SerializeObject(input);
-                writer.Put(json);
-                _client.FirstPeer.Send(writer, DeliveryMethod.ReliableOrdered);
-            }
         }
     }
 }
