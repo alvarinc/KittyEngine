@@ -1,5 +1,6 @@
 ﻿namespace KittyEngine.Core.Server
 {
+    using KittyEngine.Core.Services.Logging;
     using LiteNetLib;
     using Newtonsoft.Json;
     using System;
@@ -8,10 +9,13 @@
     {
         private NetManager _server;
         private EventBasedNetListener _listener;
+
+        private ILogger _logger;
         private IServerGameLogic _gameLogic;
 
-        public Server(IServerGameLogic gameLogic)
+        public Server(ILogger logger, IServerGameLogic gameLogic)
         {
+            _logger = logger;
             _gameLogic = gameLogic;
 
             ConfigureServer();
@@ -56,7 +60,7 @@
             _listener.NetworkReceiveEvent += (fromPeer, dataReader, deliveryMethod, channel) =>
             {
                 string message = dataReader.GetString();
-                Console.WriteLine($"[Server] Player {fromPeer.Id} : command {message}");
+                _logger.Log(LogLevel.Info, $"[Server] Player {fromPeer.Id} : command {message}");
                 GameCommandInput input = null;
 
                 try
@@ -65,7 +69,7 @@
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"[Server] invalid message from {fromPeer.Id}");
+                    _logger.Log(LogLevel.Info, $"[Server] invalid message from {fromPeer.Id}");
                 }
 
                 if (input != null)

@@ -12,6 +12,22 @@ namespace KittyEngine.Core.Services.IoC
             _serviceCollection = new ServiceCollection();
         }
 
+        public void Register<TInterface>(ServiceBehavior behavior, Func<TInterface> builder)
+            where TInterface : class
+        {
+            switch (behavior)
+            {
+                case ServiceBehavior.Transient:
+                    _serviceCollection.AddTransient<TInterface>(provider => builder());
+                    break;
+                case ServiceBehavior.Scoped:
+                    _serviceCollection.AddScoped<TInterface>(provider => builder());
+                    break;
+                default:
+                    throw new InvalidOperationException($"Not supported behavior {behavior}");
+            }
+        }
+
         public void Register<TImplementation>(ServiceBehavior behavior)
             where TImplementation : class
         {
@@ -51,6 +67,14 @@ namespace KittyEngine.Core.Services.IoC
             EnsureServiceProvider();
 
             return _serviceProvider.GetService<TInterface>();
+        }
+
+        public TInterface Get<TInterface>(Type interfaceType)
+            where TInterface : class
+        {
+            EnsureServiceProvider();
+
+            return _serviceProvider.GetService(interfaceType) as TInterface;
         }
 
         private void EnsureServiceProvider()

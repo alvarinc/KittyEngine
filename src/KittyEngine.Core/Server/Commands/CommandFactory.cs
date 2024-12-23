@@ -5,11 +5,11 @@ namespace KittyEngine.Core.Server.Commands
 {
     internal class CommandFactory : LightFactory<IGameCommand>
     {
-        public CommandFactory() 
+        public CommandFactory(IServiceContainer _container) : base(_container)
         {
-            Register<JoinCommand>("join");
-            Register<ExitCommand>("exit");
-            Register<MoveCommand>("move");
+            Add<JoinCommand>("join");
+            Add<ExitCommand>("exit");
+            Add<MoveCommand>("move");
         }
     }
 }

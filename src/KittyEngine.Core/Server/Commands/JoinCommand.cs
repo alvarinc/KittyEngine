@@ -1,12 +1,20 @@
 ﻿using KittyEngine.Core.Server.Model;
+using KittyEngine.Core.Services.Logging;
 using KittyEngine.Core.State;
 
 namespace KittyEngine.Core.Server.Commands
 {
     internal class JoinCommand : GameCommandBase
     {
+        private ILogger _logger;
+
         private string _guid;
         private string _name;
+
+        public JoinCommand(ILogger logger)
+        {
+            _logger = logger;
+        }
 
         public override bool ValidateParameters(GameCommandInput input)
         {
@@ -24,7 +32,7 @@ namespace KittyEngine.Core.Server.Commands
             gameState.Players[player.PeerId].Name = player.Name;
             gameState.Players[player.PeerId].Guid = player.Guid;
 
-            Console.WriteLine($"[Server] Player {player.PeerId} : {player.Name} joined the game");
+            _logger.Log(LogLevel.Info, $"[Server] Player {player.PeerId} : {player.Name} joined the game");
 
             return new GameCommandResult
             {

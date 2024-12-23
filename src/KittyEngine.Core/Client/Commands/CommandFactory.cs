@@ -5,9 +5,9 @@ namespace KittyEngine.Core.Client.Commands
 {
     internal class CommandFactory : LightFactory<IGameCommand>
     {
-        public CommandFactory() 
+        public CommandFactory(IServiceContainer _container) : base(_container)
         {
-            Register<SynchronizeCommand>("sync");
+            Add<SynchronizeCommand>("sync");
         }
     }
 }
