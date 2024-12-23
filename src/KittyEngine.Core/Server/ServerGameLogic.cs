@@ -1,6 +1,7 @@
 ﻿namespace KittyEngine.Core.Server
 {
     using KittyEngine.Core.Server.Commands;
+    using KittyEngine.Core.Services.IoC;
     using KittyEngine.Core.State;
     using LiteNetLib;
     using System;
@@ -42,10 +43,10 @@
         private readonly Dictionary<int, Player> _connectedUsers = new();
         private readonly Dictionary<int, GameCommandResult> _peerCommandResults = new();
         private readonly GameState _gameState = new();
-        private readonly ICommandFactory _commandFactory;
+        private readonly ILightFactory<IGameCommand> _commandFactory;
         private readonly Queue<GameCommandRequest> _gameCommmandRequests = new();
 
-        public ServerGameLogic(ICommandFactory commandFactory)
+        public ServerGameLogic(ILightFactory<IGameCommand> commandFactory)
         {
             _commandFactory = commandFactory;
         }

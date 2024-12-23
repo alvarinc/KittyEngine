@@ -4,28 +4,32 @@
     using KittyEngine.Core.Client.Input.Keyboard;
     using KittyEngine.Core.Client.Output;
     using KittyEngine.Core.Server;
+    using KittyEngine.Core.Services.IoC;
     using KittyEngine.Core.State;
 
     public interface IClientGameLogic
     {
         void ViewAs(string playerId);
 
-        List<GameCommandInput> HandleInputEvents();
+        void Bind(NetworkAdapter networkAdapter);
 
         void HandleServerMessage(GameCommandInput input);
 
-        void RenderOutput();
+        void RenderLoop();
     }
 
     internal class ClientGameLogic : IClientGameLogic
     {
+        private NetworkAdapter _networkAdapter;
         private string _playerId;
         private GameState _gameState = null;
         private bool _gameStateUpdated = false;
         private KeyboardEventHandler _keyboardEventHandler;
+        private ILightFactory<IGameCommand> _commandFactory;
 
-        public ClientGameLogic()
+        public ClientGameLogic(ILightFactory<IGameCommand> commandFactory)
         {
+            _commandFactory = commandFactory;
             _keyboardEventHandler = new KeyboardEventHandler();
         }
 
@@ -34,18 +38,34 @@
             _playerId = playerId;
         }
 
-        public List<GameCommandInput> HandleInputEvents()
+        public void Bind(NetworkAdapter networkAdapter)
         {
-            return _keyboardEventHandler.HandleEvents();
+            if (_networkAdapter != null)
+            {
+                throw new InvalidOperationException("A network adapter is already connected.");
+            }
+
+            _networkAdapter = networkAdapter;
+        }
+
+        public void RenderLoop()
+        {
+            var inputs = HandleInputEvents();
+            foreach (var input in inputs)
+            {
+                _networkAdapter.SendMessage(input);
+            }
+
+            _networkAdapter.HandleServerEvents();
+
+            RenderOutput();
+
+            Thread.Sleep(15);
         }
 
         public void HandleServerMessage(GameCommandInput input)
         {
-            IGameCommand cmd = null;
-            if (input.Command == "sync")
-            {
-                cmd = new SynchronizeCommand();
-            }
+            var cmd = _commandFactory.Create(input.Command);
 
             if (cmd != null)
             {
@@ -63,7 +83,12 @@
             }
         }
 
-        public void RenderOutput()
+        private List<GameCommandInput> HandleInputEvents()
+        {
+            return _keyboardEventHandler.HandleEvents();
+        }
+
+        private void RenderOutput()
         {
             if (_gameStateUpdated)
             {

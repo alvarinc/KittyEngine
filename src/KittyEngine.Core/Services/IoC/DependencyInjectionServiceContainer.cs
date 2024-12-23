@@ -2,7 +2,7 @@
 
 namespace KittyEngine.Core.Services.IoC
 {
-    internal class DependencyInjectionServiceContainer : IServiceContainer
+    public class DependencyInjectionServiceContainer : IServiceContainer
     {
         private ServiceCollection _serviceCollection;
         private ServiceProvider _serviceProvider;
@@ -35,7 +35,7 @@ namespace KittyEngine.Core.Services.IoC
             switch(behavior)
             {
                 case ServiceBehavior.Transient:
-                    _serviceCollection.AddTransient<TInterface, TImplementation>();
+                    _serviceCollection.AddTransient<TInterface, TImplementation>(provider => provider.GetService<TImplementation>());
                     break;
                 case ServiceBehavior.Scoped:
                     _serviceCollection.AddScoped<TInterface, TImplementation>();
