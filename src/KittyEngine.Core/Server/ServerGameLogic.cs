@@ -67,7 +67,7 @@
 
             // Register a new player for the client
             _connectedUsers.Add(peer.Id, new Player());
-            Console.WriteLine($"[Server] Player connected. ID: {peer.Id}");
+            Console.WriteLine($"[Server] Player {peer.Id} : connected.");
         }
 
         public void OnMessageReceived(NetPeer peer, GameCommandInput input)
@@ -187,6 +187,7 @@
 
                 if (!_gameState.Players.ContainsKey(connectedPeer.Id))
                 {
+                    Console.WriteLine($"[Server] Player {connectedPeer.Id} : Disconnect");
                     connectedPeer.Disconnect();
                     _connectedUsers.Remove(connectedPeer.Id);
                 }

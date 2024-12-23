@@ -1,7 +1,7 @@
 ﻿namespace KittyEngine.Core.Client
 {
     using KittyEngine.Core.Client.Commands;
-    using KittyEngine.Core.Client.Input.Keyboard;
+    using KittyEngine.Core.Client.Input;
     using KittyEngine.Core.Client.Output;
     using KittyEngine.Core.Server;
     using KittyEngine.Core.Services.IoC;
@@ -20,21 +20,27 @@
 
     internal class ClientGameLogic : IClientGameLogic
     {
-        private NetworkAdapter _networkAdapter;
         private string _playerId;
         private GameState _gameState = null;
         private bool _gameStateUpdated = false;
-        private KeyboardEventHandler _keyboardEventHandler;
-        private ILightFactory<IGameCommand> _commandFactory;
 
-        public ClientGameLogic(ILightFactory<IGameCommand> commandFactory)
+        private NetworkAdapter _networkAdapter;
+
+        private ILightFactory<IGameCommand> _commandFactory;
+        private IRenderer _renderer;
+        private IInputHandler _inputHandler;
+
+        public ClientGameLogic(ILightFactory<IGameCommand> commandFactory, IRenderer renderer, IInputHandler inputHandler)
         {
             _commandFactory = commandFactory;
-            _keyboardEventHandler = new KeyboardEventHandler();
+            _renderer = renderer;
+            _inputHandler = inputHandler;
         }
 
         public void ViewAs(string playerId)
         {
+            EnsureIsConnected();
+
             _playerId = playerId;
         }
 
@@ -50,6 +56,8 @@
 
         public void RenderLoop()
         {
+            EnsureIsConnected();
+
             var inputs = HandleInputEvents();
             foreach (var input in inputs)
             {
@@ -65,6 +73,8 @@
 
         public void HandleServerMessage(GameCommandInput input)
         {
+            EnsureIsConnected();
+
             var cmd = _commandFactory.Create(input.Command);
 
             if (cmd != null)
@@ -85,15 +95,23 @@
 
         private List<GameCommandInput> HandleInputEvents()
         {
-            return _keyboardEventHandler.HandleEvents();
+            return _inputHandler.HandleEvents();
         }
 
         private void RenderOutput()
         {
             if (_gameStateUpdated)
             {
-                Renderer.Render(_gameState, _playerId);
+                _renderer.Render(_gameState, _playerId);
                 _gameStateUpdated = false;
+            }
+        }
+
+        private void EnsureIsConnected()
+        {
+            if (_networkAdapter == null)
+            {
+                throw new InvalidOperationException("No network adapter connected.");
             }
         }
     }

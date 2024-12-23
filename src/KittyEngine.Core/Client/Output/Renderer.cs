@@ -2,9 +2,14 @@
 
 namespace KittyEngine.Core.Client.Output
 {
-    internal static class Renderer
+    public interface IRenderer
     {
-        public static void Render(GameState _gameState, string playerId)
+        void Render(GameState _gameState, string playerId);
+    }
+
+    internal class Renderer : IRenderer
+    {
+        public void Render(GameState _gameState, string playerId)
         {
             var player = _gameState.Players.Values.FirstOrDefault(x => x.Guid == playerId);
             if (player == null)

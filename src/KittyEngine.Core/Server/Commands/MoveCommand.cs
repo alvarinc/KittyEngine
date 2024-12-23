@@ -44,7 +44,7 @@ namespace KittyEngine.Core.Server.Commands
 
             if (results.StateUpdated)
             {
-                Console.WriteLine($"[Server] Player {playerState.Name} moved to: {playerState.Position.X}:{playerState.Position.Y}:{playerState.Position.Z}");
+                Console.WriteLine($"[Server] Player {playerState.PeerId} : {playerState.Name} moved to: {playerState.Position.X}:{playerState.Position.Y}:{playerState.Position.Z}");
             }
 
             return results;
