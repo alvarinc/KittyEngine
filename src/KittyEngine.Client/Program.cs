@@ -1,6 +1,6 @@
 ﻿using KittyEngine.Core.Client;
+using KittyEngine.Core.Client.Model;
 using KittyEngine.Core.Services.IoC;
-using KittyEngine.Core.State;
 
 namespace KittyEngine.Client
 {
@@ -10,16 +10,16 @@ namespace KittyEngine.Client
         {
             Console.WriteLine("Player Name:");
 
-            var player = new Player(Guid.NewGuid().ToString(), Console.ReadLine());
+            var player = new PlayerInput(Guid.NewGuid().ToString(), Console.ReadLine());
             
-            var gameServer = new GameServer("localhost", 9050);
+            var server = new ServerInput("localhost", 9050);
 
             Console.WriteLine("Starting client...");
 
             ServiceContainer.Instance
                 .ConfigureGameClient()
                 .Get<Core.Client.Client>()
-                .Run(gameServer, player);
+                .Run(server, player);
         }
     }
 }

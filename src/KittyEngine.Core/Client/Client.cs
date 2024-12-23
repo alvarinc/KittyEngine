@@ -1,7 +1,7 @@
 ﻿namespace KittyEngine.Core.Client
 {
+    using KittyEngine.Core.Client.Model;
     using KittyEngine.Core.Server;
-    using KittyEngine.Core.State;
     using LiteNetLib;
     using Newtonsoft.Json;
     using System;
@@ -12,7 +12,7 @@
         private EventBasedNetListener _listener;
         private NetworkAdapter _networkAdapter;
         private IClientGameLogic _gameLogic;
-        private Player _player;
+        private PlayerInput _player;
         private bool _inGame = false;
 
         public Client(IClientGameLogic gameLogic)
@@ -22,14 +22,14 @@
             ConfigureClient();
         }
 
-        public void Run(GameServer gameServer, Player player)
+        public void Run(ServerInput server, PlayerInput player)
         {
             _player = player;
 
             Console.WriteLine("[Client] Connecting...");
 
             _client.Start();
-            _client.Connect(gameServer.Address, gameServer.Port, "Client=KittyEngine.Core.Client");
+            _client.Connect(server.Address, server.Port, "Client=KittyEngine.Core.Client");
 
             Console.WriteLine("[Client] Press keys to send to server. Press ESC to stop.");
 

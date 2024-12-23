@@ -1,4 +1,6 @@
-﻿using KittyEngine.Core.State;
+﻿using KittyEngine.Core.Server.Model;
+using KittyEngine.Core.State;
+using System.Collections.Generic;
 
 namespace KittyEngine.Core.Server.Commands
 {
@@ -9,10 +11,10 @@ namespace KittyEngine.Core.Server.Commands
             return true;
         }
 
-        public override GameCommandResult Execute(GameState gameState, Player player, int peerId)
+        public override GameCommandResult Execute(GameState gameState, Player player)
         {
-            Console.WriteLine($"[Server] Player {peerId} : {player.Name} requested to stop. Remove from game.");
-            gameState.Players.Remove(peerId);
+            Console.WriteLine($"[Server] Player {player.PeerId} : {player.Name} requested to stop. Remove from game.");
+            gameState.Players.Remove(player.PeerId);
 
             return new GameCommandResult
             {

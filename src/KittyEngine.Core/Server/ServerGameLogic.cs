@@ -1,6 +1,7 @@
 ﻿namespace KittyEngine.Core.Server
 {
     using KittyEngine.Core.Server.Commands;
+    using KittyEngine.Core.Server.Model;
     using KittyEngine.Core.Services.IoC;
     using KittyEngine.Core.State;
     using LiteNetLib;
@@ -40,9 +41,10 @@
         }
 
         private NetworkAdapter _networkAdapter;
+
         private readonly Dictionary<int, Player> _connectedUsers = new();
-        private readonly Dictionary<int, GameCommandResult> _peerCommandResults = new();
         private readonly GameState _gameState = new();
+
         private readonly ILightFactory<IGameCommand> _commandFactory;
         private readonly Queue<GameCommandRequest> _gameCommmandRequests = new();
 
@@ -66,7 +68,7 @@
             EnsureIsConnected();
 
             // Register a new player for the client
-            _connectedUsers.Add(peer.Id, new Player());
+            _connectedUsers.Add(peer.Id, new Player(peer.Id));
             Console.WriteLine($"[Server] Player {peer.Id} : connected.");
         }
 
@@ -75,7 +77,6 @@
             EnsureIsConnected();
 
             _gameCommmandRequests.Enqueue(new GameCommandRequest(peer.Id, input));
-
         }
 
         public void GameLoop()
@@ -88,10 +89,10 @@
             var synchronizer = new StateSynchronizer<GameState>(_gameState);
 
             // Update players
-            ExecuteCommands();
+            var commandResultByPeers = ExecuteCommands();
 
             // Send updated state to clients
-            SynchronizeClients(synchronizer);
+            SynchronizeClients(commandResultByPeers, synchronizer);
 
             Thread.Sleep(15);
         }
@@ -104,24 +105,26 @@
             }
         }
 
-        private void ExecuteCommands()
+        private Dictionary<int, GameCommandResult> ExecuteCommands()
         {
-            _peerCommandResults.Clear();
+            var peerCommandResults = new Dictionary<int, GameCommandResult>();
 
             while (_gameCommmandRequests.Count > 0)
             {
                 var request = _gameCommmandRequests.Dequeue();
                 var result = ExecuteCommand(request);
 
-                if (!_peerCommandResults.TryGetValue(request.PeerId, out GameCommandResult currentResult))
+                if (!peerCommandResults.TryGetValue(request.PeerId, out GameCommandResult currentResult))
                 {
-                    _peerCommandResults[request.PeerId] = result;
+                    peerCommandResults[request.PeerId] = result;
                 }
                 else
                 {
-                    _peerCommandResults[request.PeerId] = currentResult.Append(result);
+                    peerCommandResults[request.PeerId] = currentResult.Append(result);
                 }
             }
+
+            return peerCommandResults;
         }
 
         private GameCommandResult ExecuteCommand(GameCommandRequest request)
@@ -147,15 +150,15 @@
             }
             else if (command.ValidateParameters(request.Input))
             {
-                return command.Execute(_gameState, player, request.PeerId);
+                return command.Execute(_gameState, player);
             }
 
             return new GameCommandResult();
         }
 
-        private void SynchronizeClients(StateSynchronizer<GameState> synchronizer)
+        private void SynchronizeClients(Dictionary<int, GameCommandResult> commandResultByPeers, StateSynchronizer<GameState> synchronizer)
         {
-            if (!_peerCommandResults.Values.Any(x => x.StateUpdated))
+            if (!commandResultByPeers.Values.Any(x => x.StateUpdated))
             {
                 return;
             }
@@ -174,7 +177,7 @@
             {
                 var mode = PeerSynchronizationMode.Patch;
 
-                if (_peerCommandResults.TryGetValue(connectedPeer.Id, out GameCommandResult commandResult))
+                if (commandResultByPeers.TryGetValue(connectedPeer.Id, out GameCommandResult commandResult))
                 {
                     if (commandResult.PeerInitializated)
                     {
