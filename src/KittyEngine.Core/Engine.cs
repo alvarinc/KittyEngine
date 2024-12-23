@@ -6,6 +6,9 @@ using KittyEngine.Core.Services.IoC;
 
 namespace KittyEngine.Core
 {
+    /// <summary>
+    /// Bootstrapper for starting game client and game server
+    /// </summary>
     public static class Engine
     {
         private static Func<IServiceContainer> _containerBuilder = () => new DependencyInjectionServiceContainer();

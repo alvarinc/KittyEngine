@@ -22,6 +22,7 @@ namespace KittyEngine.Core.Client
             // Logging
             var logManager = new LoggerManager();
             logManager.AddConnector(new ConsoleConnector());
+            logManager.AddConnector(new SerilogConnector());
             container.Register<ILoggerManager>(ServiceBehavior.Scoped, () => logManager);
             container.Register<ILogger, Logger>(ServiceBehavior.Scoped);
 
