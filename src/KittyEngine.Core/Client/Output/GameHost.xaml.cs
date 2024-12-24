@@ -41,6 +41,8 @@ namespace KittyEngine.Core.Client.Outputs
         {
             gameViewportHost.Children.Clear();
             gameViewportHost.Children.Add(viewport);
+
+            Synchronize();
         }
 
         public void Synchronize()

@@ -1,10 +1,11 @@
 ﻿using KittyEngine.Core.Server;
+using KittyEngine.Core.State;
 
-namespace KittyEngine.Core.Client.Input.Keyboard
+namespace KittyEngine.Core.Client.Input.ConsoleKeyboard.Converters
 {
-    internal class MoveEventHandler : IKeyboardEventHandler
+    internal class MoveConverter : IKeyboardEventConverter
     {
-        public void OnKeyboardEvent(string keyPressed, InputEventArgument e)
+        public GameCommandInput Convert(GameState gameState, string playerId, string keyPressed)
         {
             float dx = 0, dy = 0, dz = 0;
 
@@ -31,8 +32,10 @@ namespace KittyEngine.Core.Client.Input.Keyboard
                 cmd.Args["dy"] = dy.ToString();
                 cmd.Args["dz"] = dz.ToString();
 
-                e.Inputs.Add(cmd);
+                return cmd;
             }
+
+            return null;
         }
     }
 }
