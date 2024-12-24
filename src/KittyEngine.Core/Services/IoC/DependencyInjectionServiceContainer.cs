@@ -51,7 +51,7 @@ namespace KittyEngine.Core.Services.IoC
             switch(behavior)
             {
                 case ServiceBehavior.Transient:
-                    _serviceCollection.AddTransient<TInterface, TImplementation>(provider => provider.GetService<TImplementation>());
+                    _serviceCollection.AddTransient<TInterface, TImplementation>();
                     break;
                 case ServiceBehavior.Scoped:
                     _serviceCollection.AddScoped<TInterface, TImplementation>();

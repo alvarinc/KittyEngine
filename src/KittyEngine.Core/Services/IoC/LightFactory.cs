@@ -5,6 +5,8 @@
         private Dictionary<string, Func<TInterface>> _commands = new Dictionary<string, Func<TInterface>>();
         protected IServiceContainer _container;
 
+        public string[] Keys => _commands.Keys.ToArray();
+
         public LightFactory(IServiceContainer container) 
         {
             _container = container;

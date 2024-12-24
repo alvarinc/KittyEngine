@@ -7,13 +7,12 @@ namespace KittyEngine.Client
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Player Name:");
-
-            var player = new PlayerInput(Guid.NewGuid().ToString(), Console.ReadLine());
+            var guid = Guid.NewGuid().ToString();
+            var player = new PlayerInput(guid, $"Player-{guid}");
 
             Console.WriteLine("Starting client...");
 
-            Engine.RunClient(player);
+            Engine.RunConsoleClient(player);
         }
     }
 }

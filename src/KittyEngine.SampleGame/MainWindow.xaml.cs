@@ -1,4 +1,6 @@
-﻿using System.Text;
+﻿using KittyEngine.Core;
+using KittyEngine.Core.Client.Model;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -19,6 +21,15 @@ namespace KittyEngine.SampleGame
         public MainWindow()
         {
             InitializeComponent();
+            ContentRendered += (sender, e) => StartGame();
+        }
+
+        private void StartGame()
+        {
+            var guid = Guid.NewGuid().ToString();
+            var player = new PlayerInput(guid, $"Player-{guid}");
+
+            Engine.StartWPFClient(player, parent: gameView);
         }
     }
 }

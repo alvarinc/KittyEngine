@@ -105,7 +105,7 @@
 
         private List<GameCommandInput> HandleInputEvents()
         {
-            return _inputHandler.HandleEvents();
+            return _inputHandler.HandleEvents(_gameState, _playerId);
         }
 
         private void RenderOutput()

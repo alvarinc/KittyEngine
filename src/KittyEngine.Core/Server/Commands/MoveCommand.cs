@@ -1,6 +1,7 @@
 ﻿using KittyEngine.Core.Server.Model;
 using KittyEngine.Core.Services.Logging;
 using KittyEngine.Core.State;
+using System.Windows.Media.Media3D;
 
 namespace KittyEngine.Core.Server.Commands
 {
@@ -35,25 +36,25 @@ namespace KittyEngine.Core.Server.Commands
             var results = new GameCommandResult();
             if (_dx != 0 && playerState.Position.X + _dx >= gameState.Map.MinX && playerState.Position.X + _dx <= gameState.Map.MaxX)
             {
-                playerState.Position.X += _dx;
+                playerState.Position = playerState.Position + new Vector3D(_dx, 0, 0);
                 results.StateUpdated = true;
             }
 
             if (_dy != 0 && playerState.Position.Y + _dy >= gameState.Map.MinY && playerState.Position.Y + _dy <= gameState.Map.MaxY)
             {
-                playerState.Position.Y += _dy;
+                playerState.Position = playerState.Position + new Vector3D(0, _dy, 0);
                 results.StateUpdated = true;
             }
 
             if (_dz != 0 && playerState.Position.Z + _dz >= gameState.Map.MinZ && playerState.Position.Z + _dz <= gameState.Map.MaxZ)
             {
-                playerState.Position.Z += _dz;
+                playerState.Position = playerState.Position + new Vector3D(0, 0, _dz);
                 results.StateUpdated = true;
             }
 
             if (results.StateUpdated)
             {
-                _logger.Log(LogLevel.Info, $"[Server] Player {player.PeerId} : {playerState.Name} moved to: {playerState.Position.X}:{playerState.Position.Y}:{playerState.Position.Z}");
+                _logger.Log(LogLevel.Info, $"[Server] Player {player.PeerId} : {playerState.Name} moved to: {playerState.Position}");
             }
 
             return results;

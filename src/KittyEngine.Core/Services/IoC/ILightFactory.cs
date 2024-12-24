@@ -2,6 +2,8 @@
 {
     internal interface ILightFactory<TInterface>
     {
+        string[] Keys { get; }
+
         ILightFactory<TInterface> Add<TImplementation>(string name)
             where TImplementation : class, TInterface;
 

@@ -1,8 +1,12 @@
 ﻿using KittyEngine.Core.Client;
+using KittyEngine.Core.Client.Input.WPFKeyboard;
 using KittyEngine.Core.Client.Model;
+using KittyEngine.Core.Client.Outputs;
 using KittyEngine.Core.Server;
 using KittyEngine.Core.Services.Configuration;
 using KittyEngine.Core.Services.IoC;
+using System.ComponentModel;
+using System.Windows.Controls;
 
 namespace KittyEngine.Core
 {
@@ -36,9 +40,20 @@ namespace KittyEngine.Core
         /// </summary>
         /// <param name="player">Player informations</param>
         /// <param name="server">Server connexion infos. If not set or null, get default values</param>
-        public static void RunClient(PlayerInput player, ServerInput server = null)
+        public static void RunConsoleClient(PlayerInput player, ServerInput server = null)
         {
-            StartClient(player, server).Join();
+            StartConsoleClient(player, server).Join();
+        }
+
+        /// <summary>
+        /// Run Game Client thread
+        /// </summary>
+        /// <param name="player">Player informations</param>
+        /// <param name="server">Server connexion infos. If not set or null, get default values</param>
+        /// <param name="parent">WPF grid for host game</param>
+        public static void RunWPFClient(PlayerInput player, ServerInput server = null, Grid parent = null)
+        {
+            StartWPFClient(player, server, parent).Join();
         }
 
         /// <summary>
@@ -56,9 +71,9 @@ namespace KittyEngine.Core
         /// <param name="player">Player informations</param>
         /// <param name="server">Server connexion infos. If not set or null, get default values</param>
         /// <returns>Client thread</returns>
-        public static Thread StartClient(PlayerInput player, ServerInput server)
+        public static Thread StartConsoleClient(PlayerInput player, ServerInput server)
         {
-            var container = _containerBuilder().ConfigureGameClient();
+            var container = _containerBuilder().ConfigureGameClient(ClientType.Console);
 
             var configuration = container.Get<IConfigurationService>();
             var client = container.Get<Core.Client.Client>();
@@ -67,6 +82,39 @@ namespace KittyEngine.Core
             {
                 server = configuration.GetDefaultServer();
             }
+
+            var thread = new Thread(() => client.Run(player, server));
+            thread.Name = "GameClient";
+            thread.Start();
+
+            return thread;
+        }
+
+        /// <summary>
+        /// Start Game Client thread
+        /// </summary>
+        /// <param name="player">Player informations</param>
+        /// <param name="server">Server connexion infos. If not set or null, get default values</param>
+        /// <param name="parent">WPF grid for host game</param>
+        /// <returns>Client thread</returns>
+        public static Thread StartWPFClient(PlayerInput player, ServerInput server = null, Grid parent = null)
+        {
+            var container = _containerBuilder().ConfigureGameClient(ClientType.WPF);
+
+            var configuration = container.Get<IConfigurationService>();
+            var client = container.Get<Core.Client.Client>();
+
+            if (server == null)
+            {
+                server = configuration.GetDefaultServer();
+            }
+
+            var gameHost = new GameHost();
+            parent.Children.Add(gameHost);
+
+            container.Get<IWPFKeyboardListener>().RegisterKeyboardEvents(gameHost);
+            //container.GetService<IMouseListener>().RegisterMouseEvents(gameHost);
+            //container.GetService<IRenderLogic>().RegisterGraphicOutput(gameHost);
 
             var thread = new Thread(() => client.Run(player, server));
             thread.Name = "GameClient";
