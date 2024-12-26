@@ -2,6 +2,7 @@
 using KittyEngine.Core.Server;
 using KittyEngine.Core.Services.Configuration;
 using KittyEngine.Core.State;
+using System.Windows.Media.Media3D;
 
 namespace KittyEngine.Core.Client.Input.WPFMouse.Converters
 {

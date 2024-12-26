@@ -7,6 +7,7 @@
     using KittyEngine.Core.Services.IoC;
     using KittyEngine.Core.Services.Logging;
     using KittyEngine.Core.State;
+    using System.Diagnostics;
 
     public interface IClientGameLogic
     {
@@ -23,6 +24,8 @@
 
     internal class ClientGameLogic : IClientGameLogic
     {
+        private static double _millisecondsPerUpdate = 10;
+
         private string _playerId;
         private GameState _gameState = null;
         private bool _gameStateUpdated = false;
@@ -83,6 +86,9 @@
 
         public void RenderLoop()
         {
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+
             EnsureIsConnected();
 
             var inputs = HandleInputEvents();
@@ -95,7 +101,15 @@
 
             RenderOutput();
 
-            Thread.Sleep(15);
+            stopwatch.Stop();
+            if (stopwatch.ElapsedMilliseconds < _millisecondsPerUpdate)
+            {
+                System.Threading.Thread.Sleep((int)(_millisecondsPerUpdate - stopwatch.ElapsedMilliseconds));
+            }
+            else
+            {
+                _logger.Log(LogLevel.Warn, $"Client update took too long: {stopwatch.ElapsedMilliseconds}ms");
+            }
         }
 
         public void Terminate(CancellationToken token)
