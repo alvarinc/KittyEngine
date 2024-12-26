@@ -37,8 +37,14 @@ namespace KittyEngine.Core.Client.Commands
             }
             else if (_mode == "patch")
             {
+                var currentPlayer = context.GameState.GetPlayer(context.PlayerId);
+                var lookDirection = currentPlayer.LookDirection;
+
                 var jsonPatch = JsonConvert.DeserializeObject<JsonPatchDocument>(_value);
                 jsonPatch.ApplyTo(context.GameState);
+
+                currentPlayer.LookDirection = lookDirection;
+
                 context.StateUpdated = true;
             }
 
