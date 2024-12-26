@@ -1,12 +1,20 @@
-﻿using KittyEngine.Core.State;
+﻿using KittyEngine.Core.Client.Outputs;
+using KittyEngine.Core.State;
 
 namespace KittyEngine.Core.Graphics.ConsoleRenderer
 {
     internal class ConsoleRenderer : IRenderer
     {
+        private IGameHost _host;
+
+        public void RegisterGraphicOutput(IGameHost host)
+        {
+            _host = host;
+        }
+
         public void Render(GameState _gameState, string playerId)
         {
-            var player = _gameState.Players.Values.FirstOrDefault(x => x.Guid == playerId);
+            var player = _gameState.GetPlayer(playerId);
             if (player == null)
             {
                 Console.WriteLine(">  Not on map yet.");

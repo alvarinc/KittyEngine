@@ -1,8 +1,10 @@
 ﻿using KittyEngine.Core.Client.Input.WPFKeyboard.Converters;
+using KittyEngine.Core.Client.Input.WPFMouse;
+using KittyEngine.Core.Client.Outputs;
 using KittyEngine.Core.Server;
 using KittyEngine.Core.Services.IoC;
 using KittyEngine.Core.State;
-using System.Windows.Controls;
+using System.Collections.Generic;
 using System.Windows.Input;
 
 namespace KittyEngine.Core.Client.Input.WPFKeyboard
@@ -10,7 +12,8 @@ namespace KittyEngine.Core.Client.Input.WPFKeyboard
     public class WPFKeyboardListener : IWPFKeyboardListener
     {
         private LightFactory<IKeyboardEventConverter> _commandFactory;
-        private List<KeyboardInput>  _keyboardInputs = new List<KeyboardInput>();
+        private List<KeyboardInput>  _inputs = new List<KeyboardInput>();
+        private object padlock = new object();
 
         private IKeyboadPressedKeyMap _keyboadPressedKeyMap;
 
@@ -26,27 +29,34 @@ namespace KittyEngine.Core.Client.Input.WPFKeyboard
             }
         }
 
-        public WPFKeyboardListener(IServiceContainer _container, IKeyboadPressedKeyMap keyboadPressedKeyMap)
+        public WPFKeyboardListener(IServiceContainer container, IKeyboadPressedKeyMap keyboadPressedKeyMap)
         {
             _keyboadPressedKeyMap = keyboadPressedKeyMap;
             IsEnabled = true;
 
-            _commandFactory = new LightFactory<IKeyboardEventConverter>(_container);
+            _commandFactory = new LightFactory<IKeyboardEventConverter>(container);
             _commandFactory.Add<WPFKeyboard.Converters.ExitConverter>("exit");
             _commandFactory.Add<WPFKeyboard.Converters.MoveConverter>("move");
         }
 
-        public void RegisterKeyboardEvents(UserControl control)
+        public void RegisterKeyboardEvents(IGameHost host)
         {
-            control.KeyDown += UserControl_KeyEvents;
-            control.KeyUp += UserControl_KeyEvents;
+            host.HostControl.KeyDown += UserControl_KeyEvents;
+            host.HostControl.KeyUp += UserControl_KeyEvents;
         }
 
         public List<GameCommandInput> HandleEvents(GameState gameState, string playerId)
         {
             var results = new List<GameCommandInput>();
+            
+            var inputs = new List<KeyboardInput>();
+            lock (padlock)
+            {
+                inputs.AddRange(_inputs.ToArray());
+                _inputs.Clear();
+            }
 
-            foreach (var keyboardInput in _keyboardInputs)
+            foreach (var keyboardInput in inputs)
             {
                 foreach (var key in _commandFactory.Keys)
                 {
@@ -61,7 +71,7 @@ namespace KittyEngine.Core.Client.Input.WPFKeyboard
                     }
                 }
             }
-            
+
             return results;
         }
 
@@ -77,7 +87,7 @@ namespace KittyEngine.Core.Client.Input.WPFKeyboard
                 var previousPressedKeys = _keyboadPressedKeyMap.GetPressedKeys();
                 _keyboadPressedKeyMap.RegisterKeyboardPressedKey(e.Key);
 
-                _keyboardInputs.Add(new KeyboardInput
+                _inputs.Add(new KeyboardInput
                 {
                     Type = KeyboardInputType.KeyDown,
                     KeyDown = e.Key,
@@ -91,7 +101,7 @@ namespace KittyEngine.Core.Client.Input.WPFKeyboard
             {
                 _keyboadPressedKeyMap.RemoveKeyboardPressedKey(e.Key);
 
-                _keyboardInputs.Add(new KeyboardInput
+                _inputs.Add(new KeyboardInput
                 {
                     Type = KeyboardInputType.KeyUp,
                     KeyDown = Key.None,

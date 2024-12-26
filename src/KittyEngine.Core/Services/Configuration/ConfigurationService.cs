@@ -8,5 +8,16 @@ namespace KittyEngine.Core.Services.Configuration
         {
             return new ServerInput("localhost", 9050);
         }
+
+        public MouseSettings GetMouseSettings()
+        {
+            return new MouseSettings
+            {
+                MoveSpeed = .75,
+                MouseRotationSpeed = .5,
+                MouseXInverted = false,
+                MouseYInverted = false
+            };
+        }
     }
 }

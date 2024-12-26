@@ -5,9 +5,9 @@ namespace KittyEngine.Core.Client.Input.WPFKeyboard.Converters
 {
     internal class ExitConverter : IKeyboardEventConverter
     {
-        public GameCommandInput Convert(GameState gameState, string playerId, KeyboardInput keyboardInput)
+        public GameCommandInput Convert(GameState gameState, string playerId, KeyboardInput input)
         {
-            if (keyboardInput.PressedKeys.Contains(System.Windows.Input.Key.Escape)) 
+            if (input.PressedKeys.Contains(System.Windows.Input.Key.Escape)) 
             {
                 return new GameCommandInput("exit");
             }

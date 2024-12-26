@@ -26,6 +26,21 @@ namespace KittyEngine.Core.Client.Outputs
 
         private ISynchronizableOutput _hud;
 
+        public Viewport3D Viewport3D 
+        { 
+            get 
+            { 
+                if (gameViewportHost.Children.Count > 0)
+                {
+                    return gameViewportHost.Children[0] as Viewport3D;
+                }
+
+                return null;
+            } 
+        }
+
+        public UserControl HostControl => this;
+
         public GameHost()
         {
             InitializeComponent();
@@ -35,6 +50,11 @@ namespace KittyEngine.Core.Client.Outputs
             {
                 Thread.CurrentThread.Name = "UIThread";
             }
+
+            Loaded += (s, e) =>
+            {
+                Focus();
+            };
         }
 
         public void AttachViewport(Viewport3D viewport)
