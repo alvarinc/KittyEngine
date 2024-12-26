@@ -8,6 +8,7 @@
     using LiteNetLib;
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
 
     public interface IServerGameLogic
     {
@@ -42,6 +43,8 @@
             Patch,
             Full
         }
+
+        private static double _millisecondsPerUpdate = 10;
 
         private NetworkAdapter _networkAdapter;
 
@@ -86,6 +89,9 @@
 
         public void GameLoop()
         {
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+
             EnsureIsConnected();
 
             // Get clients inputs
@@ -99,7 +105,15 @@
             // Send updated state to clients
             SynchronizeClients(commandResultByPeers, synchronizer);
 
-            Thread.Sleep(15);
+            stopwatch.Stop();
+            if (stopwatch.ElapsedMilliseconds < _millisecondsPerUpdate)
+            {
+                System.Threading.Thread.Sleep((int)(_millisecondsPerUpdate - stopwatch.ElapsedMilliseconds));
+            }
+            else
+            {
+                _logger.Log(LogLevel.Warn, $"Server update took too long: {stopwatch.ElapsedMilliseconds}ms");
+            }
         }
 
         public void Terminate(CancellationToken token)
