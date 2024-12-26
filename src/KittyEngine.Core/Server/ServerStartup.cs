@@ -27,6 +27,8 @@ namespace KittyEngine.Core.Server
             container.Register<JoinCommand>(ServiceBehavior.Transient);
             container.Register<ExitCommand>(ServiceBehavior.Transient);
             container.Register<MoveCommand>(ServiceBehavior.Transient);
+            container.Register<MoveCommand3D>(ServiceBehavior.Transient);
+            container.Register<RotateCommand3D>(ServiceBehavior.Transient);
             container.Register<ILightFactory<IGameCommand>, CommandFactory>(ServiceBehavior.Scoped);
 
             // Game logic

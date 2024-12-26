@@ -9,9 +9,7 @@ namespace KittyEngine.Core.Server.Commands
     {
         private ILogger _logger;
 
-        private float _dx;
-        private float _dy;
-        private float _dz;
+        private Vector3D _direction;
 
         public MoveCommand(ILogger logger)
         {
@@ -20,35 +18,36 @@ namespace KittyEngine.Core.Server.Commands
 
         public override bool ValidateParameters(GameCommandInput input)
         {
-            var dxString = input.Args["dx"];
-            var dyString = input.Args["dy"];
-            var dzString = input.Args["dz"];
-
-            return
-                float.TryParse(dxString, out _dx) &&
-                float.TryParse(dyString, out _dy) &&
-                float.TryParse(dzString, out _dz);
+            try
+            {
+                _direction = Vector3D.Parse(input.Args["direction"]);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         public override GameCommandResult Execute(GameState gameState, Player player)
         {
             var playerState = gameState.Players[player.PeerId];
             var results = new GameCommandResult();
-            if (_dx != 0 && playerState.Position.X + _dx >= gameState.Map.MinX && playerState.Position.X + _dx <= gameState.Map.MaxX)
+            if (_direction.X != 0 && playerState.Position.X + _direction.X >= gameState.Map.MinX && playerState.Position.X + _direction.X <= gameState.Map.MaxX)
             {
-                playerState.Position = playerState.Position + new Vector3D(_dx, 0, 0);
+                playerState.Position = playerState.Position + new Vector3D(_direction.X, 0, 0);
                 results.StateUpdated = true;
             }
 
-            if (_dy != 0 && playerState.Position.Y + _dy >= gameState.Map.MinY && playerState.Position.Y + _dy <= gameState.Map.MaxY)
+            if (_direction.Y != 0 && playerState.Position.Y + _direction.Y >= gameState.Map.MinY && playerState.Position.Y + _direction.Y <= gameState.Map.MaxY)
             {
-                playerState.Position = playerState.Position + new Vector3D(0, _dy, 0);
+                playerState.Position = playerState.Position + new Vector3D(0, _direction.Y, 0);
                 results.StateUpdated = true;
             }
 
-            if (_dz != 0 && playerState.Position.Z + _dz >= gameState.Map.MinZ && playerState.Position.Z + _dz <= gameState.Map.MaxZ)
+            if (_direction.Z != 0 && playerState.Position.Z + _direction.Z >= gameState.Map.MinZ && playerState.Position.Z + _direction.Z <= gameState.Map.MaxZ)
             {
-                playerState.Position = playerState.Position + new Vector3D(0, 0, _dz);
+                playerState.Position = playerState.Position + new Vector3D(0, 0, _direction.Z);
                 results.StateUpdated = true;
             }
 

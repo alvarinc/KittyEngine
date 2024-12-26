@@ -1,5 +1,6 @@
 ﻿using KittyEngine.Core.Server;
 using KittyEngine.Core.State;
+using System.Windows.Media.Media3D;
 
 namespace KittyEngine.Core.Client.Input.ConsoleKeyboard.Converters
 {
@@ -28,9 +29,7 @@ namespace KittyEngine.Core.Client.Input.ConsoleKeyboard.Converters
             {
                 // Send movement command to the server
                 var cmd = new GameCommandInput("move");
-                cmd.Args["dx"] = dx.ToString();
-                cmd.Args["dy"] = dy.ToString();
-                cmd.Args["dz"] = dz.ToString();
+                cmd.Args["direction"] = new Vector3D(dx, dy, dz).ToString();
 
                 return cmd;
             }
