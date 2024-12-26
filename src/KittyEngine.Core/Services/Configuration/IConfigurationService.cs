@@ -5,5 +5,7 @@ namespace KittyEngine.Core.Services.Configuration
     internal interface IConfigurationService
     {
         ServerInput GetDefaultServer();
+
+        MouseSettings GetMouseSettings();
     }
 }

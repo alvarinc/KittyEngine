@@ -15,7 +15,7 @@ namespace KittyEngine.Core.Client.Input.WPFKeyboard.Converters
             _primitiveMoveService = primitiveMoveService;
         }
 
-        public GameCommandInput Convert(GameState gameState, string playerId, KeyboardInput keyboardInput)
+        public GameCommandInput Convert(GameState gameState, string playerId, KeyboardInput input)
         {
             var player = gameState.GetPlayer(playerId);
             if (player == null)
@@ -23,7 +23,7 @@ namespace KittyEngine.Core.Client.Input.WPFKeyboard.Converters
                 return null;
             }
 
-            var pressedKeys = keyboardInput.PressedKeys.AsEnumerable();
+            var pressedKeys = input.PressedKeys.AsEnumerable();
             var moveForward = pressedKeys.Contains(Key.Z);
             var moveBackward = pressedKeys.Contains(Key.S);
             var moveLeft = pressedKeys.Contains(Key.Q);

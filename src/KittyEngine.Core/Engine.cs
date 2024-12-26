@@ -1,5 +1,6 @@
 ﻿using KittyEngine.Core.Client;
 using KittyEngine.Core.Client.Input.WPFKeyboard;
+using KittyEngine.Core.Client.Input.WPFMouse;
 using KittyEngine.Core.Client.Model;
 using KittyEngine.Core.Client.Outputs;
 using KittyEngine.Core.Server;
@@ -101,6 +102,14 @@ namespace KittyEngine.Core
         {
             var container = _containerBuilder().ConfigureGameClient(ClientType.WPF);
 
+            var gameHost = new GameHost();
+
+            container.Get<IWPFKeyboardListener>().RegisterKeyboardEvents(gameHost);
+            container.Get<IWPFMouseListener>().RegisterMouseEvents(gameHost);
+            container.Get<Graphics.IRenderer>().RegisterGraphicOutput(gameHost);
+
+            parent.Children.Add(gameHost);
+
             var configuration = container.Get<IConfigurationService>();
             var client = container.Get<Core.Client.Client>();
 
@@ -108,13 +117,6 @@ namespace KittyEngine.Core
             {
                 server = configuration.GetDefaultServer();
             }
-
-            var gameHost = new GameHost();
-            parent.Children.Add(gameHost);
-
-            container.Get<IWPFKeyboardListener>().RegisterKeyboardEvents(gameHost);
-            //container.GetService<IMouseListener>().RegisterMouseEvents(gameHost);
-            //container.GetService<IRenderLogic>().RegisterGraphicOutput(gameHost);
 
             var thread = new Thread(() => client.Run(player, server));
             thread.Name = "GameClient";

@@ -5,6 +5,6 @@ namespace KittyEngine.Core.Client.Input.WPFKeyboard.Converters
 {
     internal interface IKeyboardEventConverter
     {
-        GameCommandInput Convert(GameState gameState, string playerId, KeyboardInput keyboardInput);
+        GameCommandInput Convert(GameState gameState, string playerId, KeyboardInput input);
     }
 }
