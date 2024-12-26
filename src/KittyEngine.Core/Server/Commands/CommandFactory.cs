@@ -10,6 +10,8 @@ namespace KittyEngine.Core.Server.Commands
             Add<JoinCommand>("join");
             Add<ExitCommand>("exit");
             Add<MoveCommand>("move");
+            Add<MoveCommand3D>("move3d");
+            Add<RotateCommand3D>("rotate3d");
         }
     }
 }

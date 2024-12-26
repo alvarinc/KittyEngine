@@ -16,7 +16,7 @@ namespace KittyEngine.Core.State
     {
         public GameState()
         {
-            Map = MapDescription.DefaultMap;
+            Map = MapDescription.ConsoleMap;
             Status = GameStatus.Creating;
         }
 
@@ -41,7 +41,7 @@ namespace KittyEngine.Core.State
         public int MinY { get; set; }
         public int MinZ { get; set; }
 
-        public static MapDescription DefaultMap => new MapDescription
+        public static MapDescription ConsoleMap => new MapDescription
         {
             MaxX = 10,
             MaxY = 10,
@@ -49,6 +49,16 @@ namespace KittyEngine.Core.State
             MinX = -10,
             MinY = -10,
             MinZ = -10
+        };
+
+        public static MapDescription WPFMap => new MapDescription
+        {
+            MaxX = 100,
+            MaxY = 100,
+            MaxZ = 100,
+            MinX = -100,
+            MinY = -100,
+            MinZ = -100
         };
     }
 

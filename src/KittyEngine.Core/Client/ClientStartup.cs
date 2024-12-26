@@ -8,6 +8,7 @@ using KittyEngine.Core.Graphics;
 using KittyEngine.Core.Client.Input.WPFKeyboard;
 using KittyEngine.Core.Physics;
 using KittyEngine.Core.Client.Outputs;
+using KittyEngine.Core.Graphics.WPFRenderer;
 
 namespace KittyEngine.Core.Client
 {
@@ -59,6 +60,9 @@ namespace KittyEngine.Core.Client
 
                 // WPF Inputs
                 container.Register<IInputHandler, WPFInputHanlder>(ServiceBehavior.Scoped);
+
+                // WPF Renderer
+                container.Register<WorldLoader>(ServiceBehavior.Scoped);
 
                 // WPF Output
                 container.Register<IOutputFactory, OutputFactory>(ServiceBehavior.Scoped);
