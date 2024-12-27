@@ -29,7 +29,10 @@ namespace KittyEngine.Core.Client.Input.WPFKeyboard.Converters
             var moveLeft = pressedKeys.Contains(Key.Q);
             var moveRight = pressedKeys.Contains(Key.D);
 
-            if (moveForward || moveBackward || moveLeft || moveRight)
+            var moveAscend = pressedKeys.Contains(Key.Space);
+            var moveDescend = pressedKeys.Contains(Key.LeftShift);
+
+            if (moveForward || moveBackward || moveLeft || moveRight || moveAscend || moveDescend)
             {
                 var identity = new Vector3D(0, 0, 0);
 
@@ -38,7 +41,10 @@ namespace KittyEngine.Core.Client.Input.WPFKeyboard.Converters
                 var moveLeftVector = moveLeft ? _primitiveMoveService.GetMoveLateral(player, 1) : identity;
                 var moveRightVector = moveRight ? _primitiveMoveService.GetMoveLateral(player, -1) : identity;
 
-                var direction = moveForwardVector + moveBackwardVector + moveLeftVector + moveRightVector;
+                var moveAscendVector = moveAscend ? player.UpDirection : identity;
+                var moveDescendVector = moveDescend ? -player.UpDirection : identity;
+
+                var direction = moveForwardVector + moveBackwardVector + moveLeftVector + moveRightVector + moveAscendVector + moveDescendVector;
 
                 if (direction != identity)
                 {
