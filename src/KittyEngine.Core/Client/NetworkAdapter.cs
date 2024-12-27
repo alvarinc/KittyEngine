@@ -2,16 +2,20 @@
 using LiteNetLib;
 using Newtonsoft.Json;
 using KittyEngine.Core.Server;
+using KittyEngine.Core.Services.Network;
+using System.Text;
 
 namespace KittyEngine.Core.Client
 {
     public class NetworkAdapter
     {
         private NetManager _client;
+        private LargeMessageSender _largeMessageSender;
 
         public NetworkAdapter(NetManager client)
         {
             _client = client;
+            _largeMessageSender = new LargeMessageSender();
         }
 
         public void HandleServerEvents()
@@ -25,8 +29,9 @@ namespace KittyEngine.Core.Client
             {
                 var writer = new NetDataWriter();
                 var json = JsonConvert.SerializeObject(input);
-                writer.Put(json);
-                _client.FirstPeer.Send(writer, DeliveryMethod.ReliableOrdered);
+
+                var data = Encoding.UTF8.GetBytes(json);
+                _largeMessageSender.SendLargeMessage(_client.FirstPeer, data);
             }
         }
     }

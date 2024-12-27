@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KittyEngine.Server", "Kitty
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KittyEngine.SampleGame", "KittyEngine.SampleGame\KittyEngine.SampleGame.csproj", "{DD226E4C-C3F7-448F-8F05-282C1CD06389}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KittyEngine.SampleMaps", "KittyEngine.SampleMaps\KittyEngine.SampleMaps.csproj", "{65FF6814-9C7D-40F1-9410-EC2F099297CF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +37,10 @@ Global
 		{DD226E4C-C3F7-448F-8F05-282C1CD06389}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DD226E4C-C3F7-448F-8F05-282C1CD06389}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DD226E4C-C3F7-448F-8F05-282C1CD06389}.Release|Any CPU.Build.0 = Release|Any CPU
+		{65FF6814-9C7D-40F1-9410-EC2F099297CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{65FF6814-9C7D-40F1-9410-EC2F099297CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{65FF6814-9C7D-40F1-9410-EC2F099297CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{65FF6814-9C7D-40F1-9410-EC2F099297CF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -43,6 +49,7 @@ Global
 		{88F7B232-7875-4427-B884-46A08C596EEB} = {939787FA-3819-4C25-9F5D-570885F8B78B}
 		{06557E75-9B8D-4208-A57A-0BD3F05F8E72} = {939787FA-3819-4C25-9F5D-570885F8B78B}
 		{DD226E4C-C3F7-448F-8F05-282C1CD06389} = {939787FA-3819-4C25-9F5D-570885F8B78B}
+		{65FF6814-9C7D-40F1-9410-EC2F099297CF} = {939787FA-3819-4C25-9F5D-570885F8B78B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FA0BEBBC-1E01-4914-9BBE-CC8E06C4F815}

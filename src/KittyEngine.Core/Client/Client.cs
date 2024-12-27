@@ -3,15 +3,18 @@
     using KittyEngine.Core.Client.Model;
     using KittyEngine.Core.Server;
     using KittyEngine.Core.Services.Logging;
+    using KittyEngine.Core.Services.Network;
     using LiteNetLib;
     using Newtonsoft.Json;
     using System;
+    using System.Reflection.PortableExecutable;
 
     public class Client
     {
         private NetManager _client;
         private EventBasedNetListener _listener;
         private NetworkAdapter _networkAdapter;
+        private LargeMessageReceiver _largeMessageReceiver;
 
         private ILogger _logger;
         private IClientGameLogic _gameLogic;
@@ -54,8 +57,27 @@
             _client.Stop();
         }
 
+        private void OnCompleteMessageReceived(NetPeer peer, string checksum, byte[] completeMessage)
+        {
+            var message = System.Text.Encoding.UTF8.GetString(completeMessage);
+            _logger.Log(LogLevel.Debug, $"[Client] Received: {message}");
+
+            try
+            {
+                var input = JsonConvert.DeserializeObject<GameCommandInput>(message);
+                _gameLogic.HandleServerMessage(input);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+        }
+
         private void ConfigureClient()
         {
+            _largeMessageReceiver = new LargeMessageReceiver();
+            _largeMessageReceiver.OnCompleteMessageReceived += OnCompleteMessageReceived;
+
             _listener = new EventBasedNetListener();
             _client = new NetManager(_listener);
             _networkAdapter = new NetworkAdapter(_client);
@@ -73,21 +95,17 @@
                 _networkAdapter.SendMessage(cmd);
             };
 
-            _listener.NetworkReceiveEvent += (fromPeer, dataReader, deliveryMethod, channel) =>
+            _listener.NetworkReceiveEvent += (peer, reader, channel, deliveryMethod) =>
             {
-                string message = dataReader.GetString();
-                _logger.Log(LogLevel.Debug, $"[Client] Received: {message}");
                 try
                 {
-                    var input = JsonConvert.DeserializeObject<GameCommandInput>(message);
-                    _gameLogic.HandleServerMessage(input);
+                    Console.WriteLine($"Received data on channel {channel} from {peer} using {deliveryMethod}");
+                    _largeMessageReceiver.OnNetworkReceive(peer, reader, deliveryMethod); // Delegate to existing handling
                 }
                 catch (Exception ex)
-                { 
-                    Console.WriteLine(ex.ToString()); 
+                {
+                    Console.WriteLine($"Error processing data on channel {channel}: {ex.Message}");
                 }
-
-                dataReader.Recycle();
             };
 
             _listener.PeerDisconnectedEvent += (peer, disconnectInfo) =>

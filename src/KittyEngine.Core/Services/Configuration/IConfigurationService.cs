@@ -2,7 +2,7 @@
 
 namespace KittyEngine.Core.Services.Configuration
 {
-    internal interface IConfigurationService
+    public interface IConfigurationService
     {
         ServerInput GetDefaultServer();
 

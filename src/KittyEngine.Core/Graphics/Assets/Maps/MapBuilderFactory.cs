@@ -9,16 +9,28 @@ namespace KittyEngine.Core.Graphics.Assets.Maps
 {
     public class MapBuilderFactory : IMapBuilderFactory
     {
+        private IContentService _contentService;
         private Dictionary<string, IMapBuilder> _mapBuilders;
 
-        public MapBuilderFactory()
+        public MapBuilderFactory(IContentService contentService)
         {
+            _contentService = contentService;
             _mapBuilders = new Dictionary<string, IMapBuilder>();
         }
 
         public void RegisterMap(IMapBuilder mapBuilder)
         {
             _mapBuilders.Add(mapBuilder.MapName, mapBuilder);
+        }
+
+        public void RegisterMapsFromAssets()
+        {
+            var maps = _contentService.GetResources(AssetType.Map);
+            foreach (var map in maps)
+            {
+                var mapBuilder = new MapBuilderFromAsset(_contentService, map);
+                _mapBuilders.Add(mapBuilder.MapName, mapBuilder);
+            }
         }
 
         public string[] GetMaps()

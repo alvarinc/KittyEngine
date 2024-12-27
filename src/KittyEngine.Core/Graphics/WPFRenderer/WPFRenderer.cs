@@ -35,6 +35,7 @@ namespace KittyEngine.Core.Graphics.WPFRenderer
                 _host.Dispatcher.Invoke(() =>
                 {
                     _worldLoader.BindGraphicsToViewport(_host);
+                    _worldLoader.LoadMap(_gameState.Map);
                     //_host.AttachViewport(_outputFactory.CreateViewport3D());
                 });
 

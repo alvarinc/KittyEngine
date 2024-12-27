@@ -1,4 +1,6 @@
-﻿using KittyEngine.Core.Server.Commands;
+﻿using KittyEngine.Core.GameEngine.Graphics.Assets;
+using KittyEngine.Core.Graphics.Assets.Maps;
+using KittyEngine.Core.Server.Commands;
 using KittyEngine.Core.Services.Configuration;
 using KittyEngine.Core.Services.IoC;
 using KittyEngine.Core.Services.Logging;
@@ -24,12 +26,18 @@ namespace KittyEngine.Core.Server
             container.Register<ILogger, Logger>(ServiceBehavior.Scoped);
 
             // Commands
+            container.Register<LoadMapCommand>(ServiceBehavior.Transient);
+
             container.Register<JoinCommand>(ServiceBehavior.Transient);
             container.Register<ExitCommand>(ServiceBehavior.Transient);
             container.Register<MoveCommand>(ServiceBehavior.Transient);
             container.Register<MoveCommand3D>(ServiceBehavior.Transient);
             container.Register<RotateCommand3D>(ServiceBehavior.Transient);
             container.Register<ILightFactory<IGameCommand>, CommandFactory>(ServiceBehavior.Scoped);
+
+            // Maps
+            container.Register<IContentService, ContentService>(ServiceBehavior.Scoped);
+            container.Register<IMapBuilderFactory, MapBuilderFactory>(ServiceBehavior.Scoped);
 
             // Game logic
             container.Register<IServerGameLogic, ServerGameLogic>(ServiceBehavior.Scoped);
