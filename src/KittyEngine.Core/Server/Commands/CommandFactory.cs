@@ -7,6 +7,8 @@ namespace KittyEngine.Core.Server.Commands
     {
         public CommandFactory(IServiceContainer _container) : base(_container)
         {
+            Add<LoadMapCommand>("loadmap");
+
             Add<JoinCommand>("join");
             Add<ExitCommand>("exit");
             Add<MoveCommand>("move");

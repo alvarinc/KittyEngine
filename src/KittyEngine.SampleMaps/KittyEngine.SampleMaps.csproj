@@ -1,0 +1,153 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Assets\Maps\DarkCastleM2.json" />
+    <None Remove="Assets\Maps\DarkCastleM3.json" />
+    <None Remove="Assets\Maps\DarkCastleM4.json" />
+    <None Remove="Assets\Maps\SAT.json" />
+    <None Remove="Assets\Skyboxes\sky0-full.png" />
+    <None Remove="Assets\Skyboxes\sky2-full.png" />
+    <None Remove="Assets\Skyboxes\sky3-full.png" />
+    <None Remove="Assets\Textures\base_door\kcdm18door_top.jpg" />
+    <None Remove="Assets\Textures\base_floor\clanggrate2.jpg" />
+    <None Remove="Assets\Textures\base_floor\clang_floor3bstairtop2.jpg" />
+    <None Remove="Assets\Textures\base_object\boxq3_3b.jpg" />
+    <None Remove="Assets\Textures\base_object\boxq3_4b.jpg" />
+    <None Remove="Assets\Textures\base_support\grate1_4_small.jpg" />
+    <None Remove="Assets\Textures\base_wall\archpipe2_ifin.jpg" />
+    <None Remove="Assets\Textures\base_wall\atech2_c.jpg" />
+    <None Remove="Assets\Textures\base_wall\basewall02.jpg" />
+    <None Remove="Assets\Textures\base_wall\basewallbobbin.jpg" />
+    <None Remove="Assets\Textures\base_wall\c_met7_2.jpg" />
+    <None Remove="Assets\Textures\base_wall\xbasewall04.jpg" />
+    <None Remove="Assets\Textures\base_wall\xian_q3dm12_leftwall4fin.jpg" />
+    <None Remove="Assets\Textures\gothic_block\blocks10.jpg" />
+    <None Remove="Assets\Textures\gothic_block\blocks11b.jpg" />
+    <None Remove="Assets\Textures\gothic_block\blocks11bbroke.jpg" />
+    <None Remove="Assets\Textures\gothic_block\blocks11bbroke3.jpg" />
+    <None Remove="Assets\Textures\gothic_block\blocks11d.jpg" />
+    <None Remove="Assets\Textures\gothic_block\blocks15_iron_r.jpg" />
+    <None Remove="Assets\Textures\gothic_block\blocks15_relief2.jpg" />
+    <None Remove="Assets\Textures\gothic_block\blocks17j.jpg" />
+    <None Remove="Assets\Textures\gothic_block\blocks18b.jpg" />
+    <None Remove="Assets\Textures\gothic_block\blocks18c.jpg" />
+    <None Remove="Assets\Textures\gothic_block\blocks18cblood.jpg" />
+    <None Remove="Assets\Textures\gothic_block\blocks18cbloodhead.jpg" />
+    <None Remove="Assets\Textures\gothic_block\blocks18cgeom.jpg" />
+    <None Remove="Assets\Textures\gothic_block\blocks18c_1.jpg" />
+    <None Remove="Assets\Textures\gothic_block\blocks18c_1a.jpg" />
+    <None Remove="Assets\Textures\gothic_block\blocks18c_3.jpg" />
+    <None Remove="Assets\Textures\gothic_block\gkc14.jpg" />
+    <None Remove="Assets\Textures\gothic_block\gkc14b.jpg" />
+    <None Remove="Assets\Textures\gothic_block\gkc15c.jpg" />
+    <None Remove="Assets\Textures\gothic_block\gkc16b.jpg" />
+    <None Remove="Assets\Textures\gothic_block\gkc18b.jpg" />
+    <None Remove="Assets\Textures\gothic_block\gkc19a.jpg" />
+    <None Remove="Assets\Textures\gothic_block\gkc19b.jpg" />
+    <None Remove="Assets\Textures\gothic_block\gkc20a.jpg" />
+    <None Remove="Assets\Textures\gothic_block\gkc20b.jpg" />
+    <None Remove="Assets\Textures\gothic_block\killblock.jpg" />
+    <None Remove="Assets\Textures\gothic_block\killtrim.jpg" />
+    <None Remove="Assets\Textures\gothic_ceiling\ceilingtech03_afinal.jpg" />
+    <None Remove="Assets\Textures\gothic_ceiling\woodceiling1b_dark.jpg" />
+    <None Remove="Assets\Textures\gothic_floor\largerblock3b.jpg" />
+    <None Remove="Assets\Textures\gothic_floor\largerblock3b2.jpg" />
+    <None Remove="Assets\Textures\gothic_floor\largerblock3b4.jpg" />
+    <None Remove="Assets\Textures\gothic_floor\pj_e3_center2.jpg" />
+    <None Remove="Assets\Textures\gothic_wall\brickwindow_bot.jpg" />
+    <None Remove="Assets\Textures\gothic_wall\brickwindow_mid.jpg" />
+    <None Remove="Assets\Textures\gothic_wall\brickwindow_top.jpg" />
+    <None Remove="Assets\Textures\gothic_wall\iron01_c3.jpg" />
+    <None Remove="Assets\Textures\gothic_wall\iron01_e.jpg" />
+    <None Remove="Assets\Textures\gothic_wall\iron1_brickrust.jpg" />
+    <None Remove="Assets\Textures\gothic_wall\purptileb.jpg" />
+    <None Remove="Assets\Textures\organics\dirt.jpg" />
+    <None Remove="Assets\Textures\organics\grass3.jpg" />
+    <None Remove="Assets\Textures\proto\rottblock.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Assets\Maps\DarkCastleM2.json" />
+    <EmbeddedResource Include="Assets\Maps\DarkCastleM3.json" />
+    <EmbeddedResource Include="Assets\Maps\DarkCastleM4.json" />
+    <EmbeddedResource Include="Assets\Maps\SAT.json" />
+    <EmbeddedResource Include="Assets\Skyboxes\sky0-full.png" />
+    <EmbeddedResource Include="Assets\Skyboxes\sky2-full.png" />
+    <EmbeddedResource Include="Assets\Skyboxes\sky3-full.png" />
+    <EmbeddedResource Include="Assets\Textures\base_door\kcdm18door_top.jpg" />
+    <EmbeddedResource Include="Assets\Textures\base_floor\clanggrate2.jpg" />
+    <EmbeddedResource Include="Assets\Textures\base_floor\clang_floor3bstairtop2.jpg" />
+    <EmbeddedResource Include="Assets\Textures\base_object\boxq3_3b.jpg" />
+    <EmbeddedResource Include="Assets\Textures\base_object\boxq3_4b.jpg" />
+    <EmbeddedResource Include="Assets\Textures\base_support\grate1_4_small.jpg" />
+    <EmbeddedResource Include="Assets\Textures\base_wall\archpipe2_ifin.jpg" />
+    <EmbeddedResource Include="Assets\Textures\base_wall\atech2_c.jpg" />
+    <EmbeddedResource Include="Assets\Textures\base_wall\basewall02.jpg" />
+    <EmbeddedResource Include="Assets\Textures\base_wall\basewallbobbin.jpg" />
+    <EmbeddedResource Include="Assets\Textures\base_wall\c_met7_2.jpg" />
+    <EmbeddedResource Include="Assets\Textures\base_wall\xbasewall04.jpg" />
+    <EmbeddedResource Include="Assets\Textures\base_wall\xian_q3dm12_leftwall4fin.jpg" />
+    <EmbeddedResource Include="Assets\Textures\gothic_block\blocks10.jpg" />
+    <EmbeddedResource Include="Assets\Textures\gothic_block\blocks11b.jpg" />
+    <EmbeddedResource Include="Assets\Textures\gothic_block\blocks11bbroke.jpg" />
+    <EmbeddedResource Include="Assets\Textures\gothic_block\blocks11bbroke3.jpg" />
+    <EmbeddedResource Include="Assets\Textures\gothic_block\blocks11d.jpg" />
+    <EmbeddedResource Include="Assets\Textures\gothic_block\blocks15_iron_r.jpg" />
+    <EmbeddedResource Include="Assets\Textures\gothic_block\blocks15_relief2.jpg" />
+    <EmbeddedResource Include="Assets\Textures\gothic_block\blocks17j.jpg" />
+    <EmbeddedResource Include="Assets\Textures\gothic_block\blocks18b.jpg" />
+    <EmbeddedResource Include="Assets\Textures\gothic_block\blocks18c.jpg" />
+    <EmbeddedResource Include="Assets\Textures\gothic_block\blocks18cblood.jpg" />
+    <EmbeddedResource Include="Assets\Textures\gothic_block\blocks18cbloodhead.jpg" />
+    <EmbeddedResource Include="Assets\Textures\gothic_block\blocks18cgeom.jpg" />
+    <EmbeddedResource Include="Assets\Textures\gothic_block\blocks18c_1.jpg" />
+    <EmbeddedResource Include="Assets\Textures\gothic_block\blocks18c_1a.jpg" />
+    <EmbeddedResource Include="Assets\Textures\gothic_block\blocks18c_3.jpg" />
+    <EmbeddedResource Include="Assets\Textures\gothic_block\gkc14.jpg" />
+    <EmbeddedResource Include="Assets\Textures\gothic_block\gkc14b.jpg" />
+    <EmbeddedResource Include="Assets\Textures\gothic_block\gkc15c.jpg" />
+    <EmbeddedResource Include="Assets\Textures\gothic_block\gkc16b.jpg" />
+    <EmbeddedResource Include="Assets\Textures\gothic_block\gkc18b.jpg" />
+    <EmbeddedResource Include="Assets\Textures\gothic_block\gkc19a.jpg" />
+    <EmbeddedResource Include="Assets\Textures\gothic_block\gkc19b.jpg" />
+    <EmbeddedResource Include="Assets\Textures\gothic_block\gkc20a.jpg" />
+    <EmbeddedResource Include="Assets\Textures\gothic_block\gkc20b.jpg" />
+    <EmbeddedResource Include="Assets\Textures\gothic_block\killblock.jpg" />
+    <EmbeddedResource Include="Assets\Textures\gothic_block\killtrim.jpg" />
+    <EmbeddedResource Include="Assets\Textures\gothic_ceiling\ceilingtech03_afinal.jpg" />
+    <EmbeddedResource Include="Assets\Textures\gothic_ceiling\woodceiling1b_dark.jpg" />
+    <EmbeddedResource Include="Assets\Textures\gothic_floor\largerblock3b.jpg" />
+    <EmbeddedResource Include="Assets\Textures\gothic_floor\largerblock3b2.jpg" />
+    <EmbeddedResource Include="Assets\Textures\gothic_floor\largerblock3b4.jpg" />
+    <EmbeddedResource Include="Assets\Textures\gothic_floor\pj_e3_center2.jpg" />
+    <EmbeddedResource Include="Assets\Textures\gothic_wall\brickwindow_bot.jpg" />
+    <EmbeddedResource Include="Assets\Textures\gothic_wall\brickwindow_mid.jpg" />
+    <EmbeddedResource Include="Assets\Textures\gothic_wall\brickwindow_top.jpg" />
+    <EmbeddedResource Include="Assets\Textures\gothic_wall\iron01_c3.jpg" />
+    <EmbeddedResource Include="Assets\Textures\gothic_wall\iron01_e.jpg" />
+    <EmbeddedResource Include="Assets\Textures\gothic_wall\iron1_brickrust.jpg" />
+    <EmbeddedResource Include="Assets\Textures\gothic_wall\purptileb.jpg" />
+    <EmbeddedResource Include="Assets\Textures\organics\dirt.jpg" />
+    <EmbeddedResource Include="Assets\Textures\organics\grass3.jpg" />
+    <EmbeddedResource Include="Assets\Textures\proto\rottblock.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Assets\Models\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Drawing.Common" Version="8.0.11" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\KittyEngine.Core\KittyEngine.Core.csproj" />
+  </ItemGroup>
+
+</Project>

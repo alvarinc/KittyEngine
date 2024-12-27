@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\KittyEngine.Client\KittyEngine.Client.csproj" />
+    <ProjectReference Include="..\KittyEngine.SampleMaps\KittyEngine.SampleMaps.csproj" />
   </ItemGroup>
 
 </Project>

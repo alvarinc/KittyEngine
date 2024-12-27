@@ -43,6 +43,7 @@ namespace KittyEngine.Core.Client.Commands
                 var jsonPatch = JsonConvert.DeserializeObject<JsonPatchDocument>(_value);
                 jsonPatch.ApplyTo(context.GameState);
 
+                // HACK : Keep player's LookDirection because actually, it is refreshed only by the client
                 currentPlayer.LookDirection = lookDirection;
 
                 context.StateUpdated = true;

@@ -84,7 +84,7 @@
         {
             EnsureIsConnected();
 
-            _gameCommmandRequests.Enqueue(new GameCommandRequest(peer.Id, input));
+            _gameCommmandRequests.Enqueue(new GameCommandRequest(peer != null ? peer.Id : -1, input));
         }
 
         public void GameLoop()
@@ -125,6 +125,7 @@
         {
             if (_networkAdapter == null)
             {
+                _logger.Log(LogLevel.Error, $"No network adapter connected.");
                 throw new InvalidOperationException("No network adapter connected.");
             }
         }
@@ -148,21 +149,39 @@
                 }
             }
 
+            // Add the server command results to all clients
+            if (peerCommandResults.ContainsKey(-1))
+            {
+                foreach(var peerId in peerCommandResults.Keys)
+                {
+                    if (peerId == -1)
+                    {
+                        continue;
+                    }
+
+                    peerCommandResults[peerId] = peerCommandResults[peerId].Append(peerCommandResults[-1]);
+                }
+            }
+
             return peerCommandResults;
         }
 
         private GameCommandResult ExecuteCommand(GameCommandRequest request)
         {
-            if (!_connectedUsers.TryGetValue(request.PeerId, out Player player))
+            Player player = null;
+            if (request.PeerId != -1)
             {
-                _logger.Log(LogLevel.Info, $"[Server] Player {request.PeerId} : Received a message from an unknown player.");
-                return new GameCommandResult();
-            }
+                if (!_connectedUsers.TryGetValue(request.PeerId, out player))
+                {
+                    _logger.Log(LogLevel.Info, $"[Server] Player {request.PeerId} : Received a message from an unknown player.");
+                    return new GameCommandResult();
+                }
 
-            if (request.Input.Command != "join" && string.IsNullOrEmpty(player.Guid))
-            {
-                _logger.Log(LogLevel.Info, $"[Server] Player {request.PeerId} joined no games.");
-                return new GameCommandResult();
+                if (request.Input.Command != "join" && string.IsNullOrEmpty(player.Guid))
+                {
+                    _logger.Log(LogLevel.Info, $"[Server] Player {request.PeerId} joined no games.");
+                    return new GameCommandResult();
+                }
             }
 
             var synchronizer = new StateSynchronizer<GameState>(_gameState);

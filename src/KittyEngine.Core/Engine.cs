@@ -3,6 +3,8 @@ using KittyEngine.Core.Client.Input.WPFKeyboard;
 using KittyEngine.Core.Client.Input.WPFMouse;
 using KittyEngine.Core.Client.Model;
 using KittyEngine.Core.Client.Outputs;
+using KittyEngine.Core.GameEngine.Graphics.Assets;
+using KittyEngine.Core.Graphics.Assets.Maps;
 using KittyEngine.Core.Server;
 using KittyEngine.Core.Services.Configuration;
 using KittyEngine.Core.Services.IoC;
@@ -61,9 +63,10 @@ namespace KittyEngine.Core
         /// Run Game Server thread
         /// </summary>
         /// <param name="port">Server connexion infos. If not set or null, get default values</param>
-        public static void RunServer(int port = 0)
+        /// <param name="configure">Custom configuration for server</param>
+        public static void RunServer(int port = 0, Action<IServiceContainer> configure = null)
         {
-            StartServer(port).Join();
+            StartServer(port, configure).Join();
         }
 
         /// <summary>
@@ -129,18 +132,18 @@ namespace KittyEngine.Core
         /// Start Game Server thread
         /// </summary>
         /// <param name="port">Server connexion infos. If not set or null, get default values</param>
+        /// <param name="configure">Custom configuration for server</param>
         /// <returns>Server thread</returns>
-        public static Thread StartServer(int port = 0)
+        public static Thread StartServer(int port = 0, Action<IServiceContainer> configure = null)
         {
             var container = _containerBuilder().ConfigureGameServer();
-
-            var configuration = container.Get<IConfigurationService>();
-            var server = container.Get<Core.Server.Server>();
-
-            if (port == 0)
+            
+            if (configure != null)
             {
-                port = configuration.GetDefaultServer().Port;
+                configure(container);
             }
+
+            var server = container.Get<Core.Server.Server>();
 
             var thread = new Thread(() => server.Run(port));
             thread.Name = "GameServer";

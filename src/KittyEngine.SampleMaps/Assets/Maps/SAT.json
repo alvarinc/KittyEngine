@@ -1,0 +1,1322 @@
+{
+  "Name": "<Default Test Map>",
+  "PlayerPosition": "10,1,150",
+  "PlayerLookDirection": "0,0,-1",
+  "Ceilings": [],
+  "Floors": [],
+  "Lights": [
+    {
+      "Metadata": {
+        "Direction": "-3,-4,-5"
+      },
+      "Index": 0,
+      "Color": "#00FFFFFF",
+      "Position": "0,0,0",
+      "RotationAxisX": 0.0,
+      "RotationAxisY": 0.0,
+      "RotationAxisZ": 0.0
+    },
+    {
+      "Metadata": {
+        "Direction": "3,4,5"
+      },
+      "Index": 1,
+      "Color": "#00FFFFFF",
+      "Position": "0,0,0",
+      "RotationAxisX": 0.0,
+      "RotationAxisY": 0.0,
+      "RotationAxisZ": 0.0
+    }
+  ],
+  "Skyboxes": [
+    {
+      "Metadata": {
+        "Name": "sky1-full.png",
+        "Size": 10000,
+        "Normal": "-3,-4,-5",
+        "UseBackMaterial": false
+      },
+      "Index": 2,
+      "Color": "#00FFFFFF",
+      "Position": "-5000,-5000,-5000",
+      "RotationAxisX": 0.0,
+      "RotationAxisY": 0.0,
+      "RotationAxisZ": 0.0
+    }
+  ],
+  "Volumes": [
+    {
+      "Metadata": {
+        "XSize": 10.0,
+        "YSize": 30.0,
+        "ZSize": 60.0,
+        "TextureFront": null,
+        "TextureBack": null,
+        "TextureLeft": null,
+        "TextureRight": null,
+        "TextureTop": null,
+        "TextureBottom": null,
+        "UseBackMaterial": true,
+        "Opacity": null
+      },
+      "Index": 3,
+      "Color": "#FF40E0D0",
+      "Position": "13,0,-13",
+      "RotationAxisX": 0.0,
+      "RotationAxisY": 54.0,
+      "RotationAxisZ": 0.0
+    },
+    {
+      "Metadata": {
+        "XSize": 40.0,
+        "YSize": 30.0,
+        "ZSize": 10.0,
+        "TextureFront": null,
+        "TextureBack": null,
+        "TextureLeft": null,
+        "TextureRight": null,
+        "TextureTop": null,
+        "TextureBottom": null,
+        "UseBackMaterial": true,
+        "Opacity": null
+      },
+      "Index": 4,
+      "Color": "#FFFFFF00",
+      "Position": "-10,0,-29",
+      "RotationAxisX": 0.0,
+      "RotationAxisY": -22.0,
+      "RotationAxisZ": 0.0
+    },
+    {
+      "Metadata": {
+        "XSize": 10.0,
+        "YSize": 10.0,
+        "ZSize": 150.0,
+        "TextureFront": null,
+        "TextureBack": null,
+        "TextureLeft": null,
+        "TextureRight": null,
+        "TextureTop": null,
+        "TextureBottom": null,
+        "UseBackMaterial": true,
+        "Opacity": null
+      },
+      "Index": 5,
+      "Color": "#FFDB7093",
+      "Position": "28,14,-38",
+      "RotationAxisX": 0.0,
+      "RotationAxisY": -56.0,
+      "RotationAxisZ": 34.0
+    },
+    {
+      "Metadata": {
+        "XSize": 10.0,
+        "YSize": 10.0,
+        "ZSize": 30.0,
+        "TextureFront": null,
+        "TextureBack": null,
+        "TextureLeft": null,
+        "TextureRight": null,
+        "TextureTop": null,
+        "TextureBottom": null,
+        "UseBackMaterial": true,
+        "Opacity": null
+      },
+      "Index": 6,
+      "Color": "#FFFFFFFF",
+      "Position": "-8,10,0",
+      "RotationAxisX": 0.0,
+      "RotationAxisY": -24.0,
+      "RotationAxisZ": 0.0
+    },
+    {
+      "Metadata": {
+        "XSize": 400.0,
+        "YSize": 1.0,
+        "ZSize": 400.0,
+        "TextureFront": null,
+        "TextureBack": null,
+        "TextureLeft": null,
+        "TextureRight": null,
+        "TextureTop": {
+          "Name": "default.png",
+          "TileMode": 4,
+          "Stretch": 1,
+          "RatioX": 0.025,
+          "RatioY": 0.025
+        },
+        "TextureBottom": null,
+        "UseBackMaterial": true,
+        "Opacity": null
+      },
+      "Index": 7,
+      "Color": "#FFFFFFFF",
+      "Position": "-200,-1,-200",
+      "RotationAxisX": 0.0,
+      "RotationAxisY": 0.0,
+      "RotationAxisZ": 0.0
+    },
+    {
+      "Metadata": {
+        "XSize": 60.0,
+        "YSize": 30.0,
+        "ZSize": 10.0,
+        "TextureFront": null,
+        "TextureBack": null,
+        "TextureLeft": null,
+        "TextureRight": null,
+        "TextureTop": null,
+        "TextureBottom": null,
+        "UseBackMaterial": true,
+        "Opacity": null
+      },
+      "Index": 8,
+      "Color": "#FF40E0D0",
+      "Position": "34,-0,-37",
+      "RotationAxisX": 0.0,
+      "RotationAxisY": 31.0,
+      "RotationAxisZ": 0.0
+    },
+    {
+      "Metadata": {
+        "XSize": 20.0,
+        "YSize": 20.0,
+        "ZSize": 20.0,
+        "TextureFront": null,
+        "TextureBack": null,
+        "TextureLeft": null,
+        "TextureRight": null,
+        "TextureTop": null,
+        "TextureBottom": null,
+        "UseBackMaterial": true,
+        "Opacity": null
+      },
+      "Index": 9,
+      "Color": "#FFFFFF00",
+      "Position": "-21,0,-50",
+      "RotationAxisX": 0.0,
+      "RotationAxisY": 0.0,
+      "RotationAxisZ": 0.0
+    },
+    {
+      "Metadata": {
+        "XSize": 30.0,
+        "YSize": 60.0,
+        "ZSize": 30.0,
+        "TextureFront": null,
+        "TextureBack": null,
+        "TextureLeft": null,
+        "TextureRight": null,
+        "TextureTop": null,
+        "TextureBottom": null,
+        "UseBackMaterial": true,
+        "Opacity": null
+      },
+      "Index": 10,
+      "Color": "#FFEE82EE",
+      "Position": "-150,0,-150",
+      "RotationAxisX": 0.0,
+      "RotationAxisY": 0.0,
+      "RotationAxisZ": 0.0
+    },
+    {
+      "Metadata": {
+        "XSize": 30.0,
+        "YSize": 30.0,
+        "ZSize": 30.0,
+        "TextureFront": {
+          "Name": "gothic_ceiling/woodceiling1b_dark.jpg",
+          "TileMode": 3,
+          "Stretch": 3,
+          "RatioX": 0.5,
+          "RatioY": 0.5
+        },
+        "TextureBack": {
+          "Name": "gothic_ceiling/woodceiling1b_dark.jpg",
+          "TileMode": 3,
+          "Stretch": 3,
+          "RatioX": 0.5,
+          "RatioY": 0.5
+        },
+        "TextureLeft": {
+          "Name": "gothic_ceiling/woodceiling1b_dark.jpg",
+          "TileMode": 3,
+          "Stretch": 3,
+          "RatioX": 0.5,
+          "RatioY": 0.5
+        },
+        "TextureRight": {
+          "Name": "gothic_ceiling/woodceiling1b_dark.jpg",
+          "TileMode": 3,
+          "Stretch": 3,
+          "RatioX": 0.5,
+          "RatioY": 0.5
+        },
+        "TextureTop": null,
+        "TextureBottom": null,
+        "UseBackMaterial": true,
+        "Opacity": null
+      },
+      "Index": 11,
+      "Color": "#FF4682B4",
+      "Position": "-100,0,-100",
+      "RotationAxisX": 0.0,
+      "RotationAxisY": 45.0,
+      "RotationAxisZ": 0.0
+    },
+    {
+      "Metadata": {
+        "XSize": 30.0,
+        "YSize": 30.0,
+        "ZSize": 30.0,
+        "TextureFront": null,
+        "TextureBack": null,
+        "TextureLeft": null,
+        "TextureRight": null,
+        "TextureTop": null,
+        "TextureBottom": null,
+        "UseBackMaterial": true,
+        "Opacity": null
+      },
+      "Index": 12,
+      "Color": "#FFFF6347",
+      "Position": "111,0,38",
+      "RotationAxisX": 0.0,
+      "RotationAxisY": 45.0,
+      "RotationAxisZ": 0.0
+    },
+    {
+      "Metadata": {
+        "XSize": 10.0,
+        "YSize": 30.0,
+        "ZSize": 60.0,
+        "TextureFront": null,
+        "TextureBack": null,
+        "TextureLeft": null,
+        "TextureRight": null,
+        "TextureTop": null,
+        "TextureBottom": null,
+        "UseBackMaterial": true,
+        "Opacity": null
+      },
+      "Index": 13,
+      "Color": "#FFFF6347",
+      "Position": "104,0,55",
+      "RotationAxisX": 0.0,
+      "RotationAxisY": 45.0,
+      "RotationAxisZ": 0.0
+    },
+    {
+      "Metadata": {
+        "XSize": 60.0,
+        "YSize": 30.0,
+        "ZSize": 10.0,
+        "TextureFront": null,
+        "TextureBack": null,
+        "TextureLeft": null,
+        "TextureRight": null,
+        "TextureTop": null,
+        "TextureBottom": null,
+        "UseBackMaterial": true,
+        "Opacity": null
+      },
+      "Index": 14,
+      "Color": "#FF40E0D0",
+      "Position": "70,0,18",
+      "RotationAxisX": 0.0,
+      "RotationAxisY": -72.0,
+      "RotationAxisZ": 0.0
+    },
+    {
+      "Metadata": {
+        "XSize": 10.0,
+        "YSize": 30.0,
+        "ZSize": 60.0,
+        "TextureFront": null,
+        "TextureBack": null,
+        "TextureLeft": null,
+        "TextureRight": null,
+        "TextureTop": null,
+        "TextureBottom": null,
+        "UseBackMaterial": true,
+        "Opacity": null
+      },
+      "Index": 15,
+      "Color": "#FF40E0D0",
+      "Position": "39,0,39",
+      "RotationAxisX": 0.0,
+      "RotationAxisY": 0.0,
+      "RotationAxisZ": 0.0
+    },
+    {
+      "Metadata": {
+        "XSize": 15.0,
+        "YSize": 80.0,
+        "ZSize": 15.0,
+        "TextureFront": null,
+        "TextureBack": null,
+        "TextureLeft": null,
+        "TextureRight": null,
+        "TextureTop": null,
+        "TextureBottom": null,
+        "UseBackMaterial": true,
+        "Opacity": null
+      },
+      "Index": 16,
+      "Color": "#FFFFFFFF",
+      "Position": "77,0,-12",
+      "RotationAxisX": 0.0,
+      "RotationAxisY": 41.0,
+      "RotationAxisZ": 0.0
+    },
+    {
+      "Metadata": {
+        "XSize": 15.0,
+        "YSize": 80.0,
+        "ZSize": 15.0,
+        "TextureFront": null,
+        "TextureBack": null,
+        "TextureLeft": null,
+        "TextureRight": null,
+        "TextureTop": null,
+        "TextureBottom": null,
+        "UseBackMaterial": true,
+        "Opacity": null
+      },
+      "Index": 17,
+      "Color": "#FFFFFFFF",
+      "Position": "34,0,26",
+      "RotationAxisX": 0.0,
+      "RotationAxisY": 41.0,
+      "RotationAxisZ": 0.0
+    },
+    {
+      "Metadata": {
+        "XSize": 15.0,
+        "YSize": 80.0,
+        "ZSize": 15.0,
+        "TextureFront": {
+          "Name": "gothic_block/blocks11b.jpg",
+          "TileMode": 4,
+          "Stretch": 1,
+          "RatioX": 1.0,
+          "RatioY": 0.25
+        },
+        "TextureBack": {
+          "Name": "gothic_block/blocks11b.jpg",
+          "TileMode": 4,
+          "Stretch": 1,
+          "RatioX": 1.0,
+          "RatioY": 0.25
+        },
+        "TextureLeft": {
+          "Name": "gothic_block/blocks11b.jpg",
+          "TileMode": 4,
+          "Stretch": 1,
+          "RatioX": 1.0,
+          "RatioY": 0.25
+        },
+        "TextureRight": {
+          "Name": "gothic_block/blocks11b.jpg",
+          "TileMode": 4,
+          "Stretch": 1,
+          "RatioX": 1.0,
+          "RatioY": 0.25
+        },
+        "TextureTop": {
+          "Name": "gothic_block/blocks11b.jpg",
+          "TileMode": 4,
+          "Stretch": 1,
+          "RatioX": 1.0,
+          "RatioY": 0.25
+        },
+        "TextureBottom": {
+          "Name": "gothic_block/blocks11b.jpg",
+          "TileMode": 4,
+          "Stretch": 1,
+          "RatioX": 1.0,
+          "RatioY": 0.25
+        },
+        "UseBackMaterial": true,
+        "Opacity": null
+      },
+      "Index": 18,
+      "Color": "#FFFFFFFF",
+      "Position": "76,0,59",
+      "RotationAxisX": 0.0,
+      "RotationAxisY": 0.0,
+      "RotationAxisZ": 0.0
+    },
+    {
+      "Metadata": {
+        "XSize": 30.0,
+        "YSize": 30.0,
+        "ZSize": 10.0,
+        "TextureFront": null,
+        "TextureBack": null,
+        "TextureLeft": null,
+        "TextureRight": null,
+        "TextureTop": null,
+        "TextureBottom": null,
+        "UseBackMaterial": true,
+        "Opacity": null
+      },
+      "Index": 19,
+      "Color": "#FFFF6347",
+      "Position": "135,0,75",
+      "RotationAxisX": 0.0,
+      "RotationAxisY": 45.0,
+      "RotationAxisZ": 0.0
+    },
+    {
+      "Metadata": {
+        "XSize": 30.0,
+        "YSize": 30.0,
+        "ZSize": 10.0,
+        "TextureFront": null,
+        "TextureBack": null,
+        "TextureLeft": null,
+        "TextureRight": null,
+        "TextureTop": null,
+        "TextureBottom": null,
+        "UseBackMaterial": true,
+        "Opacity": null
+      },
+      "Index": 20,
+      "Color": "#FF40E0D0",
+      "Position": "-30,-0,25",
+      "RotationAxisX": 0.0,
+      "RotationAxisY": 0.0,
+      "RotationAxisZ": 0.0
+    },
+    {
+      "Metadata": {
+        "XSize": 15.0,
+        "YSize": 80.0,
+        "ZSize": 15.0,
+        "TextureFront": null,
+        "TextureBack": null,
+        "TextureLeft": null,
+        "TextureRight": null,
+        "TextureTop": null,
+        "TextureBottom": null,
+        "UseBackMaterial": true,
+        "Opacity": null
+      },
+      "Index": 21,
+      "Color": "#FFFFFFFF",
+      "Position": "27,0,-23",
+      "RotationAxisX": 0.0,
+      "RotationAxisY": 0.0,
+      "RotationAxisZ": 0.0
+    },
+    {
+      "Metadata": {
+        "XSize": 5.0,
+        "YSize": 5.0,
+        "ZSize": 40.0,
+        "TextureFront": null,
+        "TextureBack": null,
+        "TextureLeft": null,
+        "TextureRight": null,
+        "TextureTop": null,
+        "TextureBottom": null,
+        "UseBackMaterial": true,
+        "Opacity": null
+      },
+      "Index": 22,
+      "Color": "#FFDB7093",
+      "Position": "73,29,-23",
+      "RotationAxisX": 0.0,
+      "RotationAxisY": -47.0,
+      "RotationAxisZ": -58.0
+    },
+    {
+      "Metadata": {
+        "XSize": 10.0,
+        "YSize": 10.0,
+        "ZSize": 200.0,
+        "TextureFront": null,
+        "TextureBack": null,
+        "TextureLeft": null,
+        "TextureRight": null,
+        "TextureTop": null,
+        "TextureBottom": null,
+        "UseBackMaterial": true,
+        "Opacity": null
+      },
+      "Index": 23,
+      "Color": "#FFDB7093",
+      "Position": "120,27,43",
+      "RotationAxisX": 25.0,
+      "RotationAxisY": 28.0,
+      "RotationAxisZ": 1.0
+    },
+    {
+      "Metadata": {
+        "XSize": 30.0,
+        "YSize": 30.0,
+        "ZSize": 10.0,
+        "TextureFront": null,
+        "TextureBack": null,
+        "TextureLeft": null,
+        "TextureRight": null,
+        "TextureTop": null,
+        "TextureBottom": null,
+        "UseBackMaterial": true,
+        "Opacity": null
+      },
+      "Index": 24,
+      "Color": "#FFFFFF00",
+      "Position": "67,-0,118",
+      "RotationAxisX": 0.0,
+      "RotationAxisY": 0.0,
+      "RotationAxisZ": 0.0
+    },
+    {
+      "Metadata": {
+        "XSize": 10.0,
+        "YSize": 10.0,
+        "ZSize": 100.0,
+        "TextureFront": {
+          "Name": "gothic_wall/iron01_e.jpg",
+          "TileMode": 1,
+          "Stretch": 1,
+          "RatioX": 0.1,
+          "RatioY": 1.0
+        },
+        "TextureBack": {
+          "Name": "gothic_wall/iron01_e.jpg",
+          "TileMode": 1,
+          "Stretch": 1,
+          "RatioX": 0.1,
+          "RatioY": 1.0
+        },
+        "TextureLeft": {
+          "Name": "gothic_wall/iron01_e.jpg",
+          "TileMode": 1,
+          "Stretch": 1,
+          "RatioX": 0.1,
+          "RatioY": 1.0
+        },
+        "TextureRight": {
+          "Name": "gothic_wall/iron01_e.jpg",
+          "TileMode": 1,
+          "Stretch": 1,
+          "RatioX": 0.1,
+          "RatioY": 1.0
+        },
+        "TextureTop": {
+          "Name": "gothic_wall/iron01_e.jpg",
+          "TileMode": 1,
+          "Stretch": 1,
+          "RatioX": 1.0,
+          "RatioY": 0.1
+        },
+        "TextureBottom": {
+          "Name": "gothic_wall/iron01_e.jpg",
+          "TileMode": 1,
+          "Stretch": 1,
+          "RatioX": 1.0,
+          "RatioY": 0.1
+        },
+        "UseBackMaterial": true,
+        "Opacity": null
+      },
+      "Index": 25,
+      "Color": "#FFDB7093",
+      "Position": "79,20,62",
+      "RotationAxisX": 36.0,
+      "RotationAxisY": 0.0,
+      "RotationAxisZ": 0.0
+    },
+    {
+      "Metadata": {
+        "XSize": 200.0,
+        "YSize": 10.0,
+        "ZSize": 10.0,
+        "TextureFront": null,
+        "TextureBack": null,
+        "TextureLeft": null,
+        "TextureRight": null,
+        "TextureTop": null,
+        "TextureBottom": null,
+        "UseBackMaterial": true,
+        "Opacity": null
+      },
+      "Index": 26,
+      "Color": "#FFDB7093",
+      "Position": "34,22,27",
+      "RotationAxisX": 0.0,
+      "RotationAxisY": 0.0,
+      "RotationAxisZ": -21.0
+    },
+    {
+      "Metadata": {
+        "XSize": 15.0,
+        "YSize": 80.0,
+        "ZSize": 15.0,
+        "TextureFront": null,
+        "TextureBack": null,
+        "TextureLeft": null,
+        "TextureRight": null,
+        "TextureTop": null,
+        "TextureBottom": null,
+        "UseBackMaterial": true,
+        "Opacity": null
+      },
+      "Index": 27,
+      "Color": "#FFFFFFFF",
+      "Position": "113,0,128",
+      "RotationAxisX": 0.0,
+      "RotationAxisY": 0.0,
+      "RotationAxisZ": 0.0
+    },
+    {
+      "Metadata": {
+        "XSize": 20.0,
+        "YSize": 30.0,
+        "ZSize": 5.0,
+        "TextureFront": {
+          "Name": "gothic_block/killtrim.jpg",
+          "TileMode": 4,
+          "Stretch": 3,
+          "RatioX": 1.0,
+          "RatioY": 1.0
+        },
+        "TextureBack": {
+          "Name": "gothic_block/killtrim.jpg",
+          "TileMode": 4,
+          "Stretch": 3,
+          "RatioX": 1.0,
+          "RatioY": 1.0
+        },
+        "TextureLeft": {
+          "Name": "gothic_block/killtrim.jpg",
+          "TileMode": 4,
+          "Stretch": 1,
+          "RatioX": 2.0,
+          "RatioY": 1.0
+        },
+        "TextureRight": {
+          "Name": "gothic_block/killtrim.jpg",
+          "TileMode": 4,
+          "Stretch": 1,
+          "RatioX": 2.0,
+          "RatioY": 1.0
+        },
+        "TextureTop": {
+          "Name": "gothic_block/killtrim.jpg",
+          "TileMode": 4,
+          "Stretch": 3,
+          "RatioX": 1.0,
+          "RatioY": 1.0
+        },
+        "TextureBottom": {
+          "Name": "gothic_block/killtrim.jpg",
+          "TileMode": 4,
+          "Stretch": 3,
+          "RatioX": 1.0,
+          "RatioY": 1.0
+        },
+        "UseBackMaterial": true,
+        "Opacity": null
+      },
+      "Index": 28,
+      "Color": "#FFEE82EE",
+      "Position": "30,0,140",
+      "RotationAxisX": 0.0,
+      "RotationAxisY": 15.0,
+      "RotationAxisZ": 0.0
+    },
+    {
+      "Metadata": {
+        "XSize": 20.0,
+        "YSize": 30.0,
+        "ZSize": 5.0,
+        "TextureFront": null,
+        "TextureBack": null,
+        "TextureLeft": null,
+        "TextureRight": null,
+        "TextureTop": null,
+        "TextureBottom": null,
+        "UseBackMaterial": true,
+        "Opacity": null
+      },
+      "Index": 29,
+      "Color": "#FFEE82EE",
+      "Position": "-31,0,140",
+      "RotationAxisX": 0.0,
+      "RotationAxisY": -15.0,
+      "RotationAxisZ": 0.0
+    },
+    {
+      "Metadata": {
+        "XSize": 20.0,
+        "YSize": 30.0,
+        "ZSize": 5.0,
+        "TextureFront": null,
+        "TextureBack": null,
+        "TextureLeft": null,
+        "TextureRight": null,
+        "TextureTop": null,
+        "TextureBottom": null,
+        "UseBackMaterial": true,
+        "Opacity": null
+      },
+      "Index": 30,
+      "Color": "#FF40E0D0",
+      "Position": "26,0,160",
+      "RotationAxisX": 0.0,
+      "RotationAxisY": -10.0,
+      "RotationAxisZ": 0.0
+    },
+    {
+      "Metadata": {
+        "XSize": 20.0,
+        "YSize": 30.0,
+        "ZSize": 5.0,
+        "TextureFront": null,
+        "TextureBack": null,
+        "TextureLeft": null,
+        "TextureRight": null,
+        "TextureTop": null,
+        "TextureBottom": null,
+        "UseBackMaterial": true,
+        "Opacity": null
+      },
+      "Index": 31,
+      "Color": "#FF40E0D0",
+      "Position": "-25,0,160",
+      "RotationAxisX": 0.0,
+      "RotationAxisY": 10.0,
+      "RotationAxisZ": 0.0
+    },
+    {
+      "Metadata": {
+        "XSize": 20.0,
+        "YSize": 30.0,
+        "ZSize": 5.0,
+        "TextureFront": null,
+        "TextureBack": null,
+        "TextureLeft": null,
+        "TextureRight": null,
+        "TextureTop": null,
+        "TextureBottom": null,
+        "UseBackMaterial": true,
+        "Opacity": null
+      },
+      "Index": 32,
+      "Color": "#FFEE82EE",
+      "Position": "-19,0,180",
+      "RotationAxisX": 0.0,
+      "RotationAxisY": 30.0,
+      "RotationAxisZ": 0.0
+    },
+    {
+      "Metadata": {
+        "XSize": 20.0,
+        "YSize": 30.0,
+        "ZSize": 5.0,
+        "TextureFront": null,
+        "TextureBack": null,
+        "TextureLeft": null,
+        "TextureRight": null,
+        "TextureTop": null,
+        "TextureBottom": null,
+        "UseBackMaterial": true,
+        "Opacity": null
+      },
+      "Index": 33,
+      "Color": "#FFEE82EE",
+      "Position": "18,0,180",
+      "RotationAxisX": 0.0,
+      "RotationAxisY": -30.0,
+      "RotationAxisZ": 0.0
+    },
+    {
+      "Metadata": {
+        "XSize": 5.0,
+        "YSize": 30.0,
+        "ZSize": 20.0,
+        "TextureFront": null,
+        "TextureBack": null,
+        "TextureLeft": null,
+        "TextureRight": null,
+        "TextureTop": null,
+        "TextureBottom": null,
+        "UseBackMaterial": true,
+        "Opacity": null
+      },
+      "Index": 34,
+      "Color": "#FF40E0D0",
+      "Position": "20,0,83",
+      "RotationAxisX": 0.0,
+      "RotationAxisY": 10.0,
+      "RotationAxisZ": 0.0
+    },
+    {
+      "Metadata": {
+        "XSize": 20.0,
+        "YSize": 30.0,
+        "ZSize": 5.0,
+        "TextureFront": null,
+        "TextureBack": null,
+        "TextureLeft": null,
+        "TextureRight": null,
+        "TextureTop": null,
+        "TextureBottom": null,
+        "UseBackMaterial": true,
+        "Opacity": null
+      },
+      "Index": 35,
+      "Color": "#FF40E0D0",
+      "Position": "-26,0,120",
+      "RotationAxisX": 0.0,
+      "RotationAxisY": -30.0,
+      "RotationAxisZ": 0.0
+    },
+    {
+      "Metadata": {
+        "XSize": 5.0,
+        "YSize": 30.0,
+        "ZSize": 20.0,
+        "TextureFront": null,
+        "TextureBack": null,
+        "TextureLeft": null,
+        "TextureRight": null,
+        "TextureTop": null,
+        "TextureBottom": null,
+        "UseBackMaterial": true,
+        "Opacity": null
+      },
+      "Index": 36,
+      "Color": "#FF40E0D0",
+      "Position": "5,0,187",
+      "RotationAxisX": 0.0,
+      "RotationAxisY": 0.0,
+      "RotationAxisZ": 0.0
+    },
+    {
+      "Metadata": {
+        "XSize": 5.0,
+        "YSize": 30.0,
+        "ZSize": 20.0,
+        "TextureFront": null,
+        "TextureBack": null,
+        "TextureLeft": null,
+        "TextureRight": null,
+        "TextureTop": null,
+        "TextureBottom": null,
+        "UseBackMaterial": true,
+        "Opacity": null
+      },
+      "Index": 37,
+      "Color": "#FFEE82EE",
+      "Position": "-3,-0,94",
+      "RotationAxisX": 0.0,
+      "RotationAxisY": 25.0,
+      "RotationAxisZ": 0.0
+    },
+    {
+      "Metadata": {
+        "XSize": 6.0,
+        "YSize": 12.0,
+        "ZSize": 6.0,
+        "TextureFront": null,
+        "TextureBack": null,
+        "TextureLeft": null,
+        "TextureRight": null,
+        "TextureTop": null,
+        "TextureBottom": null,
+        "UseBackMaterial": true,
+        "Opacity": null
+      },
+      "Index": 38,
+      "Color": "#FFFF0000",
+      "Position": "-67,0,142",
+      "RotationAxisX": 0.0,
+      "RotationAxisY": 0.0,
+      "RotationAxisZ": 0.0
+    },
+    {
+      "Metadata": {
+        "XSize": 30.0,
+        "YSize": 2.0,
+        "ZSize": 40.0,
+        "TextureFront": null,
+        "TextureBack": null,
+        "TextureLeft": null,
+        "TextureRight": null,
+        "TextureTop": null,
+        "TextureBottom": null,
+        "UseBackMaterial": true,
+        "Opacity": null
+      },
+      "Index": 39,
+      "Color": "#FFEE82EE",
+      "Position": "-140,10,53",
+      "RotationAxisX": 35.0,
+      "RotationAxisY": 0.0,
+      "RotationAxisZ": 0.0
+    },
+    {
+      "Metadata": {
+        "XSize": 7.0,
+        "YSize": 10.0,
+        "ZSize": 10.0,
+        "TextureFront": null,
+        "TextureBack": null,
+        "TextureLeft": null,
+        "TextureRight": null,
+        "TextureTop": null,
+        "TextureBottom": null,
+        "UseBackMaterial": true,
+        "Opacity": null
+      },
+      "Index": 40,
+      "Color": "#FFFFFFFF",
+      "Position": "-111,0,82",
+      "RotationAxisX": 0.0,
+      "RotationAxisY": 0.0,
+      "RotationAxisZ": 0.0
+    },
+    {
+      "Metadata": {
+        "XSize": 7.0,
+        "YSize": 10.0,
+        "ZSize": 10.0,
+        "TextureFront": null,
+        "TextureBack": null,
+        "TextureLeft": null,
+        "TextureRight": null,
+        "TextureTop": null,
+        "TextureBottom": null,
+        "UseBackMaterial": true,
+        "Opacity": null
+      },
+      "Index": 41,
+      "Color": "#FFFFFFFF",
+      "Position": "-146,0,82",
+      "RotationAxisX": 0.0,
+      "RotationAxisY": 0.0,
+      "RotationAxisZ": 0.0
+    },
+    {
+      "Metadata": {
+        "XSize": 5.0,
+        "YSize": 10.0,
+        "ZSize": 40.0,
+        "TextureFront": null,
+        "TextureBack": null,
+        "TextureLeft": null,
+        "TextureRight": null,
+        "TextureTop": null,
+        "TextureBottom": null,
+        "UseBackMaterial": true,
+        "Opacity": null
+      },
+      "Index": 42,
+      "Color": "#FFFFFFFF",
+      "Position": "-145,12,49",
+      "RotationAxisX": 35.0,
+      "RotationAxisY": 0.0,
+      "RotationAxisZ": 0.0
+    },
+    {
+      "Metadata": {
+        "XSize": 5.0,
+        "YSize": 10.0,
+        "ZSize": 40.0,
+        "TextureFront": null,
+        "TextureBack": null,
+        "TextureLeft": null,
+        "TextureRight": null,
+        "TextureTop": null,
+        "TextureBottom": null,
+        "UseBackMaterial": true,
+        "Opacity": null
+      },
+      "Index": 43,
+      "Color": "#FFFFFFFF",
+      "Position": "-110,12,49",
+      "RotationAxisX": 35.0,
+      "RotationAxisY": 0.0,
+      "RotationAxisZ": 0.0
+    },
+    {
+      "Metadata": {
+        "XSize": 30.0,
+        "YSize": 2.0,
+        "ZSize": 30.0,
+        "TextureFront": null,
+        "TextureBack": null,
+        "TextureLeft": null,
+        "TextureRight": null,
+        "TextureTop": null,
+        "TextureBottom": null,
+        "UseBackMaterial": true,
+        "Opacity": null
+      },
+      "Index": 44,
+      "Color": "#FF40E0D0",
+      "Position": "-140,22,27",
+      "RotationAxisX": 0.0,
+      "RotationAxisY": 0.0,
+      "RotationAxisZ": 0.0
+    },
+    {
+      "Metadata": {
+        "XSize": 7.0,
+        "YSize": 60.0,
+        "ZSize": 7.0,
+        "TextureFront": null,
+        "TextureBack": null,
+        "TextureLeft": null,
+        "TextureRight": null,
+        "TextureTop": null,
+        "TextureBottom": null,
+        "UseBackMaterial": true,
+        "Opacity": null
+      },
+      "Index": 45,
+      "Color": "#FFFFFFFF",
+      "Position": "-146,0,49",
+      "RotationAxisX": 0.0,
+      "RotationAxisY": 0.0,
+      "RotationAxisZ": 0.0
+    },
+    {
+      "Metadata": {
+        "XSize": 7.0,
+        "YSize": 60.0,
+        "ZSize": 7.0,
+        "TextureFront": null,
+        "TextureBack": null,
+        "TextureLeft": null,
+        "TextureRight": null,
+        "TextureTop": null,
+        "TextureBottom": null,
+        "UseBackMaterial": true,
+        "Opacity": null
+      },
+      "Index": 46,
+      "Color": "#FFFFFFFF",
+      "Position": "-111,0,49",
+      "RotationAxisX": 0.0,
+      "RotationAxisY": 0.0,
+      "RotationAxisZ": 0.0
+    },
+    {
+      "Metadata": {
+        "XSize": 60.0,
+        "YSize": 2.0,
+        "ZSize": 30.0,
+        "TextureFront": null,
+        "TextureBack": null,
+        "TextureLeft": null,
+        "TextureRight": null,
+        "TextureTop": null,
+        "TextureBottom": null,
+        "UseBackMaterial": true,
+        "Opacity": null
+      },
+      "Index": 47,
+      "Color": "#FF40E0D0",
+      "Position": "-138,22,1",
+      "RotationAxisX": 0.0,
+      "RotationAxisY": 45.0,
+      "RotationAxisZ": 0.0
+    },
+    {
+      "Metadata": {
+        "XSize": 30.0,
+        "YSize": 2.0,
+        "ZSize": 30.0,
+        "TextureFront": null,
+        "TextureBack": null,
+        "TextureLeft": null,
+        "TextureRight": null,
+        "TextureTop": null,
+        "TextureBottom": null,
+        "UseBackMaterial": true,
+        "Opacity": null
+      },
+      "Index": 48,
+      "Color": "#FF40E0D0",
+      "Position": "-97,22,-16",
+      "RotationAxisX": 0.0,
+      "RotationAxisY": 0.0,
+      "RotationAxisZ": 0.0
+    },
+    {
+      "Metadata": {
+        "XSize": 5.0,
+        "YSize": 10.0,
+        "ZSize": 10.0,
+        "TextureFront": null,
+        "TextureBack": null,
+        "TextureLeft": null,
+        "TextureRight": null,
+        "TextureTop": null,
+        "TextureBottom": null,
+        "UseBackMaterial": true,
+        "Opacity": null
+      },
+      "Index": 49,
+      "Color": "#FFFFFFFF",
+      "Position": "-110,21,39",
+      "RotationAxisX": 0.0,
+      "RotationAxisY": 0.0,
+      "RotationAxisZ": 0.0
+    },
+    {
+      "Metadata": {
+        "XSize": 20.0,
+        "YSize": 10.0,
+        "ZSize": 5.0,
+        "TextureFront": null,
+        "TextureBack": null,
+        "TextureLeft": null,
+        "TextureRight": null,
+        "TextureTop": null,
+        "TextureBottom": null,
+        "UseBackMaterial": true,
+        "Opacity": null
+      },
+      "Index": 50,
+      "Color": "#FFFFFFFF",
+      "Position": "-85,21,14",
+      "RotationAxisX": 0.0,
+      "RotationAxisY": 0.0,
+      "RotationAxisZ": 0.0
+    },
+    {
+      "Metadata": {
+        "XSize": 35.0,
+        "YSize": 10.0,
+        "ZSize": 5.0,
+        "TextureFront": null,
+        "TextureBack": null,
+        "TextureLeft": null,
+        "TextureRight": null,
+        "TextureTop": null,
+        "TextureBottom": null,
+        "UseBackMaterial": true,
+        "Opacity": null
+      },
+      "Index": 51,
+      "Color": "#FFFFFFFF",
+      "Position": "-113,21,26",
+      "RotationAxisX": 0.0,
+      "RotationAxisY": 45.0,
+      "RotationAxisZ": 0.0
+    },
+    {
+      "Metadata": {
+        "XSize": 5.0,
+        "YSize": 10.0,
+        "ZSize": 30.0,
+        "TextureFront": null,
+        "TextureBack": null,
+        "TextureLeft": null,
+        "TextureRight": null,
+        "TextureTop": null,
+        "TextureBottom": null,
+        "UseBackMaterial": true,
+        "Opacity": null
+      },
+      "Index": 52,
+      "Color": "#FFFFFFFF",
+      "Position": "-145,21,25",
+      "RotationAxisX": 0.0,
+      "RotationAxisY": 0.0,
+      "RotationAxisZ": 0.0
+    },
+    {
+      "Metadata": {
+        "XSize": 35.0,
+        "YSize": 10.0,
+        "ZSize": 5.0,
+        "TextureFront": null,
+        "TextureBack": null,
+        "TextureLeft": null,
+        "TextureRight": null,
+        "TextureTop": null,
+        "TextureBottom": null,
+        "UseBackMaterial": true,
+        "Opacity": null
+      },
+      "Index": 53,
+      "Color": "#FFFFFFFF",
+      "Position": "-98,21,-21",
+      "RotationAxisX": 0.0,
+      "RotationAxisY": 0.0,
+      "RotationAxisZ": 0.0
+    },
+    {
+      "Metadata": {
+        "XSize": 65.0,
+        "YSize": 10.0,
+        "ZSize": 5.0,
+        "TextureFront": null,
+        "TextureBack": null,
+        "TextureLeft": null,
+        "TextureRight": null,
+        "TextureTop": null,
+        "TextureBottom": null,
+        "UseBackMaterial": true,
+        "Opacity": null
+      },
+      "Index": 54,
+      "Color": "#FFFFFFFF",
+      "Position": "-152,21,1",
+      "RotationAxisX": 0.0,
+      "RotationAxisY": 45.0,
+      "RotationAxisZ": 0.0
+    },
+    {
+      "Metadata": {
+        "XSize": 7.0,
+        "YSize": 60.0,
+        "ZSize": 7.0,
+        "TextureFront": null,
+        "TextureBack": null,
+        "TextureLeft": null,
+        "TextureRight": null,
+        "TextureTop": null,
+        "TextureBottom": null,
+        "UseBackMaterial": true,
+        "Opacity": null
+      },
+      "Index": 55,
+      "Color": "#FFFFFFFF",
+      "Position": "-70,0,13",
+      "RotationAxisX": 0.0,
+      "RotationAxisY": 0.0,
+      "RotationAxisZ": 0.0
+    },
+    {
+      "Metadata": {
+        "XSize": 7.0,
+        "YSize": 60.0,
+        "ZSize": 7.0,
+        "TextureFront": null,
+        "TextureBack": null,
+        "TextureLeft": null,
+        "TextureRight": null,
+        "TextureTop": null,
+        "TextureBottom": null,
+        "UseBackMaterial": true,
+        "Opacity": null
+      },
+      "Index": 56,
+      "Color": "#FFFFFFFF",
+      "Position": "-70,0,-22",
+      "RotationAxisX": 0.0,
+      "RotationAxisY": 0.0,
+      "RotationAxisZ": 0.0
+    }
+  ],
+  "Walls": []
+}

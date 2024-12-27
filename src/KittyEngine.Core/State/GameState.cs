@@ -1,4 +1,6 @@
 ﻿
+using KittyEngine.Core.Graphics.Assets.Maps.Predefined;
+using KittyEngine.Core.Graphics.Models.Definitions;
 using KittyEngine.Core.Physics;
 using System.Windows.Media.Media3D;
 
@@ -8,7 +10,7 @@ namespace KittyEngine.Core.State
     {
         Creating,
         Created,
-        Play,
+        Running,
         Terminated
     }
 
@@ -16,50 +18,23 @@ namespace KittyEngine.Core.State
     {
         public GameState()
         {
-            Map = MapDescription.ConsoleMap;
+            Id = Guid.NewGuid().ToString();
+            Map = new MapDefinition();
             Status = GameStatus.Creating;
         }
+
+        public string Id { get; set; }
 
         public GameStatus Status { get; set; }
 
         public Dictionary<int, PlayerState> Players { get; set; } = new();
 
-        public MapDescription Map { get; set; } = new();
+        public MapDefinition Map { get; set; }
 
         public PlayerState GetPlayer(string guid) 
         {
             return Players.Values.FirstOrDefault(x => x.Guid == guid);
         }
-    }
-
-    public class MapDescription
-    {
-        public int MaxX { get; set; }
-        public int MaxY { get; set; }
-        public int MaxZ { get; set; }
-        public int MinX { get; set; }
-        public int MinY { get; set; }
-        public int MinZ { get; set; }
-
-        public static MapDescription ConsoleMap => new MapDescription
-        {
-            MaxX = 10,
-            MaxY = 10,
-            MaxZ = 10,
-            MinX = -10,
-            MinY = -10,
-            MinZ = -10
-        };
-
-        public static MapDescription WPFMap => new MapDescription
-        {
-            MaxX = 100,
-            MaxY = 100,
-            MaxZ = 100,
-            MinX = -100,
-            MinY = -100,
-            MinZ = -100
-        };
     }
 
     public class PlayerState : IMovableBody

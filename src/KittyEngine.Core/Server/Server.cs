@@ -1,33 +1,44 @@
 ﻿namespace KittyEngine.Core.Server
 {
+    using KittyEngine.Core.Services.Configuration;
     using KittyEngine.Core.Services.Logging;
+    using KittyEngine.Core.Services.Network;
     using LiteNetLib;
     using Newtonsoft.Json;
     using System;
+    using System.Reflection.PortableExecutable;
 
     public class Server
     {
         private NetManager _server;
         private EventBasedNetListener _listener;
+        private LargeMessageReceiver _largeMessageReceiver;
 
         private ILogger _logger;
+        private IConfigurationService _configuration;
         private IServerGameLogic _gameLogic;
 
-        public Server(ILogger logger, IServerGameLogic gameLogic)
+        public Server(ILogger logger, IConfigurationService configuration, IServerGameLogic gameLogic)
         {
             _logger = logger;
+            _configuration = configuration;
             _gameLogic = gameLogic;
 
             ConfigureServer();
         }
 
-        public void Run(int port)
+        public void Run(int port = 0)
         {
             Run(port, CancellationToken.None);
         }
 
         public void Run(int port, CancellationToken token)
         {
+            if (port == 0)
+            {
+                port = _configuration.GetDefaultServer().Port;
+            }
+
             _server.Start(port);
 
             while (!token.IsCancellationRequested)
@@ -40,16 +51,45 @@
             _server.Stop();
         }
 
+        public void SendMessage(GameCommandInput input)
+        {
+            _gameLogic.OnMessageReceived(null, input);
+        }
+
+        private void OnCompleteMessageReceived(NetPeer peer, string checksum, byte[] completeMessage)
+        {
+            var message = System.Text.Encoding.UTF8.GetString(completeMessage);
+            _logger.Log(LogLevel.Info, $"[Server] Player {peer.Id} : command {message}");
+            GameCommandInput input = null;
+
+            try
+            {
+                input = JsonConvert.DeserializeObject<GameCommandInput>(message);
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(LogLevel.Info, $"[Server] invalid message from {peer.Id}");
+            }
+
+            if (input != null)
+            {
+                _gameLogic.OnMessageReceived(peer, input);
+            }
+        }
+
         private void ConfigureServer()
         {
+            _largeMessageReceiver = new LargeMessageReceiver();
+            _largeMessageReceiver.OnCompleteMessageReceived += OnCompleteMessageReceived;
+
             _listener = new EventBasedNetListener();
             _server = new NetManager(_listener);
             _gameLogic.Bind(new NetworkAdapter(_server));
 
             _listener.ConnectionRequestEvent += request =>
             {
-                if (_server.ConnectedPeersCount < 10)
-                    request.AcceptIfKey("Client=KittyEngine.Core.Client");
+                if (_server.ConnectedPeersCount < 10 && request.Data.GetString() == "Client=KittyEngine.Core.Client")
+                    request.Accept();
                 else
                     request.Reject();
             };
@@ -59,27 +99,17 @@
                 _gameLogic.OnClientConnected(peer);
             };
 
-            _listener.NetworkReceiveEvent += (fromPeer, dataReader, deliveryMethod, channel) =>
+            _listener.NetworkReceiveEvent += (peer, reader, channel, deliveryMethod) =>
             {
-                string message = dataReader.GetString();
-                _logger.Log(LogLevel.Info, $"[Server] Player {fromPeer.Id} : command {message}");
-                GameCommandInput input = null;
-
                 try
                 {
-                    input = JsonConvert.DeserializeObject<GameCommandInput>(message);
+                    Console.WriteLine($"Received data on channel {channel} from {peer} using {deliveryMethod}");
+                    _largeMessageReceiver.OnNetworkReceive(peer, reader, deliveryMethod); // Delegate to existing handling
                 }
                 catch (Exception ex)
                 {
-                    _logger.Log(LogLevel.Info, $"[Server] invalid message from {fromPeer.Id}");
+                    Console.WriteLine($"Error processing data on channel {channel}: {ex.Message}");
                 }
-
-                if (input != null)
-                {
-                    _gameLogic.OnMessageReceived(fromPeer, input);
-                }
-
-                dataReader.Recycle();
             };
         }
     }

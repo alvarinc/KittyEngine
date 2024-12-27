@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\KittyEngine.Core\KittyEngine.Core.csproj" />
+    <ProjectReference Include="..\KittyEngine.SampleMaps\KittyEngine.SampleMaps.csproj" />
   </ItemGroup>
 
 </Project>

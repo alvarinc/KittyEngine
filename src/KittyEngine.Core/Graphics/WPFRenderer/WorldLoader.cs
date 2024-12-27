@@ -1,6 +1,7 @@
 ﻿using KittyEngine.Core.Client.Outputs;
 using KittyEngine.Core.Graphics.Assets.Maps;
 using KittyEngine.Core.Graphics.Assets.Maps.Predefined;
+using KittyEngine.Core.Graphics.Models.Definitions;
 using KittyEngine.Core.Physics;
 using System.Windows.Controls;
 using System.Windows.Media.Media3D;
@@ -28,9 +29,14 @@ namespace KittyEngine.Core.Graphics.WPFRenderer
 
                 _playerCameraState = InitializeCamera();
             }
+        }
 
-            var map = new MapRenderer(new NewMapBuilder().CreateMap());
+        public void LoadMap(MapDefinition mapDefinition)
+        { 
+            // Create map
+            var map = new MapRenderer(mapDefinition);
             var level = map.Render();
+
             // Attach world
             _viewport3D.Children.Clear();
 
