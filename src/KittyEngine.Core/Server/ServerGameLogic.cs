@@ -206,15 +206,15 @@
                 return;
             }
 
-            var patchCmd = new GameCommandInput("sync");
-            patchCmd.Args["entity"] = "gamestate";
-            patchCmd.Args["mode"] = "patch";
-            patchCmd.Args["value"] = synchronizer.GetJsonPatch();
+            var patchCmd = new GameCommandInput("sync")
+                .AddArgument("entity", "gamestate")
+                .AddArgument("mode", "patch")
+                .AddArgument("value", synchronizer.GetJsonPatch());
 
-            var fullCmd = new GameCommandInput("sync");
-            fullCmd.Args["entity"] = "gamestate";
-            fullCmd.Args["mode"] = "full";
-            fullCmd.Args["value"] = synchronizer.GetJson();
+            var fullCmd = new GameCommandInput("sync")
+                .AddArgument("entity", "gamestate")
+                .AddArgument("mode", "full")
+                .AddArgument("value", synchronizer.GetJson());
 
             foreach (var connectedPeer in _networkAdapter.GetConnectedPeers())
             {

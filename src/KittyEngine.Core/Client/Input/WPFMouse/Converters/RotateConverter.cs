@@ -52,9 +52,8 @@ namespace KittyEngine.Core.Client.Input.WPFMouse.Converters
             {
                 player.LookDirection = body.LookDirection;
 
-                var cmd = new GameCommandInput("rotate3d");
-                cmd.Args["direction"] = body.LookDirection.ToString();
-                return cmd;
+                return new GameCommandInput("rotate3d")
+                    .AddArgument("direction", body.LookDirection.ToString());
             }
 
             return null;

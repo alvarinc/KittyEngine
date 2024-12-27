@@ -49,9 +49,9 @@ namespace KittyEngine.Core.Client.Input.WPFKeyboard.Converters
                 if (direction != identity)
                 {
                     direction.Normalize();
-                    var cmd = new GameCommandInput("move3d");
-                    cmd.Args["direction"] = direction.ToString();
-                    return cmd;
+                    
+                    return new GameCommandInput("move3d")
+                        .AddArgument("direction", direction.ToString());
                 }
             }
 
