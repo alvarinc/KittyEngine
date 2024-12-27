@@ -89,9 +89,10 @@
                 _gameLogic.ViewAs(_player.Guid);
 
                 _logger.Log(LogLevel.Info, $"Join game as {_player.Name}");
-                var cmd = new GameCommandInput("join");
-                cmd.Args["guid"] = _player.Guid;
-                cmd.Args["name"] = _player.Name;
+                var cmd = new GameCommandInput("join")
+                    .AddArgument("guid", _player.Guid)
+                    .AddArgument("name", _player.Name);
+
                 _networkAdapter.SendMessage(cmd);
             };
 

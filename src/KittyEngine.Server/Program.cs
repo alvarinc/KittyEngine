@@ -22,11 +22,9 @@ namespace KittyEngine.Server
                 mapBuilderFactory.RegisterMapsFromAssets();
                 mapBuilderFactory.RegisterMap(new MazeMapBuilder());
 
-                var command = new GameCommandInput("loadmap");
-                command.Args["name"] = "Dark Castle Arena 2";
-
                 var server = container.Get<Core.Server.Server>();
-                server.SendMessage(command);
+                server.SendMessage(new GameCommandInput("loadmap")
+                    .AddArgument("name", "Dark Castle Arena 2"));
             });
         }
     }

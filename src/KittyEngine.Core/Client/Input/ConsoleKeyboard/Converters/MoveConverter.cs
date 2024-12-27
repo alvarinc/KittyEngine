@@ -28,10 +28,8 @@ namespace KittyEngine.Core.Client.Input.ConsoleKeyboard.Converters
             if (dx != 0 || dy != 0 || dz != 0)
             {
                 // Send movement command to the server
-                var cmd = new GameCommandInput("move");
-                cmd.Args["direction"] = new Vector3D(dx, dy, dz).ToString();
-
-                return cmd;
+                return new GameCommandInput("move")
+                    .AddArgument("direction", new Vector3D(dx, dy, dz).ToString());
             }
 
             return null;

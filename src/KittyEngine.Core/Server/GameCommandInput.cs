@@ -15,5 +15,11 @@
             Command = commandName;
             Args = new Dictionary<string, string>();
         }
+
+        public GameCommandInput AddArgument(string key, string value)
+        {
+            Args.Add(key, value);
+            return this;
+        }
     }
 }
