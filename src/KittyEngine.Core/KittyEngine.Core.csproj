@@ -9,6 +9,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Assets\Models\Base\Volume\Volume.obj" />
+    <None Remove="Assets\Skyboxes\sky1-full.png" />
+    <None Remove="Assets\Textures\default.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Assets\Models\Base\Volume\Volume.obj" />
+    <EmbeddedResource Include="Assets\Skyboxes\sky1-full.png" />
+    <EmbeddedResource Include="Assets\Textures\default.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="LiteNetLib" Version="1.3.1" />
     <PackageReference Include="Microsoft.AspNetCore.JsonPatch" Version="9.0.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.1" />
