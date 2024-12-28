@@ -185,14 +185,14 @@
 
             var synchronizer = new StateSynchronizer<GameState>(_serverState.GameState);
             var command = _commandFactory.Get(request.Input.Command);
-
+            
             if (command == null)
             {
                 _logger.Log(LogLevel.Info, $"Command not registered : {request.Input.Command}");
             }
             else if (command.ValidateParameters(request.Input))
             {
-                return command.Execute(_serverState.GameState, player);
+                return command.Execute(new GameCommandContext(_networkAdapter, _serverState.GameState, player));
             }
 
             return new GameCommandResult();

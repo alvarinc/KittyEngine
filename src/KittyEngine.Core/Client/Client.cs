@@ -19,14 +19,16 @@
 
         private ILogger _logger;
         private IClientGameLogic _gameLogic;
-        
+        private ClientState _clientState;
+
         private PlayerInput _player;
         private bool _inGame = false;
 
-        public Client(ILogger logger, IClientGameLogic gameLogic)
+        public Client(ILogger logger, IClientGameLogic gameLogic, ClientState clientState)
         {
             _logger = logger;
             _gameLogic = gameLogic;
+            _clientState = clientState;
 
             ConfigureClient();
         }
@@ -38,6 +40,11 @@
 
         public void Run(PlayerInput player, ServerInput server, CancellationToken token)
         {
+            if (player == null)
+            {
+                return;
+            }
+
             _player = player;
 
             _logger.Log(LogLevel.Info, "[Client] Connecting...");
@@ -87,7 +94,6 @@
             _listener.PeerConnectedEvent += peer =>
             {
                 _logger.Log(LogLevel.Info, $"Connected to server: {peer}");
-                _gameLogic.ViewAs(_player.Guid);
 
                 _logger.Log(LogLevel.Info, $"Join game as {_player.Name}");
                 var cmd = new GameCommandInput("join")

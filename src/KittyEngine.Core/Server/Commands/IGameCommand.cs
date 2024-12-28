@@ -6,6 +6,6 @@ namespace KittyEngine.Core.Server.Commands
     internal interface IGameCommand
     {
         bool ValidateParameters(GameCommandInput cmd);
-        GameCommandResult Execute(GameState gameState, Player player);
+        GameCommandResult Execute(GameCommandContext context);
     }
 }

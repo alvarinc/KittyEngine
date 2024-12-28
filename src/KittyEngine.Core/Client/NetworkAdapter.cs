@@ -12,6 +12,8 @@ namespace KittyEngine.Core.Client
         private NetManager _client;
         private LargeMessageSender _largeMessageSender;
 
+        public int PeerId => _client.FirstPeer.Id;
+
         public NetworkAdapter(NetManager client)
         {
             _client = client;

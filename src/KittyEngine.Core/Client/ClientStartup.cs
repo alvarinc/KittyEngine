@@ -37,6 +37,7 @@ namespace KittyEngine.Core.Client
             container.Register<ClientState>(ServiceBehavior.Scoped);
 
             // Commands
+            container.Register<JoinedCommand>(ServiceBehavior.Transient);
             container.Register<SynchronizeCommand>(ServiceBehavior.Transient);
             container.Register<ILightFactory<Core.Client.Commands.IGameCommand>, Core.Client.Commands.CommandFactory>(ServiceBehavior.Scoped);
 

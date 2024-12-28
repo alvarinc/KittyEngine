@@ -1,12 +1,9 @@
-﻿using KittyEngine.Core.Physics;
-using KittyEngine.Core.Server.Model;
-using KittyEngine.Core.Services.Logging;
-using KittyEngine.Core.State;
+﻿using KittyEngine.Core.Services.Logging;
 using System.Windows.Media.Media3D;
 
 namespace KittyEngine.Core.Server.Commands
 {
-    internal class MoveCommand : GameCommandBase
+    internal class MoveCommand : IGameCommand
     {
         private ILogger _logger;
 
@@ -17,7 +14,7 @@ namespace KittyEngine.Core.Server.Commands
             _logger = logger;
         }
 
-        public override bool ValidateParameters(GameCommandInput input)
+        public bool ValidateParameters(GameCommandInput input)
         {
             try
             {
@@ -30,9 +27,9 @@ namespace KittyEngine.Core.Server.Commands
             }
         }
 
-        public override GameCommandResult Execute(GameState gameState, Player player)
+        public GameCommandResult Execute(GameCommandContext context)
         {
-            var playerState = gameState.Players[player.PeerId];
+            var playerState = context.GameState.Players[context.Player.PeerId];
             var results = new GameCommandResult();
 
             //if (_direction.X != 0 && playerState.Position.X + _direction.X >= gameState.Map.MinX && playerState.Position.X + _direction.X <= gameState.Map.MaxX)
@@ -55,7 +52,7 @@ namespace KittyEngine.Core.Server.Commands
 
             if (results.StateUpdated)
             {
-                _logger.Log(LogLevel.Info, $"[Server] Player {player.PeerId} : {playerState.Name} moved to: {playerState.Position}");
+                _logger.Log(LogLevel.Info, $"[Server] Player {context.Player.PeerId} : {playerState.Name} moved to: {playerState.Position}");
             }
 
             return results;

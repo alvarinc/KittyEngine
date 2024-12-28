@@ -1,10 +1,9 @@
-﻿using KittyEngine.Core.Server.Model;
-using KittyEngine.Core.Services.Logging;
+﻿using KittyEngine.Core.Services.Logging;
 using KittyEngine.Core.State;
 
 namespace KittyEngine.Core.Server.Commands
 {
-    internal class JoinCommand : GameCommandBase
+    internal class JoinCommand : IGameCommand
     {
         private ILogger _logger;
 
@@ -16,23 +15,29 @@ namespace KittyEngine.Core.Server.Commands
             _logger = logger;
         }
 
-        public override bool ValidateParameters(GameCommandInput input)
+        public bool ValidateParameters(GameCommandInput input)
         {
             _guid = input.Args["guid"];
             _name = input.Args["name"];
             return true;
         }
 
-        public override GameCommandResult Execute(GameState gameState, Player player)
+        public GameCommandResult Execute(GameCommandContext context)
         {
-            player.Guid = _guid;
-            player.Name = _name;
+            context.Player.Guid = _guid;
+            context.Player.Name = _name;
 
-            gameState.Players.Add(player.PeerId, new PlayerState(player.PeerId));
-            gameState.Players[player.PeerId].Name = player.Name;
-            gameState.Players[player.PeerId].Guid = player.Guid;
+            context.GameState.Players.Add(context.Player.PeerId, new PlayerState(context.Player.PeerId));
+            context.GameState.Players[context.Player.PeerId].Name = context.Player.Name;
+            context.GameState.Players[context.Player.PeerId].Guid = context.Player.Guid;
 
-            _logger.Log(LogLevel.Info, $"[Server] Player {player.PeerId} : {player.Name} joined the game");
+            _logger.Log(LogLevel.Info, $"[Server] Player {context.Player.PeerId} : {context.Player.Name} joined the game");
+
+            var command = new GameCommandInput("joined")
+              .AddArgument("guid", context.Player.Guid)
+              .AddArgument("name", context.Player.Name);
+
+            context.SendMessage(context.Player.PeerId, command);
 
             return new GameCommandResult
             {

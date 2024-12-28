@@ -1,11 +1,26 @@
-﻿using KittyEngine.Core.State;
+﻿using KittyEngine.Core.Server;
+using KittyEngine.Core.Server.Model;
+using KittyEngine.Core.State;
 
 namespace KittyEngine.Core.Client.Commands
 {
     internal class GameCommandContext
     {
-        public GameState GameState { get; set; }
-        public string PlayerId { get; set; }
+        private NetworkAdapter _adapter;
+
+        public ClientState State { get; set; }
         public bool StateUpdated { get; set; }
+
+        public int PeerId => _adapter.PeerId;
+
+        public GameCommandContext(NetworkAdapter adapter)
+        {
+            _adapter = adapter;
+        }
+
+        public void SendMessage(GameCommandInput input)
+        {
+            _adapter.SendMessage(input);
+        }
     }
 }
