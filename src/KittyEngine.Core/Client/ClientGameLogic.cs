@@ -27,7 +27,7 @@
         private static double _millisecondsPerUpdate = 10;
 
         private string _playerId;
-        private GameState _gameState = null;
+        //private GameState _gameState = null;
         private bool _gameStateUpdated = false;
 
         private NetworkAdapter _networkAdapter;
@@ -36,13 +36,15 @@
         private ILightFactory<IGameCommand> _commandFactory;
         private IRenderer _renderer;
         private IInputHandler _inputHandler;
+        private ClientState _clientState;
 
-        public ClientGameLogic(ILogger logger, ILightFactory<IGameCommand> commandFactory, IRenderer renderer, IInputHandler inputHandler)
+        public ClientGameLogic(ILogger logger, ILightFactory<IGameCommand> commandFactory, IRenderer renderer, IInputHandler inputHandler, ClientState clientState)
         {
             _logger = logger;
             _commandFactory = commandFactory;
             _renderer = renderer;
             _inputHandler = inputHandler;
+            _clientState = clientState;
         }
 
         public void Bind(NetworkAdapter networkAdapter)
@@ -72,12 +74,12 @@
             {
                 if (cmd.ValidateParameters(input))
                 {
-                    var context = new GameCommandContext { GameState = _gameState, PlayerId = _playerId };
+                    var context = new GameCommandContext { GameState = _clientState.GameState, PlayerId = _playerId };
                     cmd.Execute(context);
 
                     if (context.StateUpdated)
                     {
-                        _gameState = context.GameState;
+                        _clientState.GameState = context.GameState;
                         _gameStateUpdated |= context.StateUpdated;
                     }
                 }
@@ -119,14 +121,14 @@
 
         private List<GameCommandInput> HandleInputEvents()
         {
-            return _inputHandler.HandleEvents(_gameState, _playerId);
+            return _inputHandler.HandleEvents(_clientState.GameState, _playerId);
         }
 
         private void RenderOutput()
         {
             if (_gameStateUpdated)
             {
-                _renderer.Render(_gameState, _playerId);
+                _renderer.Render(_clientState.GameState, _playerId);
                 _gameStateUpdated = false;
             }
         }

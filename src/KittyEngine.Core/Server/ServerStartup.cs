@@ -5,6 +5,7 @@ using KittyEngine.Core.Services.Configuration;
 using KittyEngine.Core.Services.IoC;
 using KittyEngine.Core.Services.Logging;
 using KittyEngine.Core.Services.Logging.Conenctors;
+using KittyEngine.Core.State;
 
 namespace KittyEngine.Core.Server
 {
@@ -24,6 +25,9 @@ namespace KittyEngine.Core.Server
             logManager.AddConnector(new SerilogConnector());
             container.Register<ILoggerManager>(ServiceBehavior.Scoped, () => logManager);
             container.Register<ILogger, Logger>(ServiceBehavior.Scoped);
+
+            // State
+            container.Register<ServerState>(ServiceBehavior.Scoped);
 
             // Commands
             container.Register<LoadMapCommand>(ServiceBehavior.Transient);

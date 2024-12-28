@@ -4,7 +4,7 @@ using KittyEngine.Core.Physics;
 
 namespace KittyEngine.Core.Graphics.Renderer
 {
-    internal interface IWorldLoader
+    internal interface IMapRenderer
     {
         void BindGraphicsToViewport(IGameHost host);
         void LoadMap(MapDefinition mapDefinition);

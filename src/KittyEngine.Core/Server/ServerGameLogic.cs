@@ -46,19 +46,18 @@
 
         private static double _millisecondsPerUpdate = 10;
 
-        private NetworkAdapter _networkAdapter;
-
-        private readonly Dictionary<int, Player> _connectedUsers = new();
-        private readonly GameState _gameState = new();
-
-        private ILogger _logger;
+        private readonly ILogger _logger;
         private readonly ILightFactory<IGameCommand> _commandFactory;
+        private readonly ServerState _serverState;
+
+        private NetworkAdapter _networkAdapter;
         private readonly Queue<GameCommandRequest> _gameCommmandRequests = new();
 
-        public ServerGameLogic(ILogger logger, ILightFactory<IGameCommand> commandFactory)
+        public ServerGameLogic(ILogger logger, ILightFactory<IGameCommand> commandFactory, ServerState serverState)
         {
             _logger = logger;
             _commandFactory = commandFactory;
+            _serverState = serverState;
         }
 
         public void Bind(NetworkAdapter networkAdapter)
@@ -76,7 +75,7 @@
             EnsureIsConnected();
 
             // Register a new player for the client
-            _connectedUsers.Add(peer.Id, new Player(peer.Id));
+            _serverState.ConnectedUsers.Add(peer.Id, new Player(peer.Id));
             _logger.Log(LogLevel.Info, $"[Server] Player {peer.Id} : connected.");
         }
 
@@ -97,7 +96,7 @@
             // Get clients inputs
             _networkAdapter.HandlePeersEvents();
 
-            var synchronizer = new StateSynchronizer<GameState>(_gameState);
+            var synchronizer = new StateSynchronizer<GameState>(_serverState.GameState);
 
             // Update players
             var commandResultByPeers = ExecuteCommands();
@@ -171,7 +170,7 @@
             Player player = null;
             if (request.PeerId != -1)
             {
-                if (!_connectedUsers.TryGetValue(request.PeerId, out player))
+                if (!_serverState.ConnectedUsers.TryGetValue(request.PeerId, out player))
                 {
                     _logger.Log(LogLevel.Info, $"[Server] Player {request.PeerId} : Received a message from an unknown player.");
                     return new GameCommandResult();
@@ -184,7 +183,7 @@
                 }
             }
 
-            var synchronizer = new StateSynchronizer<GameState>(_gameState);
+            var synchronizer = new StateSynchronizer<GameState>(_serverState.GameState);
             var command = _commandFactory.Get(request.Input.Command);
 
             if (command == null)
@@ -193,7 +192,7 @@
             }
             else if (command.ValidateParameters(request.Input))
             {
-                return command.Execute(_gameState, player);
+                return command.Execute(_serverState.GameState, player);
             }
 
             return new GameCommandResult();
@@ -231,11 +230,11 @@
                 _logger.Log(LogLevel.Info, $"[Server] Player {connectedPeer.Id} : {mode} synchronize");
                 _networkAdapter.SendMessage(connectedPeer, mode == PeerSynchronizationMode.Full ? fullCmd : patchCmd);
 
-                if (!_gameState.Players.ContainsKey(connectedPeer.Id))
+                if (!_serverState.GameState.Players.ContainsKey(connectedPeer.Id))
                 {
                     _logger.Log(LogLevel.Info, $"[Server] Player {connectedPeer.Id} : Disconnect");
                     connectedPeer.Disconnect();
-                    _connectedUsers.Remove(connectedPeer.Id);
+                    _serverState.ConnectedUsers.Remove(connectedPeer.Id);
                 }
             }
         }

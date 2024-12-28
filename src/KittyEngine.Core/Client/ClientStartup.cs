@@ -12,6 +12,7 @@ using KittyEngine.Core.Graphics.Renderer;
 using KittyEngine.Core.Graphics.Models.Builders;
 using KittyEngine.Core.Terminal.Renderer;
 using KittyEngine.Core.GameEngine.Graphics.Assets;
+using KittyEngine.Core.State;
 
 namespace KittyEngine.Core.Client
 {
@@ -31,6 +32,9 @@ namespace KittyEngine.Core.Client
             logManager.AddConnector(new SerilogConnector());
             container.Register<ILoggerManager>(ServiceBehavior.Scoped, () => logManager);
             container.Register<ILogger, Logger>(ServiceBehavior.Scoped);
+
+            // State
+            container.Register<ClientState>(ServiceBehavior.Scoped);
 
             // Commands
             container.Register<SynchronizeCommand>(ServiceBehavior.Transient);
@@ -68,7 +72,7 @@ namespace KittyEngine.Core.Client
                 container.Register<IImageAssetProvider, ImageAssetProvider>(ServiceBehavior.Scoped);
                 container.Register<ILayeredModel3DFactory, LayeredModel3DFactory>(ServiceBehavior.Scoped);
                 container.Register<IMapBuilder, MapBuilder>(ServiceBehavior.Scoped);
-                container.Register<IWorldLoader, WorldLoader>(ServiceBehavior.Scoped);
+                container.Register<IMapRenderer, MapRenderer>(ServiceBehavior.Scoped);
 
                 // WPF Output
                 container.Register<IOutputFactory, OutputFactory>(ServiceBehavior.Scoped);

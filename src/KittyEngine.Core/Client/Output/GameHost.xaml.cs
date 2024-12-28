@@ -1,4 +1,7 @@
-﻿using System.Windows;
+﻿using KittyEngine.Core.Client.Input.WPFKeyboard;
+using KittyEngine.Core.Client.Input.WPFMouse;
+using KittyEngine.Core.State;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -10,17 +13,14 @@ namespace KittyEngine.Core.Client.Outputs
     /// </summary>
     public partial class GameHost : UserControl, IGameHost
     {
-        //private IGameStateClient State
-        //    => Container.Get<IGameStateClient>();
+        private ClientState _clientState;
 
         //private IOutputFactory OutputFactory
         //    => Container.Get<IOutputFactory>();
 
-        //private IKeyboardListener KeyboardListener
-        //    => Container.Get<IKeyboardListener>();
+        private IWPFKeyboardListener _keyboardListener;
 
-        //private IMouseListener MouseListener
-        //    => Container.Get<IMouseListener>();
+        private IWPFMouseListener _mouseListener;
 
         //private GameMode? _previousGameMode;
 
@@ -41,9 +41,14 @@ namespace KittyEngine.Core.Client.Outputs
 
         public UserControl HostControl => this;
 
-        public GameHost()
+        public GameHost(IWPFKeyboardListener keyboardListener, IWPFMouseListener mouseListener, ClientState clientState)
         {
             InitializeComponent();
+
+            _keyboardListener = keyboardListener;
+            _mouseListener = mouseListener;
+            _clientState = clientState;
+
             Focusable = true;
 
             if (string.IsNullOrEmpty(Thread.CurrentThread.Name))
@@ -177,34 +182,34 @@ namespace KittyEngine.Core.Client.Outputs
 
         private void UserControl_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
-            //if (e.Key == System.Windows.Input.Key.F11)
-            //{
-            //    var parentWindow = Window.GetWindow(this);
-            //    if (State.Client.IsInFullScreenMode)
-            //    {
-            //        MouseListener.IsEnabled = false;
-            //        parentWindow.WindowStyle = State.Client.NormalWindowsStyle;
-            //        parentWindow.Topmost = State.Client.NormalTopmost;
-            //        parentWindow.WindowState = State.Client.NormalWindowsState;
-            //        State.Client.IsInFullScreenMode = false;
-            //        MouseListener.Reset();
-            //        MouseListener.IsEnabled = true;
-            //    }
-            //    else
-            //    {
-            //        MouseListener.IsEnabled = false;
-            //        State.Client.NormalWindowsStyle = parentWindow.WindowStyle;
-            //        State.Client.NormalWindowsState = parentWindow.WindowState;
-            //        State.Client.NormalTopmost = parentWindow.Topmost;
-            //        parentWindow.WindowStyle = WindowStyle.None;
-            //        parentWindow.Topmost = true;
-            //        parentWindow.WindowState = WindowState.Normal;
-            //        parentWindow.WindowState = WindowState.Maximized;
-            //        State.Client.IsInFullScreenMode = true;
-            //        MouseListener.Reset();
-            //        MouseListener.IsEnabled = true;
-            //    }
-            //}
+            if (e.Key == System.Windows.Input.Key.F11)
+            {
+                var parentWindow = Window.GetWindow(this);
+                if (_clientState.ClientWindow.IsInFullScreenMode)
+                {
+                    _mouseListener.IsEnabled = false;
+                    parentWindow.WindowStyle = _clientState.ClientWindow.NormalWindowsStyle;
+                    parentWindow.Topmost = _clientState.ClientWindow.NormalTopmost;
+                    parentWindow.WindowState = _clientState.ClientWindow.NormalWindowsState;
+                    _clientState.ClientWindow.IsInFullScreenMode = false;
+                    _mouseListener.Reset();
+                    _mouseListener.IsEnabled = true;
+                }
+                else
+                {
+                    _mouseListener.IsEnabled = false;
+                    _clientState.ClientWindow.NormalWindowsStyle = parentWindow.WindowStyle;
+                    _clientState.ClientWindow.NormalWindowsState = parentWindow.WindowState;
+                    _clientState.ClientWindow.NormalTopmost = parentWindow.Topmost;
+                    parentWindow.WindowStyle = WindowStyle.None;
+                    parentWindow.Topmost = true;
+                    parentWindow.WindowState = WindowState.Normal;
+                    parentWindow.WindowState = WindowState.Maximized;
+                    _clientState.ClientWindow.IsInFullScreenMode = true;
+                    _mouseListener.Reset();
+                    _mouseListener.IsEnabled = true;
+                }
+            }
             //else if (e.Key == System.Windows.Input.Key.F12)
             //{
             //    if (terminalHost.Children.Count > 0)

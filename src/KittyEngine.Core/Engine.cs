@@ -8,6 +8,7 @@ using KittyEngine.Core.Graphics.Assets.Maps;
 using KittyEngine.Core.Server;
 using KittyEngine.Core.Services.Configuration;
 using KittyEngine.Core.Services.IoC;
+using KittyEngine.Core.State;
 using System.ComponentModel;
 using System.Windows.Controls;
 
@@ -112,13 +113,18 @@ namespace KittyEngine.Core
                 configure(container);
             }
 
-            var gameHost = new GameHost();
-
-            container.Get<IWPFKeyboardListener>().RegisterKeyboardEvents(gameHost);
-            container.Get<IWPFMouseListener>().RegisterMouseEvents(gameHost);
-            container.Get<Graphics.IRenderer>().RegisterGraphicOutput(gameHost);
+            var keyboardListener = container.Get<IWPFKeyboardListener>();
+            var mouseListener = container.Get<IWPFMouseListener>();
+            var renderer = container.Get<Graphics.IRenderer>();
+            var clientState = container.Get<ClientState>();
+            var gameHost = new GameHost(keyboardListener, mouseListener, clientState);
 
             placeholder.Children.Add(gameHost);
+
+            keyboardListener.RegisterKeyboardEvents(gameHost);
+            mouseListener.RegisterMouseEvents(gameHost);
+            renderer.RegisterGraphicOutput(gameHost);
+            
 
             var configuration = container.Get<IConfigurationService>();
             var client = container.Get<Core.Client.Client>();

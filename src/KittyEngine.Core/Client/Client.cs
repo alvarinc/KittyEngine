@@ -4,6 +4,7 @@
     using KittyEngine.Core.Server;
     using KittyEngine.Core.Services.Logging;
     using KittyEngine.Core.Services.Network;
+    using KittyEngine.Core.State;
     using LiteNetLib;
     using Newtonsoft.Json;
     using System;

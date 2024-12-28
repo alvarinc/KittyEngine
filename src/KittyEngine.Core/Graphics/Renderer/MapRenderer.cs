@@ -1,5 +1,4 @@
 ﻿using KittyEngine.Core.Client.Outputs;
-using KittyEngine.Core.Graphics.Assets.Maps.Predefined;
 using KittyEngine.Core.Graphics.Models.Definitions;
 using KittyEngine.Core.Physics;
 using System.Windows.Controls;
@@ -7,14 +6,14 @@ using System.Windows.Media.Media3D;
 
 namespace KittyEngine.Core.Graphics.Renderer
 {
-    internal class WorldLoader : IWorldLoader
+    internal class MapRenderer : IMapRenderer
     {
         private IOutputFactory _outputFactory;
         private IMapBuilder _mapBuilder;
         private Viewport3D _viewport3D;
         private PlayerCameraState _playerCameraState;
 
-        public WorldLoader(IOutputFactory outputFactory, IMapBuilder mapBuilder)
+        public MapRenderer(IOutputFactory outputFactory, IMapBuilder mapBuilder)
         {
             _outputFactory = outputFactory;
             _mapBuilder = mapBuilder;
@@ -35,14 +34,14 @@ namespace KittyEngine.Core.Graphics.Renderer
         public void LoadMap(MapDefinition mapDefinition)
         {
             // Create map
-            var level = _mapBuilder.Create(mapDefinition);
+            var layeredModels = _mapBuilder.Create(mapDefinition);
 
             // Attach world
             _viewport3D.Children.Clear();
 
-            foreach (var model in level)
+            foreach (var layeredModel in layeredModels)
             {
-                _viewport3D.Children.Add(model.GetModel());
+                _viewport3D.Children.Add(layeredModel.GetModel());
             }
 
             // Attach camera
