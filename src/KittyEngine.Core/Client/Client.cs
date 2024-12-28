@@ -4,11 +4,9 @@
     using KittyEngine.Core.Server;
     using KittyEngine.Core.Services.Logging;
     using KittyEngine.Core.Services.Network;
-    using KittyEngine.Core.State;
     using LiteNetLib;
     using Newtonsoft.Json;
     using System;
-    using System.Reflection.PortableExecutable;
 
     public class Client
     {
@@ -19,16 +17,14 @@
 
         private ILogger _logger;
         private IClientGameLogic _gameLogic;
-        private ClientState _clientState;
 
         private PlayerInput _player;
         private bool _inGame = false;
 
-        public Client(ILogger logger, IClientGameLogic gameLogic, ClientState clientState)
+        public Client(ILogger logger, IClientGameLogic gameLogic)
         {
             _logger = logger;
             _gameLogic = gameLogic;
-            _clientState = clientState;
 
             ConfigureClient();
         }

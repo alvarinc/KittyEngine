@@ -31,6 +31,7 @@ namespace KittyEngine.Core.Server.Commands
             var factory = _mapBuilderFactory.Get(_mapName);
             var maps = _mapBuilderFactory.GetMaps();
             context.GameState.Map = factory.CreateMap();
+            context.GameState.Status = State.GameStatus.Created;
             _logger.Log(LogLevel.Info, $"[Server] Loaded map <{context.GameState.Map.Name}>. {maps.Length} maps");
 
             return new GameCommandResult

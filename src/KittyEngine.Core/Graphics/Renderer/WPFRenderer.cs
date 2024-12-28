@@ -41,7 +41,8 @@ namespace KittyEngine.Core.Graphics.Renderer
 
             _host.Dispatcher.Invoke(() =>
             {
-                _mapRenderer.UpdateCamera(player);
+                _mapRenderer.UpdateCamera();
+                _mapRenderer.UpdatePlayers();
             });
         }
     }

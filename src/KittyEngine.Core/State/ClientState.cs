@@ -9,12 +9,14 @@ namespace KittyEngine.Core.State
             Mode = ClientMode.InGame;
             ConnectedUser = null;
             GameState = new GameState();
+            Graphics = new GraphicState();
             ClientWindow = new ClientWindowState();
         }
 
         public ClientMode Mode { get; set; }
         public Player ConnectedUser { get; set; }
         public GameState GameState { get; set; }
+        public GraphicState Graphics { get; set; }
 
         public ClientWindowState ClientWindow { get; set; }
     }
