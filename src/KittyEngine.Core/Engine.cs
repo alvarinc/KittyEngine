@@ -54,9 +54,10 @@ namespace KittyEngine.Core
         /// <param name="player">Player informations</param>
         /// <param name="server">Server connexion infos. If not set or null, get default values</param>
         /// <param name="parent">WPF grid for host game</param>
-        public static void RunWPFClient(PlayerInput player, ServerInput server = null, Grid parent = null)
+        /// <param name="configure">Custom configuration for server</param>
+        public static void RunWPFClient(PlayerInput player, ServerInput server = null, Grid parent = null, Action<IServiceContainer> configure = null)
         {
-            StartWPFClient(player, server, parent).Join();
+            StartWPFClient(player, server, parent, configure).Join();
         }
 
         /// <summary>
@@ -100,10 +101,16 @@ namespace KittyEngine.Core
         /// <param name="player">Player informations</param>
         /// <param name="server">Server connexion infos. If not set or null, get default values</param>
         /// <param name="parent">WPF grid for host game</param>
+        /// <param name="configure">Custom configuration for server</param>
         /// <returns>Client thread</returns>
-        public static Thread StartWPFClient(PlayerInput player, ServerInput server = null, Grid parent = null)
+        public static Thread StartWPFClient(PlayerInput player, ServerInput server = null, Grid parent = null, Action<IServiceContainer> configure = null)
         {
             var container = _containerBuilder().ConfigureGameClient(ClientType.WPF);
+
+            if (configure != null)
+            {
+                configure(container);
+            }
 
             var gameHost = new GameHost();
 

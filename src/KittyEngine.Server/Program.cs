@@ -3,6 +3,7 @@ using KittyEngine.Core;
 using KittyEngine.Core.GameEngine.Graphics.Assets;
 using KittyEngine.Core.Graphics.Assets.Maps;
 using KittyEngine.Core.Server;
+using KittyEngine.SampleMaps;
 using KittyEngine.SampleMaps.Maze;
 
 namespace KittyEngine.Server
@@ -16,7 +17,7 @@ namespace KittyEngine.Server
             Engine.RunServer(configure:container => 
             {
                 var contentService = container.Get<IContentService>();
-                contentService.RegisterSource(new EmbeddedContentSource(typeof(KittyEngine.SampleMaps.Maze.MazeMapBuilder)));
+                contentService.RegisterContentFromSampleMaps();
 
                 var mapBuilderFactory = container.Get<IMapBuilderFactory>();
                 mapBuilderFactory.RegisterMapsFromAssets();
