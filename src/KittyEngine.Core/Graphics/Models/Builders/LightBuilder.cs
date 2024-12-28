@@ -1,4 +1,5 @@
-﻿using KittyEngine.Core.Graphics.Models.Definitions;
+﻿using KittyEngine.Core.GameEngine.Graphics.Assets;
+using KittyEngine.Core.Graphics.Models.Definitions;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 
@@ -8,7 +9,8 @@ namespace KittyEngine.Core.Graphics.Models.Builders
     {
         private List<LayeredModel3D> models;
 
-        public LightBuilder(Color color, List<LayeredModel3D> models) : base(color)
+        public LightBuilder(IImageAssetProvider imageAssetProvider, Color color, List<LayeredModel3D> models) 
+            : base(imageAssetProvider, color)
         {
             Color = color;
             this.models = models;

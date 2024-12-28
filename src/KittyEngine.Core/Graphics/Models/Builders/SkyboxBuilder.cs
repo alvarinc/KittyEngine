@@ -1,4 +1,5 @@
 ﻿//using KittyEngine.Core.Graphics.Assets;
+using KittyEngine.Core.GameEngine.Graphics.Assets;
 using KittyEngine.Core.Graphics.Models.Definitions;
 using System.Windows;
 using System.Windows.Media;
@@ -15,7 +16,8 @@ namespace KittyEngine.Core.Graphics.Models.Builders
         private Point[] _topTextureCoordinates1 = new[] { new Point(1, 1), new Point(1, 0), new Point(0, 0) };
         private Point[] _topTextureCoordinates2 = new[] { new Point(0, 1), new Point(1, 1), new Point(0, 0) };
 
-        public SkyboxBuilder(Color color, List<LayeredModel3D> models) : base(color)
+        public SkyboxBuilder(IImageAssetProvider imageAssetProvider, Color color, List<LayeredModel3D> models) 
+            : base(imageAssetProvider, color)
         {
             this.models = models;
         }
@@ -71,16 +73,16 @@ namespace KittyEngine.Core.Graphics.Models.Builders
         {
             var materiaGroup = new MaterialGroup();
 
-            //if (!string.IsNullOrEmpty(filepath))
-            //{
-            //    var imageSource = AssetHelper.GetSkyboxPart(filepath, face);
-            //    var brush = new ImageBrush(imageSource);
-            //    materiaGroup.Children.Add(new DiffuseMaterial(brush));
-            //}
-            //else
-            //{
-                materiaGroup.Children.Add(new DiffuseMaterial(new SolidColorBrush(Color)));
-            //}
+            if (!string.IsNullOrEmpty(filepath))
+            {
+                var imageSource = _imageAssetProvider.GetSkyboxPart(filepath, face);
+                var brush = new ImageBrush(imageSource);
+                materiaGroup.Children.Add(new DiffuseMaterial(brush));
+            }
+            else
+            {
+              materiaGroup.Children.Add(new DiffuseMaterial(new SolidColorBrush(Color)));
+            }
 
             return materiaGroup;
         }

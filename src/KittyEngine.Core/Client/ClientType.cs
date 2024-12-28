@@ -2,7 +2,7 @@
 {
     public enum ClientType
     {
-        Console,
+        Terminal,
         WPF
     }
 }

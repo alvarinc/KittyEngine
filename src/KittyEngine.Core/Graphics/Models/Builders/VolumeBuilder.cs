@@ -1,4 +1,5 @@
-﻿using KittyEngine.Core.Graphics.Models.Definitions;
+﻿using KittyEngine.Core.GameEngine.Graphics.Assets;
+using KittyEngine.Core.Graphics.Models.Definitions;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 
@@ -7,7 +8,8 @@ namespace KittyEngine.Core.Graphics.Models.Builders
     public class VolumeBuilder : ModelBuilder
     {
         private List<LayeredModel3D> models;
-        public VolumeBuilder(Color color, List<LayeredModel3D> models) : base(color)
+        public VolumeBuilder(IImageAssetProvider imageAssetProvider, Color color, List<LayeredModel3D> models) 
+            : base(imageAssetProvider, color)
         {
             this.models = models;
         }

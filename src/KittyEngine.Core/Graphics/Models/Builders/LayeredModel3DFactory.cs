@@ -1,11 +1,23 @@
-﻿using KittyEngine.Core.Graphics.Models.Definitions;
+﻿using KittyEngine.Core.GameEngine.Graphics.Assets;
+using KittyEngine.Core.Graphics.Models.Definitions;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 
 namespace KittyEngine.Core.Graphics.Models.Builders
 {
-    public class ModelBuilderFromDefinition
+    public interface ILayeredModel3DFactory
     {
+        LayeredModel3D Build(ModelBaseDefinition definition, bool addTextures = true, Transform3D transform = null);
+    }
+
+    public class LayeredModel3DFactory : ILayeredModel3DFactory
+    {
+        private IImageAssetProvider _imageAssetProvider;
+        public LayeredModel3DFactory(IImageAssetProvider imageAssetProvider)
+        {
+            _imageAssetProvider = imageAssetProvider;
+        }
+
         public LayeredModel3D Build(ModelBaseDefinition definition, bool addTextures = true, Transform3D transform = null)
         {
             var level = new List<LayeredModel3D>();
@@ -32,13 +44,13 @@ namespace KittyEngine.Core.Graphics.Models.Builders
 
         private void BuildLight(LightDefinition definition, List<LayeredModel3D> level)
         {
-            var builder = new LightBuilder(definition.Color, level);
+            var builder = new LightBuilder(_imageAssetProvider, definition.Color, level);
             builder.Create(definition.Metadata.Direction);
         }
 
         private void BuildSkybox(SkyboxDefinition definition, List<LayeredModel3D> level, bool addTextures)
         {
-            var builder = new SkyboxBuilder(definition.Color, level);
+            var builder = new SkyboxBuilder(_imageAssetProvider, definition.Color, level);
             builder.UseBackMaterial = definition.Metadata.UseBackMaterial;
             var model = builder.Create((int)definition.Position.X, (int)definition.Position.Y, (int)definition.Position.Z, definition.Metadata.Size, definition.Metadata.Normal, addTextures? definition.Metadata.Name : string.Empty);
             model.RotateByAxisX(definition.RotationAxisX);
@@ -56,7 +68,7 @@ namespace KittyEngine.Core.Graphics.Models.Builders
 
         private void BuildVolume(VolumeDefinition definition, List<LayeredModel3D> level, bool addTextures, Transform3D transform = null)
         {
-            var builder = new VolumeBuilder(definition.Color, level);
+            var builder = new VolumeBuilder(_imageAssetProvider, definition.Color, level);
             builder.UseBackMaterial = definition.Metadata.UseBackMaterial;
             builder.CalibrationTransform = transform;
 

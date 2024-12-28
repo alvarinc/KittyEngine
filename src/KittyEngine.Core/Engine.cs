@@ -77,7 +77,7 @@ namespace KittyEngine.Core
         /// <returns>Client thread</returns>
         public static Thread StartConsoleClient(PlayerInput player, ServerInput server)
         {
-            var container = _containerBuilder().ConfigureGameClient(ClientType.Console);
+            var container = _containerBuilder().ConfigureGameClient(ClientType.Terminal);
 
             var configuration = container.Get<IConfigurationService>();
             var client = container.Get<Core.Client.Client>();
