@@ -1,5 +1,7 @@
 ﻿using KittyEngine.Core;
 using KittyEngine.Core.Client.Model;
+using KittyEngine.Core.GameEngine.Graphics.Assets;
+using KittyEngine.SampleMaps;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -29,7 +31,11 @@ namespace KittyEngine.SampleGame
             var guid = Guid.NewGuid().ToString();
             var player = new PlayerInput(guid, $"Player-{guid}");
 
-            Engine.StartWPFClient(player, parent: gameView);
+            Engine.StartWPFClient(player, parent: gameView, configure:container => 
+            {
+                var contentService = container.Get<IContentService>();
+                contentService.RegisterContentFromSampleMaps();
+            });
         }
     }
 }
