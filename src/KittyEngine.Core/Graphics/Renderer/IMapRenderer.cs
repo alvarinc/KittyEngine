@@ -8,6 +8,7 @@ namespace KittyEngine.Core.Graphics.Renderer
     {
         void BindGraphicsToViewport(IGameHost host);
         void LoadMap(MapDefinition mapDefinition);
-        void UpdateCamera(IMovableBody body);
+        void UpdateCamera();
+        void UpdatePlayers();
     }
 }

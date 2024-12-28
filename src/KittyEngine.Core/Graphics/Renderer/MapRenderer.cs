@@ -1,7 +1,9 @@
 ﻿using KittyEngine.Core.Client.Outputs;
+using KittyEngine.Core.Graphics.Models.Builders;
 using KittyEngine.Core.Graphics.Models.Definitions;
-using KittyEngine.Core.Physics;
+using KittyEngine.Core.State;
 using System.Windows.Controls;
+using System.Windows.Media;
 using System.Windows.Media.Media3D;
 
 namespace KittyEngine.Core.Graphics.Renderer
@@ -10,13 +12,18 @@ namespace KittyEngine.Core.Graphics.Renderer
     {
         private IOutputFactory _outputFactory;
         private IMapBuilder _mapBuilder;
+        private ILayeredModel3DFactory _modelFactory;
+
+        private ClientState _clientState;
         private Viewport3D _viewport3D;
         private PlayerCameraState _playerCameraState;
 
-        public MapRenderer(IOutputFactory outputFactory, IMapBuilder mapBuilder)
+        public MapRenderer(IOutputFactory outputFactory, IMapBuilder mapBuilder, ILayeredModel3DFactory modelFactory, ClientState clientState)
         {
             _outputFactory = outputFactory;
             _mapBuilder = mapBuilder;
+            _modelFactory = modelFactory;
+            _clientState = clientState;
         }
 
         public void BindGraphicsToViewport(IGameHost host)
@@ -34,12 +41,13 @@ namespace KittyEngine.Core.Graphics.Renderer
         public void LoadMap(MapDefinition mapDefinition)
         {
             // Create map
-            var layeredModels = _mapBuilder.Create(mapDefinition);
+            _clientState.Graphics.Map.Clear();
+            _clientState.Graphics.Map.AddRange(_mapBuilder.Create(mapDefinition));
 
             // Attach world
             _viewport3D.Children.Clear();
 
-            foreach (var layeredModel in layeredModels)
+            foreach (var layeredModel in _clientState.Graphics.Map)
             {
                 _viewport3D.Children.Add(layeredModel.GetModel());
             }
@@ -48,10 +56,44 @@ namespace KittyEngine.Core.Graphics.Renderer
             _viewport3D.Camera = _playerCameraState.Camera;
         }
 
-        public void UpdateCamera(IMovableBody body)
+        public void UpdateCamera()
         {
+            var body = _clientState.GameState.GetPlayer(_clientState.ConnectedUser.Guid);
             _playerCameraState.Camera.Position = body.Position;
             _playerCameraState.Camera.LookDirection = body.LookDirection;
+        }
+
+        public void UpdatePlayers()
+        {
+            foreach (var player in _clientState.GameState.Players.Values)
+            {
+                if (!_clientState.Graphics.Players.ContainsKey(player.PeerId))
+                {
+                    var playerModel = _modelFactory.Build(CreatePlayerModel(player));
+                    _clientState.Graphics.Players.Add(player.PeerId, playerModel);
+                    _viewport3D.Children.Add(playerModel.GetModel());
+                }
+
+                var layeredModel = _clientState.Graphics.Players[player.PeerId];
+                var rect3D = player.GetBounds(player.Position);
+                layeredModel.Translate(new Vector3D(rect3D.X, rect3D.Y, rect3D.Z));
+            }
+        }
+
+        private VolumeDefinition CreatePlayerModel(PlayerState playerState)
+        {
+            return new VolumeDefinition
+            {
+                Color = Colors.Red,
+                Position = new Point3D(0, 0, 0),
+                Metadata = new VolumeMetadata
+                {
+                    UseBackMaterial = playerState.Guid != _clientState.ConnectedUser.Guid,
+                    XSize = playerState.SizeX,
+                    YSize = playerState.SizeY,
+                    ZSize = playerState.SizeZ
+                }
+            };
         }
 
         private PlayerCameraState InitializeCamera()
