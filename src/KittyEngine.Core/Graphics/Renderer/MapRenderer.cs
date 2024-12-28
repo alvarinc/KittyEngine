@@ -69,7 +69,7 @@ namespace KittyEngine.Core.Graphics.Renderer
             {
                 if (!_clientState.Graphics.Players.ContainsKey(player.PeerId))
                 {
-                    var playerModel = _modelFactory.Build(CreatePlayerModel(player));
+                    var playerModel = CreatePlayerModel(player);
                     _clientState.Graphics.Players.Add(player.PeerId, playerModel);
                     _viewport3D.Children.Add(playerModel.GetModel());
                 }
@@ -80,9 +80,9 @@ namespace KittyEngine.Core.Graphics.Renderer
             }
         }
 
-        private VolumeDefinition CreatePlayerModel(PlayerState playerState)
+        private LayeredModel3D CreatePlayerModel(PlayerState playerState)
         {
-            return new VolumeDefinition
+            var definition = new VolumeDefinition
             {
                 Color = Colors.Red,
                 Position = new Point3D(0, 0, 0),
@@ -94,6 +94,8 @@ namespace KittyEngine.Core.Graphics.Renderer
                     ZSize = playerState.SizeZ
                 }
             };
+
+            return _modelFactory.Build(definition);
         }
 
         private PlayerCameraState InitializeCamera()
