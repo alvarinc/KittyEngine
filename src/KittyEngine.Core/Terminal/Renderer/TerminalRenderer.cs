@@ -1,9 +1,10 @@
 ﻿using KittyEngine.Core.Client.Outputs;
+using KittyEngine.Core.Graphics;
 using KittyEngine.Core.State;
 
-namespace KittyEngine.Core.Graphics.ConsoleRenderer
+namespace KittyEngine.Core.Terminal.Renderer
 {
-    internal class ConsoleRenderer : IRenderer
+    internal class TerminalRenderer : IRenderer
     {
         private IGameHost _host;
 

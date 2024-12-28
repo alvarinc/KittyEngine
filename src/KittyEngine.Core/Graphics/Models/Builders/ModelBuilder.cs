@@ -1,4 +1,5 @@
-﻿using KittyEngine.Core.Graphics.Models.Definitions;
+﻿using KittyEngine.Core.GameEngine.Graphics.Assets;
+using KittyEngine.Core.Graphics.Models.Definitions;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
@@ -14,8 +15,11 @@ namespace KittyEngine.Core.Graphics.Models.Builders
         public bool UseBackMaterial { get; set; }
         public Transform3D CalibrationTransform { get; set; }
 
-        public ModelBuilder(Color color)
+        protected IImageAssetProvider _imageAssetProvider;
+
+        public ModelBuilder(IImageAssetProvider imageAssetProvider, Color color)
         {
+            _imageAssetProvider = imageAssetProvider;
             Color = color;
         }
 
@@ -114,15 +118,15 @@ namespace KittyEngine.Core.Graphics.Models.Builders
         protected MaterialGroup CreateMaterial(string filename, TileMode tileMode = TileMode.Tile, Stretch stretch = Stretch.Uniform, double ratioX = 1, double ratioY = 1)
         {
             MaterialGroup material;
-            //if (!string.IsNullOrEmpty(filename))
-            //{
-            //    material = AssetHelper.CreateMaterial(filename, tileMode, stretch, ratioX, ratioY);
-            //}
-            //else
-            //{
-                material = new MaterialGroup();
-                material.Children.Add(new DiffuseMaterial(new SolidColorBrush(Color)));
-            //}
+            if (!string.IsNullOrEmpty(filename))
+            {
+                material = _imageAssetProvider.CreateMaterial(filename, tileMode, stretch, ratioX, ratioY);
+            }
+            else
+            {
+              material = new MaterialGroup();
+              material.Children.Add(new DiffuseMaterial(new SolidColorBrush(Color)));
+            }
 
             return material;
         }

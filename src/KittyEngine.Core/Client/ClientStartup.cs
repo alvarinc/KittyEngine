@@ -8,7 +8,10 @@ using KittyEngine.Core.Graphics;
 using KittyEngine.Core.Client.Input.WPFKeyboard;
 using KittyEngine.Core.Physics;
 using KittyEngine.Core.Client.Outputs;
-using KittyEngine.Core.Graphics.WPFRenderer;
+using KittyEngine.Core.Graphics.Renderer;
+using KittyEngine.Core.Graphics.Models.Builders;
+using KittyEngine.Core.Terminal.Renderer;
+using KittyEngine.Core.GameEngine.Graphics.Assets;
 
 namespace KittyEngine.Core.Client
 {
@@ -33,7 +36,7 @@ namespace KittyEngine.Core.Client
             container.Register<SynchronizeCommand>(ServiceBehavior.Transient);
             container.Register<ILightFactory<Core.Client.Commands.IGameCommand>, Core.Client.Commands.CommandFactory>(ServiceBehavior.Scoped);
 
-            if (clientType == ClientType.Console)
+            if (clientType == ClientType.Terminal)
             {
                 // Console Input
                 container.Register<Input.ConsoleKeyboard.Converters.ExitConverter>(ServiceBehavior.Scoped);
@@ -42,7 +45,7 @@ namespace KittyEngine.Core.Client
                 container.Register<IInputHandler, ConsoleInputHanlder>(ServiceBehavior.Scoped);
 
                 // Console Output
-                container.Register<IRenderer, Graphics.ConsoleRenderer.ConsoleRenderer>(ServiceBehavior.Scoped);
+                container.Register<IRenderer, TerminalRenderer>(ServiceBehavior.Scoped);
             }
             else if (clientType == ClientType.WPF)
             {
@@ -62,15 +65,21 @@ namespace KittyEngine.Core.Client
                 container.Register<IInputHandler, WPFInputHanlder>(ServiceBehavior.Scoped);
 
                 // WPF Renderer
-                container.Register<WorldLoader>(ServiceBehavior.Scoped);
+                container.Register<IImageAssetProvider, ImageAssetProvider>(ServiceBehavior.Scoped);
+                container.Register<ILayeredModel3DFactory, LayeredModel3DFactory>(ServiceBehavior.Scoped);
+                container.Register<IMapBuilder, MapBuilder>(ServiceBehavior.Scoped);
+                container.Register<IWorldLoader, WorldLoader>(ServiceBehavior.Scoped);
 
                 // WPF Output
                 container.Register<IOutputFactory, OutputFactory>(ServiceBehavior.Scoped);
-                container.Register<IRenderer, Graphics.WPFRenderer.WPFRenderer>(ServiceBehavior.Scoped);
+                container.Register<IRenderer, Graphics.Renderer.WPFRenderer>(ServiceBehavior.Scoped);
             }
 
             // Physics
             container.Register<IPrimitiveMoveService, PrimitiveMoveService>(ServiceBehavior.Scoped);
+
+            // Maps
+            container.Register<IContentService, ContentService>(ServiceBehavior.Scoped);
 
             // Game logic
             container.Register<IClientGameLogic, ClientGameLogic>(ServiceBehavior.Scoped);

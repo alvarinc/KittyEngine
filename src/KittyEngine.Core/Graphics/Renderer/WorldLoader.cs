@@ -1,22 +1,23 @@
 ﻿using KittyEngine.Core.Client.Outputs;
-using KittyEngine.Core.Graphics.Assets.Maps;
 using KittyEngine.Core.Graphics.Assets.Maps.Predefined;
 using KittyEngine.Core.Graphics.Models.Definitions;
 using KittyEngine.Core.Physics;
 using System.Windows.Controls;
 using System.Windows.Media.Media3D;
 
-namespace KittyEngine.Core.Graphics.WPFRenderer
+namespace KittyEngine.Core.Graphics.Renderer
 {
-    internal class WorldLoader
+    internal class WorldLoader : IWorldLoader
     {
         private IOutputFactory _outputFactory;
+        private IMapBuilder _mapBuilder;
         private Viewport3D _viewport3D;
         private PlayerCameraState _playerCameraState;
 
-        public WorldLoader(IOutputFactory outputFactory)
+        public WorldLoader(IOutputFactory outputFactory, IMapBuilder mapBuilder)
         {
             _outputFactory = outputFactory;
+            _mapBuilder = mapBuilder;
         }
 
         public void BindGraphicsToViewport(IGameHost host)
@@ -32,10 +33,9 @@ namespace KittyEngine.Core.Graphics.WPFRenderer
         }
 
         public void LoadMap(MapDefinition mapDefinition)
-        { 
+        {
             // Create map
-            var map = new MapRenderer(mapDefinition);
-            var level = map.Render();
+            var level = _mapBuilder.Create(mapDefinition);
 
             // Attach world
             _viewport3D.Children.Clear();

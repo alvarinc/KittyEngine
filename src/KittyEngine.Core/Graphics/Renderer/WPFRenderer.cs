@@ -1,20 +1,18 @@
 ﻿using KittyEngine.Core.Client.Outputs;
 using KittyEngine.Core.State;
 
-namespace KittyEngine.Core.Graphics.WPFRenderer
+namespace KittyEngine.Core.Graphics.Renderer
 {
     internal class WPFRenderer : IRenderer
     {
         private IGameHost _host;
         private bool _initialized = false;
 
-        private IOutputFactory _outputFactory;
-        private WorldLoader _worldLoader;
+        private IWorldLoader _worldLoader;
 
-        public WPFRenderer(IOutputFactory outputFactory, WorldLoader worldLoader)
+        public WPFRenderer(IWorldLoader worldLoader)
         {
             _worldLoader = worldLoader;
-            _outputFactory = outputFactory;
         }
 
         public void RegisterGraphicOutput(IGameHost host)
@@ -36,7 +34,6 @@ namespace KittyEngine.Core.Graphics.WPFRenderer
                 {
                     _worldLoader.BindGraphicsToViewport(_host);
                     _worldLoader.LoadMap(_gameState.Map);
-                    //_host.AttachViewport(_outputFactory.CreateViewport3D());
                 });
 
                 _initialized = true;
@@ -46,7 +43,6 @@ namespace KittyEngine.Core.Graphics.WPFRenderer
             {
                 _worldLoader.UpdateCamera(player);
             });
-            // TODO: Implement rendering logic here.
         }
     }
 }
