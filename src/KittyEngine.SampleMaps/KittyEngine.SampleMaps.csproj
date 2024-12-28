@@ -10,6 +10,8 @@
     <None Remove="Assets\Maps\DarkCastleM2.json" />
     <None Remove="Assets\Maps\DarkCastleM3.json" />
     <None Remove="Assets\Maps\DarkCastleM4.json" />
+    <None Remove="Assets\Maps\E1M1.json" />
+    <None Remove="Assets\Maps\Q3DM1.json" />
     <None Remove="Assets\Maps\SAT.json" />
     <None Remove="Assets\Skyboxes\sky0-full.png" />
     <None Remove="Assets\Skyboxes\sky2-full.png" />
@@ -76,6 +78,8 @@
     <EmbeddedResource Include="Assets\Maps\DarkCastleM2.json" />
     <EmbeddedResource Include="Assets\Maps\DarkCastleM3.json" />
     <EmbeddedResource Include="Assets\Maps\DarkCastleM4.json" />
+    <EmbeddedResource Include="Assets\Maps\E1M1.json" />
+    <EmbeddedResource Include="Assets\Maps\Q3DM1.json" />
     <EmbeddedResource Include="Assets\Maps\SAT.json" />
     <EmbeddedResource Include="Assets\Skyboxes\sky0-full.png" />
     <EmbeddedResource Include="Assets\Skyboxes\sky2-full.png" />
