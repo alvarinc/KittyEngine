@@ -13,8 +13,6 @@
     {
         void Bind(NetworkAdapter networkAdapter);
 
-        void ViewAs(string playerId);
-
         void HandleServerMessage(GameCommandInput input);
 
         void RenderLoop();
@@ -26,8 +24,6 @@
     {
         private static double _millisecondsPerUpdate = 10;
 
-        private string _playerId;
-        //private GameState _gameState = null;
         private bool _gameStateUpdated = false;
 
         private NetworkAdapter _networkAdapter;
@@ -57,13 +53,6 @@
             _networkAdapter = networkAdapter;
         }
 
-        public void ViewAs(string playerId)
-        {
-            EnsureIsConnected();
-
-            _playerId = playerId;
-        }
-
         public void HandleServerMessage(GameCommandInput input)
         {
             EnsureIsConnected();
@@ -74,12 +63,12 @@
             {
                 if (cmd.ValidateParameters(input))
                 {
-                    var context = new GameCommandContext { GameState = _clientState.GameState, PlayerId = _playerId };
+                    var context = new GameCommandContext(_networkAdapter) { State = _clientState };
                     cmd.Execute(context);
 
                     if (context.StateUpdated)
                     {
-                        _clientState.GameState = context.GameState;
+                        _clientState.GameState = context.State.GameState;
                         _gameStateUpdated |= context.StateUpdated;
                     }
                 }
@@ -121,14 +110,19 @@
 
         private List<GameCommandInput> HandleInputEvents()
         {
-            return _inputHandler.HandleEvents(_clientState.GameState, _playerId);
+            if (_clientState.ConnectedUser == null)
+            {
+                return new List<GameCommandInput>();
+            }
+
+            return _inputHandler.HandleEvents(_clientState.GameState, _clientState.ConnectedUser.Guid);
         }
 
         private void RenderOutput()
         {
-            if (_gameStateUpdated)
+            if (_clientState.ConnectedUser != null && _gameStateUpdated)
             {
-                _renderer.Render(_clientState.GameState, _playerId);
+                _renderer.Render(_clientState.GameState, _clientState.ConnectedUser.Guid);
                 _gameStateUpdated = false;
             }
         }

@@ -24,6 +24,11 @@ namespace KittyEngine.Core.Server
 
         public void SendMessage(NetPeer peer, GameCommandInput cmd)
         {
+            if (peer == null)
+            {
+                return;
+            }
+
             var writer = new NetDataWriter();
             var json = JsonConvert.SerializeObject(cmd);
             Console.WriteLine($"Sending message: {json}");

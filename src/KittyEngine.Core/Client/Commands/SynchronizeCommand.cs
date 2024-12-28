@@ -19,11 +19,11 @@ namespace KittyEngine.Core.Client.Commands
             _logger = logger;
         }
 
-        public bool ValidateParameters(GameCommandInput cmd)
+        public bool ValidateParameters(GameCommandInput input)
         {
-            _entity = cmd.Args["entity"];
-            _mode = cmd.Args["mode"];
-            _value = cmd.Args["value"];
+            _entity = input.Args["entity"];
+            _mode = input.Args["mode"];
+            _value = input.Args["value"];
 
             return true;
         }
@@ -32,16 +32,16 @@ namespace KittyEngine.Core.Client.Commands
         {
             if (_mode == "full")
             {
-                context.GameState = JsonConvert.DeserializeObject<GameState>(_value);
+                context.State.GameState = JsonConvert.DeserializeObject<GameState>(_value);
                 context.StateUpdated = true;
             }
             else if (_mode == "patch")
             {
-                var currentPlayer = context.GameState.GetPlayer(context.PlayerId);
+                var currentPlayer = context.State.GameState.GetPlayer(context.State.ConnectedUser.Guid);
                 var lookDirection = currentPlayer.LookDirection;
 
                 var jsonPatch = JsonConvert.DeserializeObject<JsonPatchDocument>(_value);
-                jsonPatch.ApplyTo(context.GameState);
+                jsonPatch.ApplyTo(context.State.GameState);
 
                 // HACK : Keep player's LookDirection because actually, it is refreshed only by the client
                 currentPlayer.LookDirection = lookDirection;
@@ -49,7 +49,7 @@ namespace KittyEngine.Core.Client.Commands
                 context.StateUpdated = true;
             }
 
-            var player = context.GameState?.Players.Values.FirstOrDefault(x => x.Guid == context.PlayerId);
+            var player = context.State.GameState?.Players.Values.FirstOrDefault(x => x.Guid == context.State.ConnectedUser.Guid);
             if (player != null)
             {
                 _logger.Log(LogLevel.Info, $"[Client] {player.PeerId} ({player.Name}) : Position: {player.Position.X}, {player.Position.Y}, {player.Position.Z}");

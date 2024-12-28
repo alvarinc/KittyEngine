@@ -7,6 +7,7 @@ namespace KittyEngine.Core.Client.Commands
     {
         public CommandFactory(IServiceContainer _container) : base(_container)
         {
+            Add<JoinedCommand>("joined");
             Add<SynchronizeCommand>("sync");
         }
     }

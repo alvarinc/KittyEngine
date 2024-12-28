@@ -1,12 +1,9 @@
 ﻿using KittyEngine.Core.Graphics.Assets.Maps;
-using KittyEngine.Core.Graphics.Assets.Maps.Predefined;
-using KittyEngine.Core.Server.Model;
 using KittyEngine.Core.Services.Logging;
-using KittyEngine.Core.State;
 
 namespace KittyEngine.Core.Server.Commands
 {
-    internal class LoadMapCommand : GameCommandBase
+    internal class LoadMapCommand : IGameCommand
     {
         private ILogger _logger;
         private IMapBuilderFactory _mapBuilderFactory;
@@ -18,23 +15,23 @@ namespace KittyEngine.Core.Server.Commands
             _mapBuilderFactory = mapBuilderFactory;
         }
 
-        public override bool ValidateParameters(GameCommandInput cmd)
+        public bool ValidateParameters(GameCommandInput cmd)
         {
             _mapName = cmd.Args["name"];
             return true;
         }
 
-        public override GameCommandResult Execute(GameState gameState, Player player)
+        public GameCommandResult Execute(GameCommandContext context)
         {
-            if (player != null)
+            if (context.Player != null)
             {
                 _logger.Log(LogLevel.Info, $"[Server] Loadmap can only be executed at server level.");
             }
 
             var factory = _mapBuilderFactory.Get(_mapName);
             var maps = _mapBuilderFactory.GetMaps();
-            gameState.Map = factory.CreateMap();
-            _logger.Log(LogLevel.Info, $"[Server] Loaded map <{gameState.Map.Name}>. {maps.Length} maps");
+            context.GameState.Map = factory.CreateMap();
+            _logger.Log(LogLevel.Info, $"[Server] Loaded map <{context.GameState.Map.Name}>. {maps.Length} maps");
 
             return new GameCommandResult
             {

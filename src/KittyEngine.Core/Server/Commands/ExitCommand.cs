@@ -1,11 +1,8 @@
-﻿using KittyEngine.Core.Server.Model;
-using KittyEngine.Core.Services.Logging;
-using KittyEngine.Core.State;
-using System.Collections.Generic;
+﻿using KittyEngine.Core.Services.Logging;
 
 namespace KittyEngine.Core.Server.Commands
 {
-    internal class ExitCommand : GameCommandBase
+    internal class ExitCommand : IGameCommand
     {
         private ILogger _logger;
 
@@ -14,15 +11,15 @@ namespace KittyEngine.Core.Server.Commands
             _logger = logger;
         }
 
-        public override bool ValidateParameters(GameCommandInput cmd)
+        public bool ValidateParameters(GameCommandInput cmd)
         {
             return true;
         }
 
-        public override GameCommandResult Execute(GameState gameState, Player player)
+        public GameCommandResult Execute(GameCommandContext context)
         {
-            _logger.Log(LogLevel.Info, $"[Server] Player {player.PeerId} : {player.Name} requested to stop. Remove from game.");
-            gameState.Players.Remove(player.PeerId);
+            _logger.Log(LogLevel.Info, $"[Server] Player {context.Player.PeerId} : {context.Player.Name} requested to stop. Remove from game.");
+            context.GameState.Players.Remove(context.Player.PeerId);
 
             return new GameCommandResult
             {

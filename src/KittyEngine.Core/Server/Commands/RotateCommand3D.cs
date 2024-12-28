@@ -1,11 +1,9 @@
-﻿using KittyEngine.Core.Server.Model;
-using KittyEngine.Core.Services.Logging;
-using KittyEngine.Core.State;
+﻿using KittyEngine.Core.Services.Logging;
 using System.Windows.Media.Media3D;
 
 namespace KittyEngine.Core.Server.Commands
 {
-    internal class RotateCommand3D : GameCommandBase
+    internal class RotateCommand3D : IGameCommand
     {
         private ILogger _logger;
 
@@ -16,7 +14,7 @@ namespace KittyEngine.Core.Server.Commands
             _logger = logger;
         }
 
-        public override bool ValidateParameters(GameCommandInput input)
+        public bool ValidateParameters(GameCommandInput input)
         {
             try
             {
@@ -31,9 +29,9 @@ namespace KittyEngine.Core.Server.Commands
             }
         }
 
-        public override GameCommandResult Execute(GameState gameState, Player player)
+        public GameCommandResult Execute(GameCommandContext context)
         {
-            var playerState = gameState.Players[player.PeerId];
+            var playerState = context.GameState.Players[context.Player.PeerId];
             var results = new GameCommandResult();
 
             playerState.LookDirection = _direction;
@@ -41,7 +39,7 @@ namespace KittyEngine.Core.Server.Commands
 
             results.StateUpdated = true;
 
-            _logger.Log(LogLevel.Info, $"[Server] Player {player.PeerId} : {playerState.Name} look to: {playerState.LookDirection}");
+            _logger.Log(LogLevel.Info, $"[Server] Player {context.Player.PeerId} : {playerState.Name} look to: {playerState.LookDirection}");
 
             return results;
         }
