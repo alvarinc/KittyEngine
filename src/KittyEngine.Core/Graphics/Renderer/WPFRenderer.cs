@@ -8,11 +8,11 @@ namespace KittyEngine.Core.Graphics.Renderer
         private IGameHost _host;
         private bool _initialized = false;
 
-        private IWorldLoader _worldLoader;
+        private IMapRenderer _mapRenderer;
 
-        public WPFRenderer(IWorldLoader worldLoader)
+        public WPFRenderer(IMapRenderer mapRenderer)
         {
-            _worldLoader = worldLoader;
+            _mapRenderer = mapRenderer;
         }
 
         public void RegisterGraphicOutput(IGameHost host)
@@ -32,8 +32,8 @@ namespace KittyEngine.Core.Graphics.Renderer
             {
                 _host.Dispatcher.Invoke(() =>
                 {
-                    _worldLoader.BindGraphicsToViewport(_host);
-                    _worldLoader.LoadMap(_gameState.Map);
+                    _mapRenderer.BindGraphicsToViewport(_host);
+                    _mapRenderer.LoadMap(_gameState.Map);
                 });
 
                 _initialized = true;
@@ -41,7 +41,7 @@ namespace KittyEngine.Core.Graphics.Renderer
 
             _host.Dispatcher.Invoke(() =>
             {
-                _worldLoader.UpdateCamera(player);
+                _mapRenderer.UpdateCamera(player);
             });
         }
     }
