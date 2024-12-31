@@ -25,7 +25,7 @@ namespace KittyEngine.Server
 
                 var server = container.Get<Core.Server.Server>();
                 server.SendMessage(new GameCommandInput("loadmap")
-                    .AddArgument("name", "<Default Test Map>"));
+                    .AddArgument("name", "Dark Castle Arena 2"));
             });
         }
     }
