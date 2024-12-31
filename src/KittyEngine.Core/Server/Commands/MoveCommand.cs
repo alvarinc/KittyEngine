@@ -1,4 +1,5 @@
-﻿using KittyEngine.Core.Services.Logging;
+﻿using KittyEngine.Core.Physics.Collisions;
+using KittyEngine.Core.Services.Logging;
 using System.Windows.Media.Media3D;
 
 namespace KittyEngine.Core.Server.Commands
@@ -6,12 +7,14 @@ namespace KittyEngine.Core.Server.Commands
     internal class MoveCommand : IGameCommand
     {
         private ILogger _logger;
+        private ICollisionManager _collisionManager;
 
         private Vector3D _direction;
 
-        public MoveCommand(ILogger logger)
+        public MoveCommand(ILogger logger, ICollisionManager collisionManager)
         {
             _logger = logger;
+            _collisionManager = collisionManager;
         }
 
         public bool ValidateParameters(GameCommandInput input)
@@ -32,23 +35,35 @@ namespace KittyEngine.Core.Server.Commands
             var playerState = context.GameState.Players[context.Player.PeerId];
             var results = new GameCommandResult();
 
-            //if (_direction.X != 0 && playerState.Position.X + _direction.X >= gameState.Map.MinX && playerState.Position.X + _direction.X <= gameState.Map.MaxX)
-            //{
-            playerState.Position = playerState.Position + new Vector3D(_direction.X, 0, 0);
-                results.StateUpdated = true;
-            //}
+            if (_direction.X != 0)
+            {
+                var directionX = new Vector3D(_direction.X, 0, 0);
+                if (!_collisionManager.DetectCollisions(CreateParameters(context, directionX)).HasCollision)
+                {
+                    playerState.Position = playerState.Position + directionX;
+                    results.StateUpdated = true;
+                }
+            }
 
-            //if (_direction.Y != 0 && playerState.Position.Y + _direction.Y >= gameState.Map.MinY && playerState.Position.Y + _direction.Y <= gameState.Map.MaxY)
-            //{
-                playerState.Position = playerState.Position + new Vector3D(0, _direction.Y, 0);
-                results.StateUpdated = true;
-            //}
+            if (_direction.Y != 0)
+            {
+                var directionY = new Vector3D(0, _direction.Y, 0);
+                if (!_collisionManager.DetectCollisions(CreateParameters(context, directionY)).HasCollision)
+                {
+                    playerState.Position = playerState.Position + directionY;
+                    results.StateUpdated = true;
+                }
+            }
 
-            //if (_direction.Z != 0 && playerState.Position.Z + _direction.Z >= gameState.Map.MinZ && playerState.Position.Z + _direction.Z <= gameState.Map.MaxZ)
-            //{
-                playerState.Position = playerState.Position + new Vector3D(0, 0, _direction.Z);
-                results.StateUpdated = true;
-            //}
+            if (_direction.Z != 0)
+            {
+                var directionZ = new Vector3D(0, 0, _direction.Z);
+                if (!_collisionManager.DetectCollisions(CreateParameters(context, directionZ)).HasCollision)
+                {
+                    playerState.Position = playerState.Position + directionZ;
+                    results.StateUpdated = true;
+                }
+            }
 
             if (results.StateUpdated)
             {
@@ -56,6 +71,19 @@ namespace KittyEngine.Core.Server.Commands
             }
 
             return results;
+        }
+
+        private CollisionDetectionParameters CreateParameters(GameCommandContext context, Vector3D direction)
+        {
+            var playerState = context.GameState.Players[context.Player.PeerId];
+            return new CollisionDetectionParameters
+            {
+                Origin = playerState.Position,
+                MoveDirection = direction,
+                ObjectBounds = playerState.GetBounds(playerState.Position + direction),
+                BvhTree = context.GameState.BvhTree,
+                ComputeWallSlidingIfCollid = true
+            };
         }
     }
 }
