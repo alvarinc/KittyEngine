@@ -1,5 +1,5 @@
 ﻿using KittyEngine.Core;
-using KittyEngine.Core.Client.Model;
+using KittyEngine.Core.Client.Outputs;
 using KittyEngine.Core.GameEngine.Graphics.Assets;
 using KittyEngine.SampleMaps;
 using System.Windows;
@@ -19,15 +19,10 @@ namespace KittyEngine.SampleGame
 
         private void StartGame()
         {
-            var guid = Guid.NewGuid();
-
-            var dialog = new ConnectionDialog($"Player-{guid}", "localhost", 9050);
+            var dialog = new ConnectionDialog();
             if (dialog.ShowDialog() == true)
             {
-                var server = new ServerInput(dialog.ServerAddress, dialog.ServerPort);
-                var player = new PlayerInput(guid.ToString(), dialog.Username);
-
-                Engine.StartWPFClient(player, server:server, placeholder: gameView, configure: container =>
+                Engine.StartWPFClient(dialog.PlayerInput, server:dialog.ServerInput, placeholder: gameView, configure: container =>
                 {
                     var contentService = container.Get<IContentService>();
                     contentService.RegisterContentFromSampleMaps();

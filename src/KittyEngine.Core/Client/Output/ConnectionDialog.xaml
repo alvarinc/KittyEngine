@@ -1,9 +1,9 @@
-﻿<Window x:Class="KittyEngine.SampleGame.ConnectionDialog"
+﻿<Window x:Class="KittyEngine.Core.Client.Outputs.ConnectionDialog"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:KittyEngine.SampleGame"
+        xmlns:local="clr-namespace:KittyEngine.Core.Client.Outputs"
         mc:Ignorable="d"
         Title="Connect to server" Height="350" Width="400" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
     <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Padding="10" Background="White">
