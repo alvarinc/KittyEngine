@@ -24,20 +24,25 @@ namespace KittyEngine.Core.Server.Commands
 
         public GameCommandResult Execute(GameCommandContext context)
         {
-            context.Player.Guid = _guid;
-            context.Player.Name = _name;
+            var player = context.Player;
+            player.Guid = _guid;
+            player.Name = _name;
 
-            context.GameState.Players.Add(context.Player.PeerId, new PlayerState(context.Player.PeerId));
-            context.GameState.Players[context.Player.PeerId].Name = context.Player.Name;
-            context.GameState.Players[context.Player.PeerId].Guid = context.Player.Guid;
+            var playerState = new PlayerState(player.PeerId);
+            playerState.Name = player.Name;
+            playerState.Guid = player.Guid;
+            playerState.Position = context.GameState.Map.PlayerPosition;
+            playerState.LookDirection = context.GameState.Map.PlayerLookDirection;
 
-            _logger.Log(LogLevel.Info, $"[Server] Player {context.Player.PeerId} : {context.Player.Name} joined the game");
+            context.GameState.Players.Add(player.PeerId, playerState);
+
+            _logger.Log(LogLevel.Info, $"[Server] Player {player.PeerId} : {player.Name} joined the game");
 
             var command = new GameCommandInput("joined")
-              .AddArgument("guid", context.Player.Guid)
-              .AddArgument("name", context.Player.Name);
+              .AddArgument("guid", player.Guid)
+              .AddArgument("name", player.Name);
 
-            context.SendMessage(context.Player.PeerId, command);
+            context.SendMessage(player.PeerId, command);
 
             return new GameCommandResult
             {

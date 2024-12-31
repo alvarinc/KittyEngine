@@ -19,14 +19,24 @@ namespace KittyEngine.SampleGame
 
         private void StartGame()
         {
-            var guid = Guid.NewGuid().ToString();
-            var player = new PlayerInput(guid, $"Player-{guid}");
+            var guid = Guid.NewGuid();
 
-            Engine.StartWPFClient(player, placeholder: gameView, configure:container => 
+            var dialog = new ConnectionDialog($"Player-{guid}", "localhost", 9050);
+            if (dialog.ShowDialog() == true)
             {
-                var contentService = container.Get<IContentService>();
-                contentService.RegisterContentFromSampleMaps();
-            });
+                var server = new ServerInput(dialog.ServerAddress, dialog.ServerPort);
+                var player = new PlayerInput(guid.ToString(), dialog.Username);
+
+                Engine.StartWPFClient(player, server:server, placeholder: gameView, configure: container =>
+                {
+                    var contentService = container.Get<IContentService>();
+                    contentService.RegisterContentFromSampleMaps();
+                });
+            }
+            else
+            {
+                Close();
+            }
         }
     }
 }
