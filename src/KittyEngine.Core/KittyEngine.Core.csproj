@@ -29,4 +29,16 @@
     <PackageReference Include="System.Drawing.Common" Version="8.0.11" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Client\Output\ConnectionDialog.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Client\Output\ConnectionDialog.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+
 </Project>
