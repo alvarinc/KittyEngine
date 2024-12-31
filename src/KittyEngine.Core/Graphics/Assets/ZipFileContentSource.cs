@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.IO;
-using System.Collections.Generic;
+﻿using System.IO;
 using System.Drawing;
 using System.Windows.Media.Imaging;
 using System.IO.Compression;
