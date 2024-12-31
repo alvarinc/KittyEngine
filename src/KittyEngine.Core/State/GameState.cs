@@ -1,5 +1,8 @@
 ﻿
+using KittyEngine.Core.Graphics.Models.Builders;
 using KittyEngine.Core.Graphics.Models.Definitions;
+using KittyEngine.Core.Physics.Collisions.BVH;
+using Newtonsoft.Json;
 
 namespace KittyEngine.Core.State
 {
@@ -19,6 +22,9 @@ namespace KittyEngine.Core.State
         public Dictionary<int, PlayerState> Players { get; set; } = new();
 
         public MapDefinition Map { get; set; }
+
+        [JsonIgnore]
+        public BVHTreeNode<LayeredModel3D> BvhTree { get; set; }
 
         public PlayerState GetPlayer(string guid) 
         {

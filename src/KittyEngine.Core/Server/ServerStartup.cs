@@ -1,5 +1,6 @@
 ﻿using KittyEngine.Core.GameEngine.Graphics.Assets;
 using KittyEngine.Core.Graphics.Assets.Maps;
+using KittyEngine.Core.Graphics.Models.Builders;
 using KittyEngine.Core.Server.Commands;
 using KittyEngine.Core.Services.Configuration;
 using KittyEngine.Core.Services.IoC;
@@ -45,6 +46,8 @@ namespace KittyEngine.Core.Server
 
             // Game logic
             container.Register<IServerGameLogic, ServerGameLogic>(ServiceBehavior.Scoped);
+            container.Register<IImageAssetProvider, ImageAssetProvider>(ServiceBehavior.Scoped);
+            container.Register<ILayeredModel3DFactory, LayeredModel3DFactory>(ServiceBehavior.Scoped);
 
             // Entry point
             container.Register<Server>(ServiceBehavior.Scoped);
