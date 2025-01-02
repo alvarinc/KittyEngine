@@ -12,7 +12,8 @@ namespace KittyEngine.Core.Physics.Collisions
             var result = new CollisionResult { HasCollision = false };
 
             // Broad Phase : AABB collision with BVH Tree
-            var collidedObjects = parameters.BvhTree.GetIntersected(parameters.ObjectBounds);
+            var objectBounds = parameters.MovableBody.GetBounds(parameters.MovableBody.Position + parameters.MoveDirection);
+            var collidedObjects = parameters.BvhTree.GetIntersected(objectBounds);
 
             if (!collidedObjects.Any())
             {
@@ -21,7 +22,7 @@ namespace KittyEngine.Core.Physics.Collisions
 
             var hasCollistion = false;
             var manager = new SATCollisionManager();
-            var objectTriangles = Triangle3DHelper.CreateTriangles(parameters.ObjectBounds);
+            var objectTriangles = Triangle3DHelper.CreateTriangles(objectBounds);
 
             var moveDirection = new Vector3D(parameters.MoveDirection.X, parameters.MoveDirection.Y, parameters.MoveDirection.Z);
             moveDirection.Normalize();
@@ -38,20 +39,25 @@ namespace KittyEngine.Core.Physics.Collisions
                 {
                     hasCollistion |= true;
                     collidedTriangles.AddRange(collisionResults.Intersections);
-
-                    foreach (var triangle in collisionResults.Intersections)
-                    {
-                        var faceNormal = triangle.FaceNormal;
-                        var collisionAngle = Vector3D.AngleBetween(faceNormal, moveDirection);
-                        var normalAngle = Vector3D.AngleBetween(faceNormal, new Vector3D(0, 1, 0));
-                        var nearestPointOnTriangle = Graphics.Geometry3D.NearestPointOnTriangle(triangle, parameters.Origin);
-                        var distance = (parameters.Origin - nearestPointOnTriangle).Length;
-                    }
                 }
             }
 
             result.HasCollision = hasCollistion;
             
+            if (hasCollistion)
+            {
+                var objectOriginBounds = parameters.MovableBody.GetBounds(parameters.MovableBody.Position);
+                var objectOriginTriangles = Triangle3DHelper.CreateTriangles(objectOriginBounds);
+                var nearestDistanceManager = new SATNearestPointManager();
+                var nearestDistanceResult = nearestDistanceManager.CalculateNearestDistance(objectOriginTriangles, collidedTriangles, parameters.MoveDirection);
+
+                if (nearestDistanceResult.NearestDistance > 0)
+                {
+                    result.NearestMoveComputed = true;
+                    result.NearestMove = nearestDistanceResult.NearestMove;
+                }
+            }
+
             return result;
         }
 

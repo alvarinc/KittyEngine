@@ -1,5 +1,4 @@
 ﻿using KittyEngine.Core.Physics;
-using KittyEngine.Core.Services.Configuration;
 using System.Windows.Media.Media3D;
 
 namespace KittyEngine.Core.State
@@ -14,12 +13,12 @@ namespace KittyEngine.Core.State
         public Point3D Position { get; set; }
         public Vector3D LookDirection { get; set; }
         public Vector3D UpDirection { get; set; }
-        #endregion
 
         public double SizeX { get; set; }
         public double SizeY { get; set; }
         public double SizeZ { get; set; }
-        
+        #endregion
+
         public PlayerState(int peerId)
         {
             PeerId = peerId;
