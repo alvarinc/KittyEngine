@@ -59,7 +59,7 @@ namespace KittyEngine.Core.Graphics.Renderer
         public void UpdateCamera()
         {
             var body = _clientState.GameState.GetPlayer(_clientState.ConnectedUser.Guid);
-            _playerCameraState.Camera.Position = body.Position;
+            _playerCameraState.Camera.Position = body.Position + new Vector3D(0, 10, 0);
             _playerCameraState.Camera.LookDirection = body.LookDirection;
         }
 
@@ -80,7 +80,7 @@ namespace KittyEngine.Core.Graphics.Renderer
             }
         }
 
-        private LayeredModel3D CreatePlayerModel(PlayerState playerState)
+        private LayeredModel3D CreatePlayerModel(PlayerState playerState, double opacity = .5)
         {
             var definition = new VolumeDefinition
             {
@@ -88,10 +88,11 @@ namespace KittyEngine.Core.Graphics.Renderer
                 Position = new Point3D(0, 0, 0),
                 Metadata = new VolumeMetadata
                 {
-                    UseBackMaterial = playerState.Guid != _clientState.ConnectedUser.Guid,
+                    UseBackMaterial = true,
                     XSize = playerState.SizeX,
                     YSize = playerState.SizeY,
-                    ZSize = playerState.SizeZ
+                    ZSize = playerState.SizeZ,
+                    Opacity = opacity
                 }
             };
 
