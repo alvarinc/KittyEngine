@@ -42,6 +42,15 @@ namespace KittyEngine.Core.Physics.Collisions.SAT
                 distance = 0;
             }
 
+            //if (distance > .01)
+            //{
+            //    distance -= .01;
+            //}
+            //else
+            //{
+            //    distance = 0;
+            //}
+
             // Update the result if this axis yields a smaller distance
             if (distance < result.NearestDistance)
             {

@@ -24,7 +24,7 @@ namespace KittyEngine.Core.State
         public MapDefinition Map { get; set; }
 
         [JsonIgnore]
-        public BVHTreeNode<LayeredModel3D> BvhTree { get; set; }
+        public BVHTreeNode<LayeredModel3D> MapBvhTree { get; set; }
 
         public PlayerState GetPlayer(string guid) 
         {

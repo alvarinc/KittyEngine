@@ -36,20 +36,20 @@ namespace KittyEngine.Core.Server.Commands
             var playerState = context.GameState.Players[context.Player.PeerId];
             var results = new GameCommandResult();
 
-            if (_direction.X != 0)
+            if (_direction.X != 0 || _direction.Y != 0 || _direction.Z != 0)
             {
-                results = ComputeMove(context, playerState, results, new Vector3D(_direction.X, 0, 0));
+                results = ComputeMove(context, playerState, results, _direction);
             }
 
-            if (_direction.Y != 0)
-            {
-                results = ComputeMove(context, playerState, results, new Vector3D(0, _direction.Y, 0));
-            }
+            //if (_direction.Y != 0)
+            //{
+            //    results = ComputeMove(context, playerState, results, new Vector3D(0, _direction.Y, 0));
+            //}
 
-            if (_direction.Z != 0)
-            {
-                results = ComputeMove(context, playerState, results, new Vector3D(0, 0, _direction.Z));
-            }
+            //if (_direction.Z != 0)
+            //{
+            //    results = ComputeMove(context, playerState, results, new Vector3D(0, 0, _direction.Z));
+            //}
 
             if (results.StateUpdated)
             {
@@ -61,23 +61,24 @@ namespace KittyEngine.Core.Server.Commands
 
         private GameCommandResult ComputeMove(GameCommandContext context, PlayerState playerState, GameCommandResult results, Vector3D direction)
         {
+            var collisionBehavior = Physics.CollisionBehavior.CheckCollision | Physics.CollisionBehavior.CanWallSlide | Physics.CollisionBehavior.CanClimbStairs;
             var result = _collisionManager.DetectCollisions(new CollisionDetectionParameters
             {
                 MovableBody = playerState,
                 MoveDirection = direction,
-                BvhTree = context.GameState.BvhTree
-            });
+                MapBvhTree = context.GameState.MapBvhTree
+            }, collisionBehavior);
 
             if (!result.HasCollision)
             {
                 playerState.Position = playerState.Position + direction;
                 results.StateUpdated = true;
             }
-            //else if (result.NearestMoveComputed)
-            //{
-            //    playerState.Position = playerState.Position + result.NearestMove;
-            //    results.StateUpdated = true;
-            //}
+            else if (result.NearestMoveComputed)
+            {
+                playerState.Position = playerState.Position + result.NearestMove;
+                results.StateUpdated = true;
+            }
 
             return results;
         }

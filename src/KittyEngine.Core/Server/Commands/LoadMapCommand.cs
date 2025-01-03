@@ -1,6 +1,5 @@
 ﻿using KittyEngine.Core.Graphics.Assets.Maps;
 using KittyEngine.Core.Graphics.Models.Builders;
-using KittyEngine.Core.Graphics.Models.Definitions;
 using KittyEngine.Core.Physics.Collisions.BVH;
 using KittyEngine.Core.Services.Logging;
 
@@ -39,7 +38,7 @@ namespace KittyEngine.Core.Server.Commands
 
             var leafNodefactory = new DefaultBVHLeafNodeFactory(_layeredModel3DFactory, context.GameState.Map.Volumes);
             var bvhTreeBuilder = new BVHTreeBuilder<LayeredModel3D>();
-            context.GameState.BvhTree = bvhTreeBuilder.Build(leafNodefactory);
+            context.GameState.MapBvhTree = bvhTreeBuilder.Build(leafNodefactory);
 
             context.GameState.Status = State.GameStatus.Created;
             _logger.Log(LogLevel.Info, $"[Server] Loaded map <{context.GameState.Map.Name}>. {maps.Length} maps");

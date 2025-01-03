@@ -6,7 +6,7 @@ namespace KittyEngine.Core.Physics.Collisions
 {
     public class CollisionDetectionParameters
     {
-        public BVHTreeNode<LayeredModel3D> BvhTree { get; set; }
+        public BVHTreeNode<LayeredModel3D> MapBvhTree { get; set; }
 
         public IMovableBody MovableBody { get; set; }
         public Vector3D MoveDirection { get; set; }
