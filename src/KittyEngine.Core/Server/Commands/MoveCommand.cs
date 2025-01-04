@@ -33,23 +33,16 @@ namespace KittyEngine.Core.Server.Commands
 
         public GameCommandResult Execute(GameCommandContext context)
         {
-            var playerState = context.GameState.Players[context.Player.PeerId];
             var results = new GameCommandResult();
 
-            if (_direction.X != 0 || _direction.Y != 0 || _direction.Z != 0)
+            if (_direction.X == 0 && _direction.Y == 0 && _direction.Z == 0)
             {
-                results = ComputeMove(context, playerState, results, _direction);
+                return results;
             }
 
-            //if (_direction.Y != 0)
-            //{
-            //    results = ComputeMove(context, playerState, results, new Vector3D(0, _direction.Y, 0));
-            //}
+            var playerState = context.GameState.Players[context.Player.PeerId];
 
-            //if (_direction.Z != 0)
-            //{
-            //    results = ComputeMove(context, playerState, results, new Vector3D(0, 0, _direction.Z));
-            //}
+            results = ComputeMove(context, playerState, results, _direction);
 
             if (results.StateUpdated)
             {
@@ -61,25 +54,44 @@ namespace KittyEngine.Core.Server.Commands
 
         private GameCommandResult ComputeMove(GameCommandContext context, PlayerState playerState, GameCommandResult results, Vector3D direction)
         {
-            var collisionBehavior = Physics.CollisionBehavior.CheckCollision | Physics.CollisionBehavior.CanWallSlide | Physics.CollisionBehavior.CanClimbStairs;
-            var result = _collisionManager.DetectCollisions(new CollisionDetectionParameters
+            var playerMoved = false;
+            var collisionParameters = new CollisionDetectionParameters
             {
                 MovableBody = playerState,
                 MoveDirection = direction,
                 MapBvhTree = context.GameState.MapBvhTree
-            }, collisionBehavior);
+            };
 
-            if (!result.HasCollision)
+            var collistionResult = _collisionManager.DetectCollisions(collisionParameters);
+
+            if (!collistionResult.HasCollision)
             {
                 playerState.Position = playerState.Position + direction;
-                results.StateUpdated = true;
-            }
-            else if (result.NearestMoveComputed)
-            {
-                playerState.Position = playerState.Position + result.NearestMove;
-                results.StateUpdated = true;
+                playerMoved = true;
             }
 
+            if (!playerMoved)
+            {
+                var stairClimbingResult = _collisionManager.ComputeStairClimbing(collisionParameters, collistionResult, _logger);
+
+                if (stairClimbingResult.CanClimbStairs)
+                {
+                    playerState.Position = playerState.Position + stairClimbingResult.Direction;
+                    playerMoved = true;
+                }
+            }
+
+            if (!playerMoved)
+            {
+                var wallSlidingResult = _collisionManager.ComputeWallSliding(collisionParameters, collistionResult);
+                if (wallSlidingResult.CanWallSlide)
+                {
+                    playerState.Position = playerState.Position + wallSlidingResult.Direction;
+                    playerMoved = true;
+                }
+            }
+
+            results.StateUpdated = playerMoved;
             return results;
         }
     }

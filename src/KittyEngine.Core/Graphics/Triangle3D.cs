@@ -72,5 +72,10 @@ namespace KittyEngine.Core.Graphics
         {
             return $"{Positions[0]} {Positions[1]} {Positions[2]}".GetHashCode();
         }
+
+        internal Point3D GetHighestPoint()
+        {
+            return Positions.Aggregate((highest, current) => current.Y > highest.Y ? current : highest);
+        }
     }
 }
