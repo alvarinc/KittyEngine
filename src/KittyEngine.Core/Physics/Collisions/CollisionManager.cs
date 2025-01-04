@@ -2,7 +2,6 @@
 using KittyEngine.Core.Graphics;
 using System.Windows.Media.Media3D;
 using KittyEngine.Core.Graphics.Models.Builders;
-using KittyEngine.Core.Services.Logging;
 
 namespace KittyEngine.Core.Physics.Collisions
 {
@@ -48,7 +47,7 @@ namespace KittyEngine.Core.Physics.Collisions
             return result;
         }
 
-        public StairClimbingResult ComputeStairClimbing(CollisionDetectionParameters parameters, CollisionResult collisionResult, ILogger logger)
+        public StairClimbingResult ComputeStairClimbing(CollisionDetectionParameters parameters, CollisionResult collisionResult)
         {
             var result = new StairClimbingResult();
 
