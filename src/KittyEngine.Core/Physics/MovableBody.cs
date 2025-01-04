@@ -2,7 +2,7 @@
 
 namespace KittyEngine.Core.Physics
 {
-    internal class MovableBody : IMovableBody
+    public class MovableBody : IMovableBody
     {
         public Point3D Position { get; set; }
         public Vector3D LookDirection { get; set; }

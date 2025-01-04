@@ -1,5 +1,6 @@
 ﻿namespace KittyEngine.Core.Server
 {
+    using KittyEngine.Core.Physics;
     using KittyEngine.Core.Server.Commands;
     using KittyEngine.Core.Server.Model;
     using KittyEngine.Core.Services.IoC;
@@ -48,15 +49,17 @@
 
         private readonly ILogger _logger;
         private readonly ILightFactory<IGameCommand> _commandFactory;
+        private readonly IPhysicsEngine _physicsEngine;
         private readonly ServerState _serverState;
 
         private NetworkAdapter _networkAdapter;
         private readonly Queue<GameCommandRequest> _gameCommmandRequests = new();
 
-        public ServerGameLogic(ILogger logger, ILightFactory<IGameCommand> commandFactory, ServerState serverState)
+        public ServerGameLogic(ILogger logger, ILightFactory<IGameCommand> commandFactory, IPhysicsEngine physicsEngine, ServerState serverState)
         {
             _logger = logger;
             _commandFactory = commandFactory;
+            _physicsEngine = physicsEngine;
             _serverState = serverState;
         }
 
@@ -100,6 +103,10 @@
 
             // Update players
             var commandResultByPeers = ExecuteCommands();
+
+            // Update physics
+            //_serverState.GameTime.Mark();
+            _physicsEngine.UpdatePhysics(_serverState.GameState, stopwatch.ElapsedMilliseconds);
 
             // Send updated state to clients
             SynchronizeClients(commandResultByPeers, synchronizer);
