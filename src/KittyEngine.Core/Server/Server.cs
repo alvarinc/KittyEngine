@@ -6,7 +6,6 @@
     using LiteNetLib;
     using Newtonsoft.Json;
     using System;
-    using System.Reflection.PortableExecutable;
 
     public class Server
     {

@@ -1,6 +1,7 @@
 ﻿using KittyEngine.Core.GameEngine.Graphics.Assets;
 using KittyEngine.Core.Graphics.Assets.Maps;
 using KittyEngine.Core.Graphics.Models.Builders;
+using KittyEngine.Core.Physics;
 using KittyEngine.Core.Physics.Collisions;
 using KittyEngine.Core.Server.Commands;
 using KittyEngine.Core.Services.Configuration;
@@ -27,6 +28,9 @@ namespace KittyEngine.Core.Server
             logManager.AddConnector(new SerilogConnector());
             container.Register<ILoggerManager>(ServiceBehavior.Scoped, () => logManager);
             container.Register<ILogger, Logger>(ServiceBehavior.Scoped);
+
+            // Physics
+            container.Register<IPhysicsEngine, PhysicsEngine>(ServiceBehavior.Scoped);
 
             // State
             container.Register<ServerState>(ServiceBehavior.Scoped);

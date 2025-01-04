@@ -34,7 +34,7 @@ namespace KittyEngine.Core.Server.Commands
         {
             var results = new GameCommandResult();
 
-            if (_direction.X == 0 && _direction.Y == 0 && _direction.Z == 0)
+            if (_direction == new Vector3D(0, 0, 0))
             {
                 return results;
             }
