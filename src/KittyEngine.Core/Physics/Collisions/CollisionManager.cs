@@ -54,44 +54,32 @@ namespace KittyEngine.Core.Physics.Collisions
 
             var collidedTriangles = collisionResult.Collisions.SelectMany(x => x.CollidedTriangles).ToList();
 
-            double maxStairHeight = 1; 
-            Vector3D upVector = new Vector3D(0, 1, 0);
-            Vector3D moveDirection = parameters.MoveDirection;
+            var maxStairHeight = 1;
 
-            //var highestY = parameters.MovableBody.Position.Y;
+            var highestY = collidedTriangles.Max(x => x.GetHighestPoint().Y);
 
-            foreach (var triangle in collidedTriangles)
+            var heightDifference = highestY - parameters.MovableBody.Position.Y;
+
+            if (heightDifference > 0 && heightDifference <= maxStairHeight)
             {
-                // Check if the triangle is climbable
-                var normal = triangle.FaceNormal;
-                var collisionAngle = Math.Round(Vector3D.AngleBetween(normal, upVector));
+                // Adjust move direction to simulate climbing
+                var adjustedDirection = parameters.MoveDirection + new Vector3D(0, heightDifference + .1, 0);
 
-                if (collisionAngle >= 0 && collisionAngle <= 90)
+                // Check if the adjusted move is free of collisions
+                var adjustedMoveParameters = new CollisionDetectionParameters
                 {
-                    double heightDifference = triangle.GetHighestPoint().Y + .1 - parameters.MovableBody.Position.Y;
+                    MapBvhTree = parameters.MapBvhTree,
+                    MovableBody = parameters.MovableBody,
+                    MoveDirection = adjustedDirection
+                };
 
-                    if (heightDifference > 0 && heightDifference <= maxStairHeight)
-                    {
-                        // Adjust move direction to simulate climbing
-                        var adjustedDirection = new Vector3D(moveDirection.X, heightDifference, moveDirection.Z);
+                var adjustedMoveResult = DetectCollisions(adjustedMoveParameters);
 
-                        // Check if the adjusted move is free of collisions
-                        var adjustedMoveParameters = new CollisionDetectionParameters
-                        {
-                            MapBvhTree = parameters.MapBvhTree,
-                            MovableBody = parameters.MovableBody,
-                            MoveDirection = adjustedDirection
-                        };
-
-                        var adjustedMoveResult = DetectCollisions(adjustedMoveParameters);
-
-                        if (!adjustedMoveResult.HasCollision)
-                        {
-                            result.CanClimbStairs = true;
-                            result.Direction = adjustedDirection;
-                            return result;
-                        }
-                    }
+                if (!adjustedMoveResult.HasCollision)
+                {
+                    result.CanClimbStairs = true;
+                    result.Direction = adjustedDirection;
+                    return result;
                 }
             }
 
