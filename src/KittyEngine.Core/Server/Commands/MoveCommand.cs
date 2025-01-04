@@ -1,6 +1,5 @@
 ﻿using KittyEngine.Core.Physics.Collisions;
 using KittyEngine.Core.Services.Logging;
-using KittyEngine.Core.State;
 using System.Windows.Media.Media3D;
 
 namespace KittyEngine.Core.Server.Commands
@@ -42,23 +41,11 @@ namespace KittyEngine.Core.Server.Commands
 
             var playerState = context.GameState.Players[context.Player.PeerId];
 
-            results = ComputeMove(context, playerState, results, _direction);
-
-            if (results.StateUpdated)
-            {
-                _logger.Log(LogLevel.Info, $"[Server] Player {context.Player.PeerId} : {playerState.Name} moved to: {playerState.Position}");
-            }
-
-            return results;
-        }
-
-        private GameCommandResult ComputeMove(GameCommandContext context, PlayerState playerState, GameCommandResult results, Vector3D direction)
-        {
             var playerMoved = false;
             var collisionParameters = new CollisionDetectionParameters
             {
                 MovableBody = playerState,
-                MoveDirection = direction,
+                MoveDirection = _direction,
                 MapBvhTree = context.GameState.MapBvhTree
             };
 
@@ -66,13 +53,13 @@ namespace KittyEngine.Core.Server.Commands
 
             if (!collistionResult.HasCollision)
             {
-                playerState.Position = playerState.Position + direction;
+                playerState.Position = playerState.Position + _direction;
                 playerMoved = true;
             }
 
             if (!playerMoved)
             {
-                var stairClimbingResult = _collisionManager.ComputeStairClimbing(collisionParameters, collistionResult, _logger);
+                var stairClimbingResult = _collisionManager.ComputeStairClimbing(collisionParameters, collistionResult);
 
                 if (stairClimbingResult.CanClimbStairs)
                 {
@@ -89,6 +76,11 @@ namespace KittyEngine.Core.Server.Commands
                     playerState.Position = playerState.Position + wallSlidingResult.Direction;
                     playerMoved = true;
                 }
+            }
+
+            if (playerMoved)
+            {
+                _logger.Log(LogLevel.Info, $"[Server] Player {context.Player.PeerId} : {playerState.Name} moved to: {playerState.Position}");
             }
 
             results.StateUpdated = playerMoved;
