@@ -5,9 +5,9 @@ namespace KittyEngine.Core.Physics
 {
     public interface IPrimitiveMoveService
     {
-        Vector3D GetMoveLongitudinal(IMovableBody body, double moveStep);
-        Vector3D GetMoveLateral(IMovableBody body, double moveStep);
-        Vector3D GetHorizontalRotation(IMovableBody body, double angleInDegree);
-        Vector3D GetVerticalRotation(IMovableBody body, double angleInDegree);
+        Vector3D GetMoveLongitudinal(IRigidBody body, double moveStep);
+        Vector3D GetMoveLateral(IRigidBody body, double moveStep);
+        Vector3D GetHorizontalRotation(IRigidBody body, double angleInDegree);
+        Vector3D GetVerticalRotation(IRigidBody body, double angleInDegree);
     }
 }

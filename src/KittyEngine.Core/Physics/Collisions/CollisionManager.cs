@@ -12,7 +12,7 @@ namespace KittyEngine.Core.Physics.Collisions
             var result = new CollisionResult();
 
             // Broad Phase : AABB collision with BVH Tree
-            var movedBodyRect3D = parameters.MovableBody.GetBounds(parameters.MovableBody.Position + parameters.MoveDirection);
+            var movedBodyRect3D = parameters.RigidBody.GetBounds(parameters.RigidBody.Position + parameters.MoveDirection);
             var collidedObjects = parameters.MapBvhTree.GetIntersected(movedBodyRect3D);
 
             if (!collidedObjects.Any())
@@ -57,7 +57,7 @@ namespace KittyEngine.Core.Physics.Collisions
 
             var highestY = collidedTriangles.Max(x => x.GetHighestPoint().Y);
 
-            var heightDifference = highestY - parameters.MovableBody.Position.Y;
+            var heightDifference = highestY - parameters.RigidBody.Position.Y;
 
             if (heightDifference > 0 && heightDifference <= maxStairHeight)
             {
@@ -68,7 +68,7 @@ namespace KittyEngine.Core.Physics.Collisions
                 var adjustedMoveParameters = new CollisionDetectionParameters
                 {
                     MapBvhTree = parameters.MapBvhTree,
-                    MovableBody = parameters.MovableBody,
+                    RigidBody = parameters.RigidBody,
                     MoveDirection = adjustedDirection
                 };
 
@@ -87,25 +87,43 @@ namespace KittyEngine.Core.Physics.Collisions
 
         public WallSlidingResult ComputeWallSliding(CollisionDetectionParameters parameters, CollisionResult collisionResult)
         {
-            var result = new WallSlidingResult();
             var collidedTriangles = collisionResult.Collisions.SelectMany(x => x.CollidedTriangles).ToList();
-            var slidableTriangles = GetSlidableTriangles(collidedTriangles, parameters.MoveDirection);
-            var nearestTriangle = Graphics.Geometry3D.SortTrianglesByNearest(slidableTriangles, parameters.MovableBody.Position).FirstOrDefault();
+            var slidableTriangles = collidedTriangles.Where(x => IsSlidableTriangle(x, parameters.MoveDirection));
+            var nearestTriangles = Graphics.Geometry3D.SortTrianglesByNearest(slidableTriangles, parameters.RigidBody.Position);
 
-            var slidingDirection = parameters.MoveDirection;
-            if (nearestTriangle != null)
+            var alternateSlidingDirection1 = parameters.MoveDirection;
+            var alternateSlidingDirection2 = parameters.MoveDirection;
+            foreach (var triangle in slidableTriangles)
             {
-                var normal = nearestTriangle.FaceNormal;
-                slidingDirection = slidingDirection - Vector3D.DotProduct(slidingDirection, normal) * normal;
+                var normal = triangle.FaceNormal;
+                alternateSlidingDirection1 = alternateSlidingDirection1 - Vector3D.DotProduct(alternateSlidingDirection1, normal) * normal;
+
+                if (alternateSlidingDirection2 == parameters.MoveDirection)
+                {
+                    alternateSlidingDirection2 = alternateSlidingDirection1;
+                }
             }
 
-            if (slidingDirection != parameters.MoveDirection)
+            var result = CanWallSlide(parameters, alternateSlidingDirection1);
+            if (!result.CanWallSlide)
+            {
+                result = CanWallSlide(parameters, alternateSlidingDirection2);
+            }
+
+            return result;
+        }
+
+        private WallSlidingResult CanWallSlide(CollisionDetectionParameters parameters, Vector3D alternateSlidingDirection1)
+        {
+            var result = new WallSlidingResult();
+            var slidingAngle = Vector3D.AngleBetween(parameters.MoveDirection, alternateSlidingDirection1);
+            if (alternateSlidingDirection1 != parameters.MoveDirection && slidingAngle <= 90)
             {
                 var nearestMoveParameters = new CollisionDetectionParameters
                 {
                     MapBvhTree = parameters.MapBvhTree,
-                    MovableBody = parameters.MovableBody,
-                    MoveDirection = slidingDirection
+                    RigidBody = parameters.RigidBody,
+                    MoveDirection = alternateSlidingDirection1
                 };
 
                 var nearestMoveResult = DetectCollisions(nearestMoveParameters);
@@ -113,27 +131,17 @@ namespace KittyEngine.Core.Physics.Collisions
                 if (!nearestMoveResult.HasCollision)
                 {
                     result.CanWallSlide = true;
-                    result.Direction = slidingDirection;
+                    result.Direction = alternateSlidingDirection1;
                 }
             }
 
             return result;
         }
 
-        private IEnumerable<Triangle3D> GetSlidableTriangles(IEnumerable<Triangle3D> triangles, Vector3D moveDirection)
+        private bool IsSlidableTriangle(Triangle3D triangle, Vector3D moveDirection)
         {
-            var results = new List<Triangle3D>();
-            foreach (var triangle in triangles)
-            {
-                var collisionAngle = Math.Round(Vector3D.AngleBetween(triangle.FaceNormal, moveDirection));
-
-                if (collisionAngle < 90)
-                {
-                    results.Add(triangle);
-                }
-            }
-
-            return results;
+            var collisionAngle = Math.Round(Vector3D.AngleBetween(triangle.FaceNormal, moveDirection));
+            return collisionAngle < 90;
         }
 
         private List<Triangle3D> CreateTrianglesAndTransform(LayeredModel3D model)

@@ -30,7 +30,7 @@ namespace KittyEngine.Core.Client.Input.WPFMouse.Converters
                 return null;
             }
 
-            var body = new MovableBody(player);
+            var body = new RigidBody(player);
 
             var moveSettings = _configurationService.GetMouseSettings();
 

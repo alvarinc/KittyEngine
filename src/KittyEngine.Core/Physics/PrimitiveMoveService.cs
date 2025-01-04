@@ -4,7 +4,7 @@ namespace KittyEngine.Core.Physics
 {
     public class PrimitiveMoveService : IPrimitiveMoveService
     {
-        public Vector3D GetMoveLongitudinal(IMovableBody body, double moveStep)
+        public Vector3D GetMoveLongitudinal(IRigidBody body, double moveStep)
         {
             Vector3D direction = new Vector3D(body.LookDirection.X, 0, body.LookDirection.Z);
             direction.Normalize();
@@ -12,7 +12,7 @@ namespace KittyEngine.Core.Physics
             return direction * moveStep;
         }
 
-        public Vector3D GetMoveLateral(IMovableBody body, double moveStep)
+        public Vector3D GetMoveLateral(IRigidBody body, double moveStep)
         {
             var direction = Vector3D.CrossProduct(body.UpDirection, body.LookDirection);
             direction.Normalize();
@@ -20,7 +20,7 @@ namespace KittyEngine.Core.Physics
             return direction * moveStep;
         }
 
-        public Vector3D GetHorizontalRotation(IMovableBody body, double angleInDegree)
+        public Vector3D GetHorizontalRotation(IRigidBody body, double angleInDegree)
         {
             var m = new Matrix3D();
             
@@ -30,7 +30,7 @@ namespace KittyEngine.Core.Physics
             return m.Transform(body.LookDirection);
         }
 
-        public Vector3D GetVerticalRotation(IMovableBody body, double angleInDegree)
+        public Vector3D GetVerticalRotation(IRigidBody body, double angleInDegree)
         {
             // Cross Product gets a vector that is perpendicular to the passed in vectors (order does matter, reverse the order and the vector will point in the reverse direction)
             var cp = Vector3D.CrossProduct(body.UpDirection, body.LookDirection);
