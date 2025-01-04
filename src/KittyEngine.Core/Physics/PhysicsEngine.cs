@@ -6,7 +6,8 @@ namespace KittyEngine.Core.Physics
 {
     public class PhysicsEngine : IPhysicsEngine
     {
-        private Vector3D _gravity = new Vector3D(0, -9.80665, 0); // g = 9.80665 Gravity acceleration (m/s^2)
+        public const double Gravity = -9.80665; // Gravity acceleration (m/s^2)
+        public const double MaxFallSpeed = 50.0; // Terminal velocity
 
         public void UpdatePhysics(GameState gameState, double deltaTimeInMilliseconds)
         {
