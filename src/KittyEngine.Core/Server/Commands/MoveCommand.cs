@@ -44,7 +44,7 @@ namespace KittyEngine.Core.Server.Commands
             var playerMoved = false;
             var collisionParameters = new CollisionDetectionParameters
             {
-                MovableBody = playerState,
+                RigidBody = playerState,
                 MoveDirection = _direction,
                 MapBvhTree = context.GameState.MapBvhTree
             };

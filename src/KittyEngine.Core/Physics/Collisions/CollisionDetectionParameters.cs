@@ -8,7 +8,7 @@ namespace KittyEngine.Core.Physics.Collisions
     {
         public BVHTreeNode<LayeredModel3D> MapBvhTree { get; set; }
 
-        public IMovableBody MovableBody { get; set; }
+        public IRigidBody RigidBody { get; set; }
         public Vector3D MoveDirection { get; set; }
     }
 }

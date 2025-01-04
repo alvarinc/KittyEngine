@@ -3,7 +3,7 @@ using System.Windows.Media.Media3D;
 
 namespace KittyEngine.Core.State
 {
-    public class PlayerState : MovableBody
+    public class PlayerState : RigidBody
     {
         public int PeerId { get; }
         public string Guid { get; set; }

@@ -2,7 +2,7 @@
 
 namespace KittyEngine.Core.Physics
 {
-    public class MovableBody : IMovableBody
+    public class RigidBody : IRigidBody
     {
         public Point3D Position { get; set; }
         public Vector3D LookDirection { get; set; }
@@ -15,9 +15,9 @@ namespace KittyEngine.Core.Physics
         public double VerticalVelocity { get; set; }
         public bool IsGrounded { get; set; }
 
-        public MovableBody() { }
+        public RigidBody() { }
 
-        public MovableBody(IMovableBody body)
+        public RigidBody(IRigidBody body)
         {
             Position = body.Position;
             LookDirection = body.LookDirection;

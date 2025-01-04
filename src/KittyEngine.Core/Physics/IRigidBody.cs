@@ -2,7 +2,7 @@
 
 namespace KittyEngine.Core.Physics
 {
-    public interface IMovableBody
+    public interface IRigidBody
     {
         Point3D Position { get; set; }
         Vector3D LookDirection { get; set; }
