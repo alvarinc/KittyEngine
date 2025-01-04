@@ -2,6 +2,7 @@
 using KittyEngine.Core.Graphics;
 using System.Windows.Media.Media3D;
 using KittyEngine.Core.Graphics.Models.Builders;
+using KittyEngine.Core.Services.Logging;
 
 namespace KittyEngine.Core.Physics.Collisions
 {
@@ -20,6 +21,7 @@ namespace KittyEngine.Core.Physics.Collisions
                 return result;
             }
 
+            // Near Phase : Separate Axis Theorem
             var manager = new SATCollisionManager();
             var movedBodyTriangles = Triangle3DHelper.CreateTriangles(movedBodyRect3D);
 
@@ -46,24 +48,60 @@ namespace KittyEngine.Core.Physics.Collisions
             return result;
         }
 
-        public CollisionResult DetectCollisions(CollisionDetectionParameters parameters, CollisionBehavior behavior)
+        public StairClimbingResult ComputeStairClimbing(CollisionDetectionParameters parameters, CollisionResult collisionResult, ILogger logger)
         {
-            if (behavior == CollisionBehavior.None)
+            var result = new StairClimbingResult();
+
+            var collidedTriangles = collisionResult.Collisions.SelectMany(x => x.CollidedTriangles).ToList();
+
+            double maxStairHeight = 1; 
+            Vector3D upVector = new Vector3D(0, 1, 0);
+            Vector3D moveDirection = parameters.MoveDirection;
+
+            //var highestY = parameters.MovableBody.Position.Y;
+
+            foreach (var triangle in collidedTriangles)
             {
-                return new CollisionResult();
+                // Check if the triangle is climbable
+                var normal = triangle.FaceNormal;
+                var collisionAngle = Math.Round(Vector3D.AngleBetween(normal, upVector));
+
+                if (collisionAngle >= 0 && collisionAngle <= 90)
+                {
+                    double heightDifference = triangle.GetHighestPoint().Y + .1 - parameters.MovableBody.Position.Y;
+
+                    if (heightDifference > 0 && heightDifference <= maxStairHeight)
+                    {
+                        // Adjust move direction to simulate climbing
+                        var adjustedDirection = new Vector3D(moveDirection.X, heightDifference, moveDirection.Z);
+
+                        // Check if the adjusted move is free of collisions
+                        var adjustedMoveParameters = new CollisionDetectionParameters
+                        {
+                            MapBvhTree = parameters.MapBvhTree,
+                            MovableBody = parameters.MovableBody,
+                            MoveDirection = adjustedDirection
+                        };
+
+                        var adjustedMoveResult = DetectCollisions(adjustedMoveParameters);
+
+                        if (!adjustedMoveResult.HasCollision)
+                        {
+                            result.CanClimbStairs = true;
+                            result.Direction = adjustedDirection;
+                            return result;
+                        }
+                    }
+                }
             }
 
-            var result = DetectCollisions(parameters);
+            return result;
+        }
 
-            if (!result.HasCollision 
-                || !behavior.HasFlag(CollisionBehavior.CanWallSlide) 
-                || !behavior.HasFlag(CollisionBehavior.CanClimbStairs))
-            {
-                return result;
-            }
-
-            // Calculate the nearest move
-            var collidedTriangles = result.Collisions.SelectMany(x => x.CollidedTriangles).ToList();
+        public WallSlidingResult ComputeWallSliding(CollisionDetectionParameters parameters, CollisionResult collisionResult)
+        {
+            var result = new WallSlidingResult();
+            var collidedTriangles = collisionResult.Collisions.SelectMany(x => x.CollidedTriangles).ToList();
             var slidableTriangles = GetSlidableTriangles(collidedTriangles, parameters.MoveDirection);
             var nearestTriangle = Graphics.Geometry3D.SortTrianglesByNearest(slidableTriangles, parameters.MovableBody.Position).FirstOrDefault();
 
@@ -87,8 +125,8 @@ namespace KittyEngine.Core.Physics.Collisions
 
                 if (!nearestMoveResult.HasCollision)
                 {
-                    result.NearestMoveComputed = true;
-                    result.NearestMove = slidingDirection;
+                    result.CanWallSlide = true;
+                    result.Direction = slidingDirection;
                 }
             }
 
@@ -100,7 +138,7 @@ namespace KittyEngine.Core.Physics.Collisions
             var results = new List<Triangle3D>();
             foreach (var triangle in triangles)
             {
-                var collisionAngle = Vector3D.AngleBetween(triangle.FaceNormal, moveDirection);
+                var collisionAngle = Math.Round(Vector3D.AngleBetween(triangle.FaceNormal, moveDirection));
 
                 if (collisionAngle < 90)
                 {
