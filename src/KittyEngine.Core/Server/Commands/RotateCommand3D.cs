@@ -19,9 +19,9 @@ namespace KittyEngine.Core.Server.Commands
             try
             {
                 _direction = Vector3D.Parse(input.Args["direction"]);
-                var identity = new Vector3D(0, 0, 0);
+                var zeroVector = new Vector3D(0, 0, 0);
 
-                return _direction != identity;
+                return _direction != zeroVector;
             }
             catch
             {

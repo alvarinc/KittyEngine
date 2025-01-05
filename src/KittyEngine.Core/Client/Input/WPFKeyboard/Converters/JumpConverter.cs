@@ -33,16 +33,16 @@ namespace KittyEngine.Core.Client.Input.WPFKeyboard.Converters
 
             if (jump)
             {
-                var identity = new Vector3D(0, 0, 0);
+                var zeroVector = new Vector3D(0, 0, 0);
 
-                var moveForwardVector = moveForward ? _primitiveMoveService.GetMoveLongitudinal(player, 1) : identity;
-                var moveBackwardVector = moveBackward ? _primitiveMoveService.GetMoveLongitudinal(player, -1) : identity;
-                var moveLeftVector = moveLeft ? _primitiveMoveService.GetMoveLateral(player, 1) : identity;
-                var moveRightVector = moveRight ? _primitiveMoveService.GetMoveLateral(player, -1) : identity;
+                var moveForwardVector = moveForward ? _primitiveMoveService.GetMoveLongitudinal(player, 1) : zeroVector;
+                var moveBackwardVector = moveBackward ? _primitiveMoveService.GetMoveLongitudinal(player, -1) : zeroVector;
+                var moveLeftVector = moveLeft ? _primitiveMoveService.GetMoveLateral(player, 1) : zeroVector;
+                var moveRightVector = moveRight ? _primitiveMoveService.GetMoveLateral(player, -1) : zeroVector;
 
                 var direction = moveForwardVector + moveBackwardVector + moveLeftVector + moveRightVector;// + moveAscendVector + moveDescendVector;
 
-                if (direction != identity)
+                if (direction != zeroVector)
                 {
                     direction.Normalize();
                 }

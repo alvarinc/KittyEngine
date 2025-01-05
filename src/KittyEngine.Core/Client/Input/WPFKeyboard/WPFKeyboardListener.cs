@@ -3,9 +3,6 @@ using KittyEngine.Core.Client.Outputs;
 using KittyEngine.Core.Server;
 using KittyEngine.Core.Services.IoC;
 using KittyEngine.Core.State;
-using System.Media;
-using System.Runtime.InteropServices;
-using System.Text.Json;
 using System.Windows.Input;
 
 namespace KittyEngine.Core.Client.Input.WPFKeyboard
@@ -85,7 +82,6 @@ namespace KittyEngine.Core.Client.Input.WPFKeyboard
                     if (cmd != null)
                     {
                         results.Add(cmd);
-                        break;
                     }
                 }
             }
