@@ -49,9 +49,9 @@ namespace KittyEngine.Core.Server.Commands
                 MapBvhTree = context.GameState.MapBvhTree
             };
 
-            var collistionResult = _collisionManager.DetectCollisions(collisionParameters);
+            var collisionResult = _collisionManager.DetectCollisions(collisionParameters);
 
-            if (!collistionResult.HasCollision)
+            if (!collisionResult.HasCollision)
             {
                 playerState.Position = playerState.Position + _direction;
                 playerState.Velocity = _direction;
@@ -60,7 +60,7 @@ namespace KittyEngine.Core.Server.Commands
 
             if (!playerMoved)
             {
-                var stairClimbingResult = _collisionManager.ComputeStairClimbing(collisionParameters, collistionResult);
+                var stairClimbingResult = _collisionManager.ComputeStairClimbing(collisionParameters, collisionResult);
 
                 if (stairClimbingResult.CanClimbStairs)
                 {
@@ -72,7 +72,7 @@ namespace KittyEngine.Core.Server.Commands
 
             if (!playerMoved)
             {
-                var wallSlidingResult = _collisionManager.ComputeWallSliding(collisionParameters, collistionResult);
+                var wallSlidingResult = _collisionManager.ComputeWallSliding(collisionParameters, collisionResult);
                 if (wallSlidingResult.CanWallSlide)
                 {
                     playerState.Position = playerState.Position + wallSlidingResult.Direction;
