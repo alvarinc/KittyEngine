@@ -40,6 +40,10 @@ namespace KittyEngine.Core.Server.Commands
             }
 
             var playerState = context.GameState.Players[context.Player.PeerId];
+            if (!playerState.IsGrounded)
+            {
+                return results;
+            }
 
             var playerMoved = false;
             var collisionParameters = new CollisionDetectionParameters
@@ -53,6 +57,7 @@ namespace KittyEngine.Core.Server.Commands
 
             if (!collisionResult.HasCollision)
             {
+                _logger.Log(LogLevel.Info, $"[Server] Player {context.Player.PeerId} : Move");
                 playerState.Position = playerState.Position + _direction;
                 playerState.Velocity = _direction;
                 playerMoved = true;
@@ -64,6 +69,7 @@ namespace KittyEngine.Core.Server.Commands
 
                 if (stairClimbingResult.CanClimbStairs)
                 {
+                    _logger.Log(LogLevel.Info, $"[Server] Player {context.Player.PeerId} : ClimbStairs");
                     playerState.Position = playerState.Position + stairClimbingResult.Direction;
                     playerState.Velocity = stairClimbingResult.Direction;
                     playerMoved = true;
@@ -75,6 +81,7 @@ namespace KittyEngine.Core.Server.Commands
                 var wallSlidingResult = _collisionManager.ComputeWallSliding(collisionParameters, collisionResult);
                 if (wallSlidingResult.CanWallSlide)
                 {
+                    _logger.Log(LogLevel.Info, $"[Server] Player {context.Player.PeerId} : WallSliding");
                     playerState.Position = playerState.Position + wallSlidingResult.Direction;
                     playerState.Velocity = wallSlidingResult.Direction;
                     playerMoved = true;

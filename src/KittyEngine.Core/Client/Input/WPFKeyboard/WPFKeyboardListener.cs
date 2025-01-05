@@ -35,6 +35,7 @@ namespace KittyEngine.Core.Client.Input.WPFKeyboard
             _commandFactory = new LightFactory<IKeyboardEventConverter>(container);
             _commandFactory.Add<WPFKeyboard.Converters.ExitConverter>("exit");
             _commandFactory.Add<WPFKeyboard.Converters.MoveConverter>("move");
+            _commandFactory.Add<WPFKeyboard.Converters.JumpConverter>("jump");
         }
 
         public void RegisterKeyboardEvents(IGameHost host)

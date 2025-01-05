@@ -6,11 +6,11 @@ using System.Windows.Media.Media3D;
 
 namespace KittyEngine.Core.Client.Input.WPFKeyboard.Converters
 {
-    internal class MoveConverter : IKeyboardEventConverter
+    internal class JumpConverter : IKeyboardEventConverter
     {
         private IPrimitiveMoveService _primitiveMoveService;
 
-        public MoveConverter(IPrimitiveMoveService primitiveMoveService)
+        public JumpConverter(IPrimitiveMoveService primitiveMoveService)
         {
             _primitiveMoveService = primitiveMoveService;
         }
@@ -29,10 +29,9 @@ namespace KittyEngine.Core.Client.Input.WPFKeyboard.Converters
             var moveLeft = pressedKeys.Contains(Key.Q);
             var moveRight = pressedKeys.Contains(Key.D);
 
-            //var moveAscend = pressedKeys.Contains(Key.Space);
-            //var moveDescend = pressedKeys.Contains(Key.LeftShift);
+            var jump = pressedKeys.Contains(Key.Space);
 
-            if (moveForward || moveBackward || moveLeft || moveRight)// || moveAscend || moveDescend)
+            if (jump)
             {
                 var identity = new Vector3D(0, 0, 0);
 
@@ -41,18 +40,15 @@ namespace KittyEngine.Core.Client.Input.WPFKeyboard.Converters
                 var moveLeftVector = moveLeft ? _primitiveMoveService.GetMoveLateral(player, 1) : identity;
                 var moveRightVector = moveRight ? _primitiveMoveService.GetMoveLateral(player, -1) : identity;
 
-                //var moveAscendVector = moveAscend ? player.UpDirection : identity;
-                //var moveDescendVector = moveDescend ? -player.UpDirection : identity;
-
                 var direction = moveForwardVector + moveBackwardVector + moveLeftVector + moveRightVector;// + moveAscendVector + moveDescendVector;
 
                 if (direction != identity)
                 {
                     direction.Normalize();
-                    
-                    return new GameCommandInput("move3d")
-                        .AddArgument("direction", direction.ToString());
                 }
+
+                return new GameCommandInput("jump")
+                        .AddArgument("direction", direction.ToString());
             }
 
             return null;

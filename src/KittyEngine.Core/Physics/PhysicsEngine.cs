@@ -1,5 +1,4 @@
 ﻿
-using KittyEngine.Core.Graphics;
 using KittyEngine.Core.Physics.Collisions;
 using KittyEngine.Core.State;
 using System.Windows.Media.Media3D;

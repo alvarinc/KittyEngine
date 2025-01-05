@@ -58,6 +58,7 @@ namespace KittyEngine.Core.Client
                 container.Register<IKeyboadPressedKeyMap, KeyboadPressedKeyMap>(ServiceBehavior.Scoped);
                 container.Register<Input.WPFKeyboard.Converters.ExitConverter>(ServiceBehavior.Scoped);
                 container.Register<Input.WPFKeyboard.Converters.MoveConverter>(ServiceBehavior.Scoped);
+                container.Register<Input.WPFKeyboard.Converters.JumpConverter>(ServiceBehavior.Scoped);
                 container.Register<IWPFKeyboardListener, Input.WPFKeyboard.WPFKeyboardListener>(ServiceBehavior.Scoped);
 
                 // WPF Mouse
