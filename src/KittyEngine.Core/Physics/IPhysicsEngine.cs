@@ -5,6 +5,6 @@ namespace KittyEngine.Core.Physics
 {
     public interface IPhysicsEngine
     {
-        void UpdatePhysics(GameState gameState, double deltaTimeInMilliseconds);
+        bool UpdatePhysics(GameState gameState, double deltaTimeInMilliseconds);
     }
 }

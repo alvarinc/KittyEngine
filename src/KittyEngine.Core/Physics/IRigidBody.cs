@@ -12,7 +12,7 @@ namespace KittyEngine.Core.Physics
         double SizeY { get; set; }
         double SizeZ { get; set; }
 
-        double VerticalVelocity { get; set; }
+        Vector3D Velocity { get; set; }
         bool IsGrounded { get; set; }
 
         Rect3D GetBounds(Point3D position);

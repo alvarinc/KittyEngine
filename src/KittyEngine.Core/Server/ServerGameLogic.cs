@@ -106,7 +106,10 @@
 
             // Update physics
             //_serverState.GameTime.Mark();
-            _physicsEngine.UpdatePhysics(_serverState.GameState, stopwatch.ElapsedMilliseconds);
+            if (_physicsEngine.UpdatePhysics(_serverState.GameState, stopwatch.ElapsedMilliseconds))
+            {
+                StateUpdatedByServer(commandResultByPeers);
+            }
 
             // Send updated state to clients
             SynchronizeClients(commandResultByPeers, synchronizer);
@@ -155,20 +158,6 @@
                 }
             }
 
-            // Add the server command results to all clients
-            if (peerCommandResults.ContainsKey(-1))
-            {
-                foreach(var peerId in peerCommandResults.Keys)
-                {
-                    if (peerId == -1)
-                    {
-                        continue;
-                    }
-
-                    peerCommandResults[peerId] = peerCommandResults[peerId].Append(peerCommandResults[-1]);
-                }
-            }
-
             return peerCommandResults;
         }
 
@@ -205,6 +194,28 @@
             return new GameCommandResult();
         }
 
+        private void StateUpdatedByServer(Dictionary<int, GameCommandResult> peerCommandResults)
+        {
+            peerCommandResults[-1] = new GameCommandResult { StateUpdated = true };
+        }
+
+        private void ApplyServerResults(Dictionary<int, GameCommandResult> peerCommandResults)
+        {
+            // Add the server command results to all clients
+            if (peerCommandResults.ContainsKey(-1))
+            {
+                foreach (var peerId in peerCommandResults.Keys)
+                {
+                    if (peerId == -1)
+                    {
+                        continue;
+                    }
+
+                    peerCommandResults[peerId] = peerCommandResults[peerId].Append(peerCommandResults[-1]);
+                }
+            }
+        }
+
         private void SynchronizeClients(Dictionary<int, GameCommandResult> commandResultByPeers, StateSynchronizer<GameState> synchronizer)
         {
             if (!commandResultByPeers.Values.Any(x => x.StateUpdated))
@@ -221,6 +232,8 @@
                 .AddArgument("entity", "gamestate")
                 .AddArgument("mode", "full")
                 .AddArgument("value", synchronizer.GetJson());
+
+            ApplyServerResults(commandResultByPeers);
 
             foreach (var connectedPeer in _networkAdapter.GetConnectedPeers())
             {

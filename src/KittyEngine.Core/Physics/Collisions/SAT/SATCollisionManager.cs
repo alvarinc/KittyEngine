@@ -11,12 +11,9 @@ namespace KittyEngine.Core.Physics.Collisions.SAT
         {
             var results = new SATCollisionResult();
 
-            var counter = 0;
             foreach (var triangleB in b)
             {
-                counter++;
-                var list = new List<Triangle3D>();
-                list.Add(triangleB);
+                var list = new List<Triangle3D>() { triangleB };
                 if (DetectCollisions(a, list))
                 {
                     results.Intersections.Add(triangleB);
@@ -93,30 +90,9 @@ namespace KittyEngine.Core.Physics.Collisions.SAT
             var bMax = bProjections.Max();
 
             // One-dimensional intersection test between a and b
-            var overlap = FindOverlap(aMin, aMax, bMin, bMax);
             var hasIntersect = aMax >= bMin && bMax >= aMin; // > to manage touching as intersection
 
             return !hasIntersect;
-        }
-
-        private double FindOverlap(double aMin, double aMax, double bMin, double bMax)
-        {
-            if (aMin < bMin)
-            {
-                if (aMax < bMin)
-                {
-                    return 0;
-                }
-
-                return aMax - bMin;
-            }
-
-            if (bMax < aMin)
-            {
-                return 0;
-            }
-
-            return bMax - aMin;
         }
     }
 }
