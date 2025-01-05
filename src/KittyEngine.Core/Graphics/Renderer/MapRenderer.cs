@@ -67,6 +67,12 @@ namespace KittyEngine.Core.Graphics.Renderer
         {
             foreach (var player in _clientState.GameState.Players.Values)
             {
+                if (player.PeerId == _clientState.ConnectedUser.PeerId)
+                {
+                    // Skip self
+                    continue;
+                }
+
                 if (!_clientState.Graphics.Players.ContainsKey(player.PeerId))
                 {
                     var playerModel = CreatePlayerModel(player);

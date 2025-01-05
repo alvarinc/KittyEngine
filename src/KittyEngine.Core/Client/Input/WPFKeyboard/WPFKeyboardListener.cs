@@ -3,6 +3,9 @@ using KittyEngine.Core.Client.Outputs;
 using KittyEngine.Core.Server;
 using KittyEngine.Core.Services.IoC;
 using KittyEngine.Core.State;
+using System.Media;
+using System.Runtime.InteropServices;
+using System.Text.Json;
 using System.Windows.Input;
 
 namespace KittyEngine.Core.Client.Input.WPFKeyboard
@@ -10,7 +13,7 @@ namespace KittyEngine.Core.Client.Input.WPFKeyboard
     public class WPFKeyboardListener : IWPFKeyboardListener
     {
         private LightFactory<IKeyboardEventConverter> _commandFactory;
-        private List<KeyboardInput>  _inputs = new List<KeyboardInput>();
+        private Queue<KeyboardInput> _inputs = new Queue<KeyboardInput>();
         private object padlock = new object();
 
         private IKeyboadPressedKeyMap _keyboadPressedKeyMap;
@@ -51,8 +54,24 @@ namespace KittyEngine.Core.Client.Input.WPFKeyboard
             var inputs = new List<KeyboardInput>();
             lock (padlock)
             {
-                inputs.AddRange(_inputs.ToArray());
-                _inputs.Clear();
+                while (_inputs.Count > 0)
+                {
+                    inputs.Add(_inputs.Dequeue());
+                }
+            }
+
+            // If no keyboard inputs, and still have pressed keys, send the PressedKeys map
+            if (inputs.Count == 0)
+            {
+                var keyPressed = _keyboadPressedKeyMap.GetPressedKeys();
+                if (keyPressed.Length > 0)
+                {
+                    inputs.Add(new KeyboardInput
+                    {
+                        Type = KeyboardInputType.KeyPressedMap,
+                        PressedKeys = _keyboadPressedKeyMap.GetPressedKeys()
+                    });
+                }
             }
 
             foreach (var keyboardInput in inputs)
@@ -84,13 +103,14 @@ namespace KittyEngine.Core.Client.Input.WPFKeyboard
             if (e.RoutedEvent.Name == "KeyDown")
             {
                 var previousPressedKeys = _keyboadPressedKeyMap.GetPressedKeys();
+                var isNewKeyDown = !previousPressedKeys.Contains(e.Key);
                 _keyboadPressedKeyMap.RegisterKeyboardPressedKey(e.Key);
 
-                _inputs.Add(new KeyboardInput
+                _inputs.Enqueue(new KeyboardInput
                 {
                     Type = KeyboardInputType.KeyDown,
                     KeyDown = e.Key,
-                    IsNewKeyDown = !previousPressedKeys.Contains(e.Key),
+                    IsNewKeyDown = isNewKeyDown,
                     KeyUp = Key.None,
                     PressedKeys = _keyboadPressedKeyMap.GetPressedKeys()
                 });
@@ -100,7 +120,7 @@ namespace KittyEngine.Core.Client.Input.WPFKeyboard
             {
                 _keyboadPressedKeyMap.RemoveKeyboardPressedKey(e.Key);
 
-                _inputs.Add(new KeyboardInput
+                _inputs.Enqueue(new KeyboardInput
                 {
                     Type = KeyboardInputType.KeyUp,
                     KeyDown = Key.None,
