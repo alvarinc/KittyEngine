@@ -60,22 +60,11 @@ namespace KittyEngine.Core.Physics.Collisions
             var result = new StairClimbingResult();
 
             var collidedTriangles = collisionResult.Collisions.SelectMany(x => x.CollidedTriangles).ToList();
-            _logger.Log(LogLevel.Info, $"Stair climbing?? collidedTriangles: {collidedTriangles.Count}");
-
             var movedBodyRect3D = parameters.RigidBody.GetBounds(parameters.RigidBody.Position + parameters.MoveDirection);
 
             var intersectionPoints = Intersections.GetIntersectionPoints(movedBodyRect3D, collidedTriangles);
-            _logger.Log(LogLevel.Info, $"Stair climbing?? intersects: {intersectionPoints.Count}");
-
             var insideVertices = Intersections.GetVerticesInsideRect3D(movedBodyRect3D, collidedTriangles);
-            _logger.Log(LogLevel.Info, $"Stair climbing?? insideVertices: {insideVertices.Count}");
-
             var points = intersectionPoints.Union(insideVertices).Distinct().ToList();
-
-            foreach (var point in points)
-            {
-                _logger.Log(LogLevel.Info, $"Stair climbing?? point: {point}");
-            }
 
             var maxStairHeight = 1;
 
@@ -88,11 +77,8 @@ namespace KittyEngine.Core.Physics.Collisions
 
             var heightDifference = highestY - parameters.RigidBody.Position.Y;
 
-            _logger.Log(LogLevel.Info, $"Stair climbing??: {heightDifference} points: {points.Count}");
             if (heightDifference > 0 && heightDifference <= maxStairHeight)
             {
-                _logger.Log(LogLevel.Info, $"Stair climbing: {heightDifference}");
-
                 // Adjust move direction to simulate climbing
                 var adjustedDirection = parameters.MoveDirection + new Vector3D(0, heightDifference + .1, 0);
 
