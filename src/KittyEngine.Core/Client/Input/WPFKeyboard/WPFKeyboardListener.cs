@@ -1,10 +1,8 @@
 ﻿using KittyEngine.Core.Client.Input.WPFKeyboard.Converters;
-using KittyEngine.Core.Client.Input.WPFMouse;
 using KittyEngine.Core.Client.Outputs;
 using KittyEngine.Core.Server;
 using KittyEngine.Core.Services.IoC;
 using KittyEngine.Core.State;
-using System.Collections.Generic;
 using System.Windows.Input;
 
 namespace KittyEngine.Core.Client.Input.WPFKeyboard
