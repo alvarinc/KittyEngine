@@ -54,6 +54,7 @@ namespace KittyEngine.Core.Server.Commands
             if (!collistionResult.HasCollision)
             {
                 playerState.Position = playerState.Position + _direction;
+                playerState.Velocity = _direction;
                 playerMoved = true;
             }
 
@@ -64,6 +65,7 @@ namespace KittyEngine.Core.Server.Commands
                 if (stairClimbingResult.CanClimbStairs)
                 {
                     playerState.Position = playerState.Position + stairClimbingResult.Direction;
+                    playerState.Velocity = stairClimbingResult.Direction;
                     playerMoved = true;
                 }
             }
@@ -74,6 +76,7 @@ namespace KittyEngine.Core.Server.Commands
                 if (wallSlidingResult.CanWallSlide)
                 {
                     playerState.Position = playerState.Position + wallSlidingResult.Direction;
+                    playerState.Velocity = wallSlidingResult.Direction;
                     playerMoved = true;
                 }
             }

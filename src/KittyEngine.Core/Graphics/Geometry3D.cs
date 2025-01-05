@@ -65,9 +65,25 @@ namespace KittyEngine.Core.Graphics
             return nearestPoint;
         }
 
-        public static Point3D ProjectOnPlane(Triangle3D triangle, Point3D projectedPoint)
+        public static Vector3D ProjectOnPlane(Triangle3D plane, Vector3D projected)
         {
-            return ProjectOnPlane(triangle.Positions[0], triangle.Positions[1], triangle.Positions[2], projectedPoint);
+            // Calculate the plane's normal vector
+            Vector3D planeNormal = plane.FaceNormal;
+            planeNormal.Normalize();
+
+            // Calculate the projection of the vector onto the plane
+            double dotProduct = Vector3D.DotProduct(projected, planeNormal);
+            Vector3D perpendicularComponent = dotProduct * planeNormal;
+
+            // Subtract the perpendicular component from the original vector
+            Vector3D projectedVector = projected - perpendicularComponent;
+
+            return projectedVector;
+        }
+
+        public static Point3D ProjectOnPlane(Triangle3D plane, Point3D projected)
+        {
+            return ProjectOnPlane(plane.Positions[0], plane.Positions[1], plane.Positions[2], projected);
         }
 
         public static Point3D ProjectOnPlane(Point3D planePointA, Point3D planePointB, Point3D planePointC, Point3D projectedPoint)
@@ -85,47 +101,47 @@ namespace KittyEngine.Core.Graphics
             return projectedPoint + planeNormal * distance;
         }
 
-        public static Point3D ProjectOnLine(Point3D startPoint, Point3D endPoint, Point3D projectedPoint)
+        public static Point3D ProjectOnLine(Point3D edgeStartPoint, Point3D edgeEndPoint, Point3D projected)
         {
-            var linedirection = endPoint - startPoint;
+            var linedirection = edgeEndPoint - edgeStartPoint;
             linedirection.Normalize();//this needs to be a unit vector
-            var d = Vector3D.DotProduct(projectedPoint - startPoint, linedirection);
+            var d = Vector3D.DotProduct(projected - edgeStartPoint, linedirection);
 
-            return startPoint + linedirection * d;
+            return edgeStartPoint + linedirection * d;
         }
 
-        public static Point3D? ProjectOnEdge(Point3D startPoint, Point3D endPoint, Point3D projectedPoint)
+        public static Point3D? ProjectOnEdge(Point3D edgeStartPoint, Point3D edgeEndPoint, Point3D projected)
         {
-            var linedirection = endPoint - startPoint;
+            var linedirection = edgeEndPoint - edgeStartPoint;
             var edgeSize = linedirection.Length;
             linedirection.Normalize();//this needs to be a unit vector
-            var d = Vector3D.DotProduct(projectedPoint - startPoint, linedirection);
+            var d = Vector3D.DotProduct(projected - edgeStartPoint, linedirection);
 
             if (d < 0 || d > edgeSize)
             {
                 return null;
             }
 
-            return startPoint + linedirection * d;
+            return edgeStartPoint + linedirection * d;
         }
 
-        public static Point3D NearestPointOnEdge(Point3D startPoint, Point3D endPoint, Point3D projectedPoint)
+        public static Point3D NearestPointOnEdge(Point3D edgeStartPoint, Point3D edgeEndPoint, Point3D projected)
         {
-            var linedirection = endPoint - startPoint;
+            var linedirection = edgeEndPoint - edgeStartPoint;
             var edgeSize = linedirection.Length;
             linedirection.Normalize();//this needs to be a unit vector
-            var d = Vector3D.DotProduct(projectedPoint - startPoint, linedirection);
+            var d = Vector3D.DotProduct(projected - edgeStartPoint, linedirection);
 
             if (d < 0)
             {
-                return startPoint;
+                return edgeStartPoint;
             }
             else if (d > edgeSize)
             {
-                return endPoint;
+                return edgeEndPoint;
             }
 
-            return startPoint + linedirection * d;
+            return edgeStartPoint + linedirection * d;
         }
     }
 }

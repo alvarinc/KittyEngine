@@ -12,6 +12,7 @@ namespace KittyEngine.Core.Physics
         public double SizeY { get; set; }
         public double SizeZ { get; set; }
 
+        public Vector3D Velocity { get; set; }
         public double VerticalVelocity { get; set; }
         public bool IsGrounded { get; set; }
 

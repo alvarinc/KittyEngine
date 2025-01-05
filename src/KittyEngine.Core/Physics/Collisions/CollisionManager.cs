@@ -2,11 +2,19 @@
 using KittyEngine.Core.Graphics;
 using System.Windows.Media.Media3D;
 using KittyEngine.Core.Graphics.Models.Builders;
+using KittyEngine.Core.Services.Logging;
 
 namespace KittyEngine.Core.Physics.Collisions
 {
     public class CollisionManager : ICollisionManager
     {
+        private ILogger _logger;
+
+        public CollisionManager(ILogger logger)
+        {
+            _logger = logger;
+        }
+
         public CollisionResult DetectCollisions(CollisionDetectionParameters parameters)
         {
             var result = new CollisionResult();
@@ -52,15 +60,39 @@ namespace KittyEngine.Core.Physics.Collisions
             var result = new StairClimbingResult();
 
             var collidedTriangles = collisionResult.Collisions.SelectMany(x => x.CollidedTriangles).ToList();
+            _logger.Log(LogLevel.Info, $"Stair climbing?? collidedTriangles: {collidedTriangles.Count}");
+
+            var movedBodyRect3D = parameters.RigidBody.GetBounds(parameters.RigidBody.Position + parameters.MoveDirection);
+
+            var intersectionPoints = Intersections.GetIntersectionPoints(movedBodyRect3D, collidedTriangles);
+            _logger.Log(LogLevel.Info, $"Stair climbing?? intersects: {intersectionPoints.Count}");
+
+            var insideVertices = Intersections.GetVerticesInsideRect3D(movedBodyRect3D, collidedTriangles);
+            _logger.Log(LogLevel.Info, $"Stair climbing?? insideVertices: {insideVertices.Count}");
+
+            var points = intersectionPoints.Union(insideVertices).Distinct().ToList();
+
+            foreach (var point in points)
+            {
+                _logger.Log(LogLevel.Info, $"Stair climbing?? point: {point}");
+            }
 
             var maxStairHeight = 1;
 
-            var highestY = collidedTriangles.Max(x => x.GetHighestPoint().Y);
+            var highestY = parameters.RigidBody.Position.Y;
+
+            if (points.Count > 0)
+            {
+                highestY = points.Max(x => x.Y);
+            }
 
             var heightDifference = highestY - parameters.RigidBody.Position.Y;
 
+            _logger.Log(LogLevel.Info, $"Stair climbing??: {heightDifference} points: {points.Count}");
             if (heightDifference > 0 && heightDifference <= maxStairHeight)
             {
+                _logger.Log(LogLevel.Info, $"Stair climbing: {heightDifference}");
+
                 // Adjust move direction to simulate climbing
                 var adjustedDirection = parameters.MoveDirection + new Vector3D(0, heightDifference + .1, 0);
 
