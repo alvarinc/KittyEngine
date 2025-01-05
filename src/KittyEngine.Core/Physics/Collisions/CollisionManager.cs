@@ -55,10 +55,8 @@ namespace KittyEngine.Core.Physics.Collisions
             return result;
         }
 
-        public StairClimbingResult ComputeStairClimbing(CollisionDetectionParameters parameters, CollisionResult collisionResult)
+        public List<Point3D> GetCollidedPoints(CollisionDetectionParameters parameters, CollisionResult collisionResult)
         {
-            var result = new StairClimbingResult();
-
             var collidedTriangles = collisionResult.Collisions.SelectMany(x => x.CollidedTriangles).ToList();
             var movedBodyRect3D = parameters.RigidBody.GetBounds(parameters.RigidBody.Position + parameters.MoveDirection);
 
@@ -66,14 +64,16 @@ namespace KittyEngine.Core.Physics.Collisions
             var insideVertices = Intersections.GetVerticesInsideRect3D(movedBodyRect3D, collidedTriangles);
             var points = intersectionPoints.Union(insideVertices).Distinct().ToList();
 
+            return points;
+        }
+
+        public StairClimbingResult ComputeStairClimbing(CollisionDetectionParameters parameters, CollisionResult collisionResult)
+        {
             var maxStairHeight = 1;
 
-            var highestY = parameters.RigidBody.Position.Y;
-
-            if (points.Count > 0)
-            {
-                highestY = points.Max(x => x.Y);
-            }
+            var result = new StairClimbingResult();
+            var points = GetCollidedPoints(parameters, collisionResult);
+            var highestY = points.Count > 0 ? points.Max(x => x.Y) : parameters.RigidBody.Position.Y;
 
             var heightDifference = highestY - parameters.RigidBody.Position.Y;
 
