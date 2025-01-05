@@ -43,6 +43,7 @@ namespace KittyEngine.Core.Server
             container.Register<MoveCommand>(ServiceBehavior.Transient);
             container.Register<MoveCommand3D>(ServiceBehavior.Transient);
             container.Register<RotateCommand3D>(ServiceBehavior.Transient);
+            container.Register<JumpCommand>(ServiceBehavior.Transient);
             container.Register<ILightFactory<IGameCommand>, CommandFactory>(ServiceBehavior.Scoped);
 
             // Maps

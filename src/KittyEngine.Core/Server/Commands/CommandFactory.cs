@@ -14,6 +14,7 @@ namespace KittyEngine.Core.Server.Commands
             Add<MoveCommand>("move");
             Add<MoveCommand3D>("move3d");
             Add<RotateCommand3D>("rotate3d");
+            Add<JumpCommand>("jump");
         }
     }
 }
