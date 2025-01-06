@@ -19,10 +19,10 @@ namespace KittyEngine.Core.Physics
 
         public bool UpdatePhysics(GameState gameState, double deltaTimeInMilliseconds)
         {
-            if (deltaTimeInMilliseconds == 0)
-            {
-                deltaTimeInMilliseconds = 10;
-            }
+            //if (deltaTimeInMilliseconds == 0)
+            //{
+            //    deltaTimeInMilliseconds = 10;
+            //}
 
             var updated = false;
             double deltaTime = deltaTimeInMilliseconds / 100.0; // Convert milliseconds to seconds
