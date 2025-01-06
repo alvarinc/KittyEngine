@@ -69,7 +69,7 @@ namespace KittyEngine.Core.Physics.Collisions
 
         public StairClimbingResult ComputeStairClimbing(CollisionDetectionParameters parameters, CollisionResult collisionResult)
         {
-            var maxStairHeight = 1;
+            var maxStairHeight = 2;
 
             var result = new StairClimbingResult();
             var points = GetCollidedPoints(parameters, collisionResult);
