@@ -3,6 +3,7 @@
     using KittyEngine.Core.Physics;
     using KittyEngine.Core.Server.Commands;
     using KittyEngine.Core.Server.Model;
+    using KittyEngine.Core.Services;
     using KittyEngine.Core.Services.IoC;
     using KittyEngine.Core.Services.Logging;
     using KittyEngine.Core.State;
@@ -19,7 +20,7 @@
 
         void OnMessageReceived(NetPeer peer, GameCommandInput input);
 
-        void GameLoop();
+        void GameLoop(GameTime gameTime);
 
         void Terminate(CancellationToken token);
     }
@@ -89,11 +90,8 @@
             _gameCommmandRequests.Enqueue(new GameCommandRequest(peer != null ? peer.Id : -1, input));
         }
 
-        public void GameLoop()
+        public void GameLoop(GameTime gameTime)
         {
-            var stopwatch = new Stopwatch();
-            stopwatch.Start();
-
             EnsureIsConnected();
 
             // Get clients inputs
@@ -106,7 +104,7 @@
 
             // Update physics
             //_serverState.GameTime.Mark();
-            if (_physicsEngine.UpdatePhysics(_serverState.GameState, stopwatch.ElapsedMilliseconds))
+            if (_physicsEngine.UpdatePhysics(_serverState.GameState, gameTime.DeltaTime.TotalMilliseconds))
             {
                 StateUpdatedByServer(commandResultByPeers);
             }
@@ -114,14 +112,15 @@
             // Send updated state to clients
             SynchronizeClients(commandResultByPeers, synchronizer);
 
-            stopwatch.Stop();
-            if (stopwatch.ElapsedMilliseconds < _millisecondsPerUpdate)
+            var elapsed = gameTime.DeltaTime;
+            gameTime.Mark();
+            if (elapsed.TotalMilliseconds < _millisecondsPerUpdate)
             {
-                System.Threading.Thread.Sleep((int)(_millisecondsPerUpdate - stopwatch.ElapsedMilliseconds));
+                System.Threading.Thread.Sleep((int)(_millisecondsPerUpdate - elapsed.TotalMilliseconds));
             }
-            else
+            else if (elapsed.TotalMilliseconds > _millisecondsPerUpdate * 2)
             {
-                _logger.Log(LogLevel.Warn, $"Server update took too long: {stopwatch.ElapsedMilliseconds}ms");
+                _logger.Log(LogLevel.Warn, $"Server update took too long: {elapsed.TotalMilliseconds}ms");
             }
         }
 

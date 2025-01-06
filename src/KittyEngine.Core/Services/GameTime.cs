@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 
-namespace KittyEngine.Core.Server
+namespace KittyEngine.Core.Services
 {
     public class GameTime
     {
@@ -13,7 +13,7 @@ namespace KittyEngine.Core.Server
             _deltaStopwatch = new Stopwatch();
         }
 
-        public void Resset()
+        public void Reset()
         {
             _totalStopwatch.Reset();
             _deltaStopwatch.Reset();
