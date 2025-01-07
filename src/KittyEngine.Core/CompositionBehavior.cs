@@ -10,7 +10,10 @@ namespace KittyEngine.Core
 
         public virtual void OnConfigureServices(IServiceContainer container)
         {
+        }
 
+        public virtual void OnShutdown(IServiceContainer container)
+        {
         }
     }
 }
