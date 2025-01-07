@@ -36,11 +36,6 @@ namespace KittyEngine.Core.Client
             // State
             container.Register<ClientState>(ServiceBehavior.Scoped);
 
-            // Commands
-            container.Register<JoinedCommand>(ServiceBehavior.Transient);
-            container.Register<SynchronizeCommand>(ServiceBehavior.Transient);
-            container.Register<ILightFactory<Core.Client.Commands.IGameCommand>, Core.Client.Commands.CommandFactory>(ServiceBehavior.Scoped);
-
             if (clientType == ClientType.Terminal)
             {
                 // Console Input
@@ -56,15 +51,11 @@ namespace KittyEngine.Core.Client
             {
                 // WPF Keyboard
                 container.Register<IKeyboadPressedKeyMap, KeyboadPressedKeyMap>(ServiceBehavior.Scoped);
-                container.Register<Input.WPFKeyboard.Converters.ExitConverter>(ServiceBehavior.Scoped);
-                container.Register<Input.WPFKeyboard.Converters.MoveConverter>(ServiceBehavior.Scoped);
-                container.Register<Input.WPFKeyboard.Converters.JumpConverter>(ServiceBehavior.Scoped);
                 container.Register<IWPFKeyboardListener, Input.WPFKeyboard.WPFKeyboardListener>(ServiceBehavior.Scoped);
 
                 // WPF Mouse
                 container.Register<Input.WPFMouse.IMouseControllerInterop, Input.WPFMouse.MouseControllerInterop>(ServiceBehavior.Scoped);
                 container.Register<Input.WPFMouse.IMouseInputFactory, Input.WPFMouse.MouseInputFactory>(ServiceBehavior.Scoped);
-                container.Register<Input.WPFMouse.Converters.RotateConverter>(ServiceBehavior.Scoped);
                 container.Register<Input.WPFMouse.IWPFMouseListener, Input.WPFMouse.WPFMouseListener>(ServiceBehavior.Scoped);
 
                 // WPF Inputs
