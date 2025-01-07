@@ -16,6 +16,7 @@ namespace KittyEngine.Core.Client.Behaviors.Inputs
             _primitiveMoveService = primitiveMoveService;
 
         }
+
         public override GameCommandInput OnKeyboardEvent(GameState gameState, string playerId, KeyboardInput input)
         {
             var player = gameState.GetPlayer(playerId);

@@ -10,12 +10,10 @@ namespace KittyEngine.Core.Client.Behaviors
     {
         public virtual void OnStartGame()
         {
-
         }
 
         public virtual void OnServerCommand(GameCommandContext context, GameCommandInput input)
         {
-
         }
 
         public virtual GameCommandInput OnMouseEvent(GameState gameState, string playerId, MouseInput input)
@@ -28,7 +26,7 @@ namespace KittyEngine.Core.Client.Behaviors
             return null;
         }
 
-        public virtual void OnShutdown()
+        public virtual void OnStopGame()
         {
         }
     }
