@@ -15,7 +15,7 @@ namespace KittyEngine.Core.Server.Behaviors.Commands
 
         public override GameCommandResult OnCommandReceived(GameCommandContext context, GameCommandInput input)
         {
-            if (input.Command != "rotate")
+            if (input.Command != "rotate3d")
             {
                 return GameCommandResult.None;
             }
