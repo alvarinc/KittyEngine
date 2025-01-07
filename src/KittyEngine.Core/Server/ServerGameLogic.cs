@@ -1,16 +1,15 @@
 ﻿namespace KittyEngine.Core.Server
 {
     using KittyEngine.Core.Physics;
+    using KittyEngine.Core.Server.Behaviors;
     using KittyEngine.Core.Server.Commands;
     using KittyEngine.Core.Server.Model;
     using KittyEngine.Core.Services;
-    using KittyEngine.Core.Services.IoC;
     using KittyEngine.Core.Services.Logging;
     using KittyEngine.Core.State;
     using LiteNetLib;
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
 
     public interface IServerGameLogic
     {
@@ -20,9 +19,11 @@
 
         void OnMessageReceived(NetPeer peer, GameCommandInput input);
 
+        void OnStartGame();
+
         void GameLoop(GameTime gameTime);
 
-        void Terminate(CancellationToken token);
+        void OnStopGame();
     }
 
     internal class ServerGameLogic : IServerGameLogic
@@ -49,18 +50,18 @@
         private static double _millisecondsPerUpdate = 10;
 
         private readonly ILogger _logger;
-        private readonly ILightFactory<IGameCommand> _commandFactory;
         private readonly IPhysicsEngine _physicsEngine;
+        private readonly IServerBehaviorContainer _serverBehaviorContainer;
         private readonly ServerState _serverState;
 
         private NetworkAdapter _networkAdapter;
         private readonly Queue<GameCommandRequest> _gameCommmandRequests = new();
 
-        public ServerGameLogic(ILogger logger, ILightFactory<IGameCommand> commandFactory, IPhysicsEngine physicsEngine, ServerState serverState)
+        public ServerGameLogic(ILogger logger, IPhysicsEngine physicsEngine, IServerBehaviorContainer serverBehaviorContainer, ServerState serverState)
         {
             _logger = logger;
-            _commandFactory = commandFactory;
             _physicsEngine = physicsEngine;
+            _serverBehaviorContainer = serverBehaviorContainer;
             _serverState = serverState;
         }
 
@@ -88,6 +89,15 @@
             EnsureIsConnected();
 
             _gameCommmandRequests.Enqueue(new GameCommandRequest(peer != null ? peer.Id : -1, input));
+        }
+
+        public void OnStartGame()
+        {
+            var behaviors = _serverBehaviorContainer.GetBehaviors();
+            foreach (var behavior in behaviors)
+            {
+                behavior.OnStartGame();
+            }
         }
 
         public void GameLoop(GameTime gameTime)
@@ -124,9 +134,13 @@
             }
         }
 
-        public void Terminate(CancellationToken token)
+        public void OnStopGame()
         {
-
+            var behaviors = _serverBehaviorContainer.GetBehaviors();
+            foreach (var behavior in behaviors)
+            {
+                behavior.OnStopGame();
+            }
         }
 
         private void EnsureIsConnected()
@@ -168,29 +182,27 @@
                 if (!_serverState.ConnectedUsers.TryGetValue(request.PeerId, out player))
                 {
                     _logger.Log(LogLevel.Info, $"[Server] Player {request.PeerId} : Received a message from an unknown player.");
-                    return new GameCommandResult();
+                    return GameCommandResult.None;
                 }
 
                 if (request.Input.Command != "join" && string.IsNullOrEmpty(player.Guid))
                 {
                     _logger.Log(LogLevel.Info, $"[Server] Player {request.PeerId} joined no games.");
-                    return new GameCommandResult();
+                    return GameCommandResult.None;
                 }
             }
 
             var synchronizer = new StateSynchronizer<GameState>(_serverState.GameState);
-            var command = _commandFactory.Get(request.Input.Command);
-            
-            if (command == null)
+
+            var behaviors = _serverBehaviorContainer.GetBehaviors();
+            var result = new GameCommandResult();
+            foreach (var behavior in behaviors)
             {
-                _logger.Log(LogLevel.Info, $"Command not registered : {request.Input.Command}");
-            }
-            else if (command.ValidateParameters(request.Input))
-            {
-                return command.Execute(new GameCommandContext(_networkAdapter, _serverState.GameState, player));
+                var commandResult = behavior.OnCommandReceived(new GameCommandContext(_networkAdapter, _serverState.GameState, player), request.Input);
+                result = result.Append(commandResult);
             }
 
-            return new GameCommandResult();
+            return result;
         }
 
         private void StateUpdatedByServer(Dictionary<int, GameCommandResult> peerCommandResults)

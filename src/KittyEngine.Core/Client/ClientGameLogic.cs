@@ -1,5 +1,6 @@
 ﻿namespace KittyEngine.Core.Client
 {
+    using KittyEngine.Core.Client.Behaviors;
     using KittyEngine.Core.Client.Commands;
     using KittyEngine.Core.Client.Input;
     using KittyEngine.Core.Graphics;
@@ -32,14 +33,16 @@
         private ILightFactory<IGameCommand> _commandFactory;
         private IRenderer _renderer;
         private IInputHandler _inputHandler;
+        private IClientBehaviorContainer _behaviorContainer;
         private ClientState _clientState;
 
-        public ClientGameLogic(ILogger logger, ILightFactory<IGameCommand> commandFactory, IRenderer renderer, IInputHandler inputHandler, ClientState clientState)
+        public ClientGameLogic(ILogger logger, ILightFactory<IGameCommand> commandFactory, IRenderer renderer, IInputHandler inputHandler, ClientState clientState, IClientBehaviorContainer behaviorContainer)
         {
             _logger = logger;
             _commandFactory = commandFactory;
             _renderer = renderer;
             _inputHandler = inputHandler;
+            _behaviorContainer = behaviorContainer;
             _clientState = clientState;
         }
 
@@ -57,20 +60,17 @@
         {
             EnsureIsConnected();
 
-            var cmd = _commandFactory.Get(input.Command);
+            var behaviors = _behaviorContainer.GetBehaviors();
 
-            if (cmd != null)
+            foreach (var behavior in behaviors)
             {
-                if (cmd.ValidateParameters(input))
-                {
-                    var context = new GameCommandContext(_networkAdapter) { State = _clientState };
-                    cmd.Execute(context);
+                var context = new GameCommandContext(_networkAdapter) { State = _clientState };
+                behavior.OnCommandReceived(context, input);
 
-                    if (context.StateUpdated)
-                    {
-                        _clientState.GameState = context.State.GameState;
-                        _gameStateUpdated |= context.StateUpdated;
-                    }
+                if (context.StateUpdated)
+                {
+                    _clientState.GameState = context.State.GameState;
+                    _gameStateUpdated |= context.StateUpdated;
                 }
             }
         }

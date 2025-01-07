@@ -2,11 +2,11 @@
 using KittyEngine.Core.Server;
 using KittyEngine.Core.Server.Model;
 
-namespace KittyEngine.Core.Client.Behaviors.ServerCommands
+namespace KittyEngine.Core.Client.Behaviors.Commands
 {
     internal class JoinedBehavior : ClientBehavior
     {
-        public override void OnServerCommand(GameCommandContext context, GameCommandInput input)
+        public override void OnCommandReceived(GameCommandContext context, GameCommandInput input)
         {
             if (input.Command != "joined")
             {

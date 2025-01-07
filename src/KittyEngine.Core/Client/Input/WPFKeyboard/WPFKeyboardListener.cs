@@ -1,4 +1,5 @@
-﻿using KittyEngine.Core.Client.Input.WPFKeyboard.Converters;
+﻿using KittyEngine.Core.Client.Behaviors;
+using KittyEngine.Core.Client.Input.WPFKeyboard.Converters;
 using KittyEngine.Core.Client.Outputs;
 using KittyEngine.Core.Server;
 using KittyEngine.Core.Services.IoC;
@@ -13,6 +14,7 @@ namespace KittyEngine.Core.Client.Input.WPFKeyboard
         private Queue<KeyboardInput> _inputs = new Queue<KeyboardInput>();
         private object padlock = new object();
 
+        private IClientBehaviorContainer _behaviorContainer;
         private IKeyboadPressedKeyMap _keyboadPressedKeyMap;
 
         private bool _isEnabled;
@@ -27,8 +29,9 @@ namespace KittyEngine.Core.Client.Input.WPFKeyboard
             }
         }
 
-        public WPFKeyboardListener(IServiceContainer container, IKeyboadPressedKeyMap keyboadPressedKeyMap)
+        public WPFKeyboardListener(IServiceContainer container, IKeyboadPressedKeyMap keyboadPressedKeyMap, IClientBehaviorContainer behaviorContainer)
         {
+            _behaviorContainer = behaviorContainer;
             _keyboadPressedKeyMap = keyboadPressedKeyMap;
             IsEnabled = true;
 
@@ -71,13 +74,12 @@ namespace KittyEngine.Core.Client.Input.WPFKeyboard
                 }
             }
 
+            var clientBehaviors = _behaviorContainer.GetBehaviors();
             foreach (var keyboardInput in inputs)
             {
-                foreach (var key in _commandFactory.Keys)
+                foreach (var clientBehavior in clientBehaviors)
                 {
-                    var cmd = _commandFactory
-                        .Get(key)
-                        .Convert(gameState, playerId, keyboardInput);
+                    var cmd = clientBehavior.OnKeyboardEvent(gameState, playerId, keyboardInput);
 
                     if (cmd != null)
                     {

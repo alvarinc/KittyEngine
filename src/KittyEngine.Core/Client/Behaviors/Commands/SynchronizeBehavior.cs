@@ -5,7 +5,7 @@ using KittyEngine.Core.State;
 using Microsoft.AspNetCore.JsonPatch;
 using Newtonsoft.Json;
 
-namespace KittyEngine.Core.Client.Behaviors.ServerCommands
+namespace KittyEngine.Core.Client.Behaviors.Commands
 {
     internal class SynchronizeBehavior : ClientBehavior
     {
@@ -16,7 +16,7 @@ namespace KittyEngine.Core.Client.Behaviors.ServerCommands
             _logger = logger;
 
         }
-        public override void OnServerCommand(GameCommandContext context, GameCommandInput input)
+        public override void OnCommandReceived(GameCommandContext context, GameCommandInput input)
         {
             if (input.Command != "sync")
             {

@@ -1,5 +1,4 @@
-﻿using KittyEngine.Core.Client.Input.ConsoleKeyboard;
-using KittyEngine.Core.Client.Input.WPFKeyboard;
+﻿using KittyEngine.Core.Client.Input.WPFKeyboard;
 using KittyEngine.Core.Client.Input.WPFMouse;
 using KittyEngine.Core.Server;
 using KittyEngine.Core.State;

@@ -1,6 +1,5 @@
 ﻿using KittyEngine.Core;
 using KittyEngine.Core.Client.Outputs;
-using KittyEngine.Core.GameEngine.Graphics.Assets;
 using KittyEngine.SampleMaps;
 using System.Windows;
 
@@ -24,7 +23,7 @@ namespace KittyEngine.SampleGame
             {
                 Engine.StartWPFClient(dialog.PlayerInput, server:dialog.ServerInput, placeholder: gameView, onloadBehaviors: behaviors =>
                 {
-                    behaviors.Add(new RegisterSampleMapsBehavior());
+                    behaviors.Add(new RegisterSampleMapsBehavior(EngineRuntime.Client));
                 });
             }
             else
