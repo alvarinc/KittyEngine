@@ -1,10 +1,9 @@
 ﻿using KittyEngine.Core.Server;
-using KittyEngine.Core.Server.Model;
 using KittyEngine.Core.State;
 
 namespace KittyEngine.Core.Client.Commands
 {
-    internal class GameCommandContext
+    public class GameCommandContext
     {
         private NetworkAdapter _adapter;
 

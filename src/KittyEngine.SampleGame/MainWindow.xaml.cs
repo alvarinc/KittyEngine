@@ -22,10 +22,9 @@ namespace KittyEngine.SampleGame
             var dialog = new ConnectionDialog();
             if (dialog.ShowDialog() == true)
             {
-                Engine.StartWPFClient(dialog.PlayerInput, server:dialog.ServerInput, placeholder: gameView, configure: container =>
+                Engine.StartWPFClient(dialog.PlayerInput, server:dialog.ServerInput, placeholder: gameView, onloadBehaviors: behaviors =>
                 {
-                    var contentService = container.Get<IContentService>();
-                    contentService.RegisterContentFromSampleMaps();
+                    behaviors.Add(new RegisterSampleMapsBehavior());
                 });
             }
             else
