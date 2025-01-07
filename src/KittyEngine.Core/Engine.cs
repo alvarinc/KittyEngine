@@ -3,13 +3,9 @@ using KittyEngine.Core.Client.Input.WPFKeyboard;
 using KittyEngine.Core.Client.Input.WPFMouse;
 using KittyEngine.Core.Client.Model;
 using KittyEngine.Core.Client.Outputs;
-using KittyEngine.Core.GameEngine.Graphics.Assets;
-using KittyEngine.Core.Graphics.Assets.Maps;
-using KittyEngine.Core.Server;
 using KittyEngine.Core.Services.Configuration;
 using KittyEngine.Core.Services.IoC;
 using KittyEngine.Core.State;
-using System.ComponentModel;
 using System.Windows.Controls;
 
 namespace KittyEngine.Core
@@ -66,9 +62,9 @@ namespace KittyEngine.Core
         /// </summary>
         /// <param name="port">Server connexion infos. If not set or null, get default values</param>
         /// <param name="configure">Custom configuration for server</param>
-        public static void RunServer(int port = 0, Action<IServiceContainer> configure = null)
+        public static void RunServer(int port = 0, Action<List<CompositionBehavior>> onloadBehaviors = null)
         {
-            StartServer(port, configure).Join();
+            StartServer(port, onloadBehaviors).Join();
         }
 
         /// <summary>
@@ -109,7 +105,7 @@ namespace KittyEngine.Core
             var container = _containerBuilder();
             var compositionBehaviors = new List<CompositionBehavior>()
             {
-                new Client.Behaviors.Compositions.RegisterClientServicesBehavior(),
+                new Client.Behaviors.Compositions.RegisterServicesBehavior(),
                 new Client.Behaviors.Compositions.RegisterAndConfigureFpsBehavior(),
             };
 
@@ -166,15 +162,34 @@ namespace KittyEngine.Core
         /// <param name="port">Server connexion infos. If not set or null, get default values</param>
         /// <param name="configure">Custom configuration for server</param>
         /// <returns>Server thread</returns>
-        public static Thread StartServer(int port = 0, Action<IServiceContainer> configure = null)
+        public static Thread StartServer(int port = 0, Action<List<CompositionBehavior>> onloadBehaviors = null)
         {
-            var container = _containerBuilder().ConfigureGameServer();
-            
-            if (configure != null)
+            var container = _containerBuilder();
+            var compositionBehaviors = new List<CompositionBehavior>()
             {
-                configure(container);
+                new Server.Behaviors.Compositions.RegisterServicesBehavior(),
+                new Server.Behaviors.Compositions.RegisterAndConfigureFpsBehavior(),
+            };
+
+            // Update list of startup behaviors if needed
+            if (onloadBehaviors != null)
+            {
+                onloadBehaviors(compositionBehaviors);
             }
 
+            // Call Startup 
+            foreach (var behavior in compositionBehaviors)
+            {
+                behavior.OnStartup(container);
+            }
+
+            // Call OnConfigure services
+            foreach (var behavior in compositionBehaviors)
+            {
+                behavior.OnConfigureServices(container);
+            }
+
+            // Start server
             var server = container.Get<Core.Server.Server>();
 
             var thread = new Thread(() => server.Run(port));

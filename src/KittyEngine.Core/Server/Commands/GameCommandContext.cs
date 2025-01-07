@@ -4,7 +4,7 @@ using LiteNetLib;
 
 namespace KittyEngine.Core.Server.Commands
 {
-    internal class GameCommandContext
+    public class GameCommandContext
     {
         private NetworkAdapter _adapter;
         public GameState GameState { get; }

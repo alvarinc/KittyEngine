@@ -1,4 +1,5 @@
-﻿using KittyEngine.Core.Client.Input.WPFMouse.Converters;
+﻿using KittyEngine.Core.Client.Behaviors;
+using KittyEngine.Core.Client.Input.WPFMouse.Converters;
 using KittyEngine.Core.Client.Outputs;
 using KittyEngine.Core.Server;
 using KittyEngine.Core.Services.IoC;
@@ -13,11 +14,13 @@ namespace KittyEngine.Core.Client.Input.WPFMouse
         private List<MouseInput> _inputs = new List<MouseInput>();
         private object padlock = new object();
 
+        private IClientBehaviorContainer _behaviorContainer;
         private IMouseInputFactory _mouseInputFactory;
         private IGameHost _gameHost;
 
-        public WPFMouseListener(IServiceContainer container, IMouseInputFactory mouseInputFactory)
+        public WPFMouseListener(IServiceContainer container, IMouseInputFactory mouseInputFactory, IClientBehaviorContainer behaviorContainer)
         {
+            _behaviorContainer = behaviorContainer;
             _mouseInputFactory = mouseInputFactory;
             IsEnabled = true;
 
@@ -53,13 +56,12 @@ namespace KittyEngine.Core.Client.Input.WPFMouse
                 _inputs.Clear();
             }
 
+            var clientBehaviors = _behaviorContainer.GetBehaviors();
             foreach (var mouseInput in inputs)
             {
-                foreach (var key in _commandFactory.Keys)
+                foreach (var behavior in clientBehaviors)
                 {
-                    var cmd = _commandFactory
-                        .Get(key)
-                        .Convert(gameState, playerId, mouseInput);
+                    var cmd = behavior.OnMouseEvent(gameState, playerId, mouseInput);
 
                     if (cmd != null)
                     {

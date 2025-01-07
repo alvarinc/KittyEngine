@@ -15,7 +15,7 @@ using KittyEngine.Core.State;
 
 namespace KittyEngine.Core.Client.Behaviors.Compositions
 {
-    public class RegisterClientServicesBehavior : CompositionBehavior
+    public class RegisterServicesBehavior : CompositionBehavior
     {
         public override void OnStartup(IServiceContainer container)
         {

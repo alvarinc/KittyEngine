@@ -12,7 +12,7 @@ namespace KittyEngine.Core.Client.Behaviors
         {
         }
 
-        public virtual void OnServerCommand(GameCommandContext context, GameCommandInput input)
+        public virtual void OnCommandReceived(GameCommandContext context, GameCommandInput input)
         {
         }
 

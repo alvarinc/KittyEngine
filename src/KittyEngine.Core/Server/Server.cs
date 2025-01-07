@@ -43,12 +43,14 @@
             var gameTime = new Services.GameTime();
             gameTime.Start();
 
+            _gameLogic.OnStartGame();
+
             while (!token.IsCancellationRequested)
             {
                 _gameLogic.GameLoop(gameTime);
             }
 
-            _gameLogic.Terminate(token);
+            _gameLogic.OnStopGame();
 
             _server.Stop();
         }

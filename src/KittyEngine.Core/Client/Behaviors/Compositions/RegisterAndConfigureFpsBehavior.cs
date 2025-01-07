@@ -11,8 +11,8 @@ namespace KittyEngine.Core.Client.Behaviors.Compositions
             container.Register<Inputs.RotateBehavior>(ServiceBehavior.Scoped);
             container.Register<Inputs.JumpBehavior>(ServiceBehavior.Scoped);
 
-            container.Register<ServerCommands.SynchronizeBehavior>(ServiceBehavior.Scoped);
-            container.Register<ServerCommands.JoinedBehavior>(ServiceBehavior.Scoped);
+            container.Register<Commands.SynchronizeBehavior>(ServiceBehavior.Scoped);
+            container.Register<Commands.JoinedBehavior>(ServiceBehavior.Scoped);
         }
 
         public override void OnConfigureServices(IServiceContainer container)
@@ -24,8 +24,8 @@ namespace KittyEngine.Core.Client.Behaviors.Compositions
             behavoirContainer.AddBehavior<Inputs.RotateBehavior>();
             behavoirContainer.AddBehavior<Inputs.JumpBehavior>();
 
-            behavoirContainer.AddBehavior<ServerCommands.SynchronizeBehavior>();
-            behavoirContainer.AddBehavior<ServerCommands.JoinedBehavior>();
+            behavoirContainer.AddBehavior<Commands.SynchronizeBehavior>();
+            behavoirContainer.AddBehavior<Commands.JoinedBehavior>();
         }
     }
 }
