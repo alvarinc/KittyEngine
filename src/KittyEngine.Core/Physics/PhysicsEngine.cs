@@ -97,7 +97,12 @@ namespace KittyEngine.Core.Physics
                     };
                     var collisionResult = _collisionManager.DetectCollisions(collisionParams);
 
-                    if (collisionResult.HasCollision)
+                    if (collisionResult.HasCollision && player.VerticalVelocity > 0)
+                    {
+                        player.VerticalVelocity = Gravity * deltaTime;
+                        player.Velocity = zeroVector;
+                    }
+                    else if (collisionResult.HasCollision && player.VerticalVelocity < 0)
                     {
                         // Resolve collision: Set grounded state and stop vertical velocity
                         player.IsGrounded = true;
