@@ -1,5 +1,4 @@
 ﻿using KittyEngine.Core.Client.Behaviors;
-using KittyEngine.Core.Client.Input.WPFMouse.Converters;
 using KittyEngine.Core.Client.Outputs;
 using KittyEngine.Core.Server;
 using KittyEngine.Core.Services.IoC;
@@ -10,7 +9,6 @@ namespace KittyEngine.Core.Client.Input.WPFMouse
 {
     public class WPFMouseListener : IWPFMouseListener
     {
-        private LightFactory<IMouseEventConverter> _commandFactory;
         private List<MouseInput> _inputs = new List<MouseInput>();
         private object padlock = new object();
 
@@ -18,14 +16,11 @@ namespace KittyEngine.Core.Client.Input.WPFMouse
         private IMouseInputFactory _mouseInputFactory;
         private IGameHost _gameHost;
 
-        public WPFMouseListener(IServiceContainer container, IMouseInputFactory mouseInputFactory, IClientBehaviorContainer behaviorContainer)
+        public WPFMouseListener(IMouseInputFactory mouseInputFactory, IClientBehaviorContainer behaviorContainer)
         {
             _behaviorContainer = behaviorContainer;
             _mouseInputFactory = mouseInputFactory;
             IsEnabled = true;
-
-            _commandFactory = new LightFactory<IMouseEventConverter>(container);
-            _commandFactory.Add<WPFMouse.Converters.RotateConverter>("rotate");
         }
 
         public void RegisterMouseEvents(IGameHost gameHost)

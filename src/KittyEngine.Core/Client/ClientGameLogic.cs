@@ -30,16 +30,14 @@
         private NetworkAdapter _networkAdapter;
 
         private ILogger _logger;
-        private ILightFactory<IGameCommand> _commandFactory;
         private IRenderer _renderer;
         private IInputHandler _inputHandler;
         private IClientBehaviorContainer _behaviorContainer;
         private ClientState _clientState;
 
-        public ClientGameLogic(ILogger logger, ILightFactory<IGameCommand> commandFactory, IRenderer renderer, IInputHandler inputHandler, ClientState clientState, IClientBehaviorContainer behaviorContainer)
+        public ClientGameLogic(ILogger logger, IRenderer renderer, IInputHandler inputHandler, ClientState clientState, IClientBehaviorContainer behaviorContainer)
         {
             _logger = logger;
-            _commandFactory = commandFactory;
             _renderer = renderer;
             _inputHandler = inputHandler;
             _behaviorContainer = behaviorContainer;

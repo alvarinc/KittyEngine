@@ -1,5 +1,4 @@
 ﻿using KittyEngine.Core.Client.Behaviors;
-using KittyEngine.Core.Client.Input.WPFKeyboard.Converters;
 using KittyEngine.Core.Client.Outputs;
 using KittyEngine.Core.Server;
 using KittyEngine.Core.Services.IoC;
@@ -10,7 +9,6 @@ namespace KittyEngine.Core.Client.Input.WPFKeyboard
 {
     public class WPFKeyboardListener : IWPFKeyboardListener
     {
-        private LightFactory<IKeyboardEventConverter> _commandFactory;
         private Queue<KeyboardInput> _inputs = new Queue<KeyboardInput>();
         private object padlock = new object();
 
@@ -29,16 +27,11 @@ namespace KittyEngine.Core.Client.Input.WPFKeyboard
             }
         }
 
-        public WPFKeyboardListener(IServiceContainer container, IKeyboadPressedKeyMap keyboadPressedKeyMap, IClientBehaviorContainer behaviorContainer)
+        public WPFKeyboardListener(IKeyboadPressedKeyMap keyboadPressedKeyMap, IClientBehaviorContainer behaviorContainer)
         {
             _behaviorContainer = behaviorContainer;
             _keyboadPressedKeyMap = keyboadPressedKeyMap;
             IsEnabled = true;
-
-            _commandFactory = new LightFactory<IKeyboardEventConverter>(container);
-            _commandFactory.Add<WPFKeyboard.Converters.ExitConverter>("exit");
-            _commandFactory.Add<WPFKeyboard.Converters.MoveConverter>("move");
-            _commandFactory.Add<WPFKeyboard.Converters.JumpConverter>("jump");
         }
 
         public void RegisterKeyboardEvents(IGameHost host)
