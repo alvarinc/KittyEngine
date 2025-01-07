@@ -56,9 +56,9 @@ namespace KittyEngine.Core
         /// <param name="server">Server connexion infos. If not set or null, get default values</param>
         /// <param name="parent">WPF grid for host game</param>
         /// <param name="configure">Custom configuration for server</param>
-        public static void RunWPFClient(PlayerInput player, ServerInput server = null, Grid placeholder = null, Action<IServiceContainer> configure = null)
+        public static void RunWPFClient(PlayerInput player, ServerInput server = null, Grid placeholder = null, Action<List<CompositionBehavior>> onloadBehaviors = null)
         {
-            StartWPFClient(player, server, placeholder, configure).Join();
+            StartWPFClient(player, server, placeholder, onloadBehaviors).Join();
         }
 
         /// <summary>
@@ -104,15 +104,34 @@ namespace KittyEngine.Core
         /// <param name="parent">WPF grid for host game</param>
         /// <param name="configure">Custom configuration for server</param>
         /// <returns>Client thread</returns>
-        public static Thread StartWPFClient(PlayerInput player, ServerInput server = null, Grid placeholder = null, Action<IServiceContainer> configure = null)
+        public static Thread StartWPFClient(PlayerInput player, ServerInput server = null, Grid placeholder = null, Action<List<CompositionBehavior>> onloadBehaviors = null)
         {
-            var container = _containerBuilder().ConfigureGameClient(ClientType.WPF);
-
-            if (configure != null)
+            var container = _containerBuilder();
+            var compositionBehaviors = new List<CompositionBehavior>()
             {
-                configure(container);
+                new Client.Behaviors.Compositions.RegisterClientServicesBehavior(),
+                new Client.Behaviors.Compositions.RegisterAndConfigureFpsBehavior(),
+            };
+
+            // Update list of startup behaviors if needed
+            if (onloadBehaviors != null)
+            {
+                onloadBehaviors(compositionBehaviors);
             }
 
+            // Call Startup 
+            foreach (var behavior in compositionBehaviors)
+            {
+                behavior.OnStartup(container);
+            }
+
+            // Call OnConfigure services
+            foreach (var behavior in compositionBehaviors)
+            {
+                behavior.OnConfigureServices(container);
+            }
+
+            // Configure game host
             var keyboardListener = container.Get<IWPFKeyboardListener>();
             var mouseListener = container.Get<IWPFMouseListener>();
             var renderer = container.Get<Graphics.IRenderer>();
@@ -124,8 +143,8 @@ namespace KittyEngine.Core
             keyboardListener.RegisterKeyboardEvents(gameHost);
             mouseListener.RegisterMouseEvents(gameHost);
             renderer.RegisterGraphicOutput(gameHost);
-            
 
+            // Start client
             var configuration = container.Get<IConfigurationService>();
             var client = container.Get<Core.Client.Client>();
 
