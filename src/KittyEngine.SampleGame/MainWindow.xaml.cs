@@ -23,7 +23,7 @@ namespace KittyEngine.SampleGame
             {
                 Engine.StartWPFClient(dialog.PlayerInput, server:dialog.ServerInput, placeholder: gameView, onloadBehaviors: behaviors =>
                 {
-                    behaviors.Add(new RegisterSampleMapsBehavior(EngineRuntime.Client));
+                    behaviors.AddComposer(new RegisterSampleMapsBehavior(EngineRuntime.Client));
                 });
             }
             else
