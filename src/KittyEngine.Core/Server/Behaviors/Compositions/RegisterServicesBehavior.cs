@@ -39,17 +39,6 @@ namespace KittyEngine.Core.Server.Behaviors.Compositions
             // Behaviors
             container.Register<IServerBehaviorContainer, ServerBehaviorContainer>(ServiceBehavior.Scoped);
 
-            // Commands
-            container.Register<LoadMapCommand>(ServiceBehavior.Transient);
-
-            container.Register<JoinCommand>(ServiceBehavior.Transient);
-            container.Register<ExitCommand>(ServiceBehavior.Transient);
-            container.Register<MoveCommand>(ServiceBehavior.Transient);
-            container.Register<MoveCommand3D>(ServiceBehavior.Transient);
-            container.Register<RotateCommand3D>(ServiceBehavior.Transient);
-            container.Register<JumpCommand>(ServiceBehavior.Transient);
-            container.Register<ILightFactory<IGameCommand>, CommandFactory>(ServiceBehavior.Scoped);
-
             // Maps
             container.Register<IContentService, ContentService>(ServiceBehavior.Scoped);
             container.Register<IMapBuilderFactory, MapBuilderFactory>(ServiceBehavior.Scoped);
