@@ -88,6 +88,8 @@
                 _networkAdapter.SendMessage(input);
             }
 
+            //_gameStateUpdated = inputs.Count > 0;
+
             _networkAdapter.HandleServerEvents();
 
             RenderOutput();
