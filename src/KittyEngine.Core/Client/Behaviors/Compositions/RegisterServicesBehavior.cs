@@ -12,11 +12,20 @@ using KittyEngine.Core.Services.IoC;
 using KittyEngine.Core.Services.Logging.Conenctors;
 using KittyEngine.Core.Services.Logging;
 using KittyEngine.Core.State;
+using KittyEngine.Core.Terminal.Renderer;
+using System.ComponentModel;
 
 namespace KittyEngine.Core.Client.Behaviors.Compositions
 {
     public class RegisterServicesBehavior : CompositionBehavior
     {
+        private ClientType _clientType;
+
+        public RegisterServicesBehavior(ClientType clientType)
+        {
+            _clientType = clientType;
+        }
+
         public override void OnStartup(IServiceContainer container)
         {
             // IoC
@@ -38,7 +47,14 @@ namespace KittyEngine.Core.Client.Behaviors.Compositions
             // Behaviors
             container.Register<IClientBehaviorContainer, ClientBehaviorContainer>(ServiceBehavior.Scoped);
 
-            OnWPFStartup(container);
+            if (_clientType == ClientType.Desktop)
+            {
+                OnWPFStartup(container);
+            }
+            else
+            {
+                OnConsoleStartup(container);
+            }
 
             // Physics
             container.Register<IPrimitiveMoveService, PrimitiveMoveService>(ServiceBehavior.Scoped);
@@ -51,6 +67,16 @@ namespace KittyEngine.Core.Client.Behaviors.Compositions
 
             // Entry point
             container.Register<Client>(ServiceBehavior.Scoped);
+        }
+
+        private void OnConsoleStartup(IServiceContainer container)
+        {
+            // Console Input
+            container.Register<Input.ConsoleKeyboard.ConsoleKeyboardListener>(ServiceBehavior.Scoped);
+            container.Register<IInputHandler, ConsoleInputHanlder>(ServiceBehavior.Scoped);
+
+            // Console Output
+            container.Register<IRenderer, TerminalRenderer>(ServiceBehavior.Scoped);
         }
 
         private void OnWPFStartup(IServiceContainer container)
