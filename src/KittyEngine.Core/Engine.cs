@@ -41,9 +41,10 @@ namespace KittyEngine.Core
         /// </summary>
         /// <param name="player">Player informations</param>
         /// <param name="server">Server connexion infos. If not set or null, get default values</param>
-        public static void RunConsoleClient(PlayerInput player, ServerInput server = null)
+        /// <param name="onloadBehaviors">Custom behavior configuration</param>
+        public static void RunConsoleClient(PlayerInput player, ServerInput server = null, Action<List<CompositionBehavior>> onloadBehaviors = null)
         {
-            StartConsoleClient(player, server).Join();
+            StartConsoleClient(player, server, onloadBehaviors).Join();
         }
 
         /// <summary>
@@ -73,11 +74,36 @@ namespace KittyEngine.Core
         /// </summary>
         /// <param name="player">Player informations</param>
         /// <param name="server">Server connexion infos. If not set or null, get default values</param>
+        /// <param name="onloadBehaviors">Custom behavior configuration</param>
         /// <returns>Client thread</returns>
-        public static Thread StartConsoleClient(PlayerInput player, ServerInput server)
+        public static Thread StartConsoleClient(PlayerInput player, ServerInput server, Action<List<CompositionBehavior>> onloadBehaviors = null)
         {
-            var container = _containerBuilder().ConfigureGameClient(ClientType.Terminal);
+            var container = _containerBuilder();
+            var compositionBehaviors = new List<CompositionBehavior>()
+            {
+                new Client.Behaviors.Compositions.RegisterServicesBehavior(ClientType.Console),
+                new Client.Behaviors.Compositions.RegisterAndConfigureFpsBehavior(),
+            };
 
+            // Update list of startup behaviors if needed
+            if (onloadBehaviors != null)
+            {
+                onloadBehaviors(compositionBehaviors);
+            }
+
+            // Call Startup 
+            foreach (var behavior in compositionBehaviors)
+            {
+                behavior.OnStartup(container);
+            }
+
+            // Call OnConfigure services
+            foreach (var behavior in compositionBehaviors)
+            {
+                behavior.OnConfigureServices(container);
+            }
+
+            // Start client
             var configuration = container.Get<IConfigurationService>();
             var client = container.Get<Core.Client.Client>();
 
@@ -106,7 +132,7 @@ namespace KittyEngine.Core
             var container = _containerBuilder();
             var compositionBehaviors = new List<CompositionBehavior>()
             {
-                new Client.Behaviors.Compositions.RegisterServicesBehavior(),
+                new Client.Behaviors.Compositions.RegisterServicesBehavior(ClientType.Desktop),
                 new Client.Behaviors.Compositions.RegisterAndConfigureFpsBehavior(),
             };
 

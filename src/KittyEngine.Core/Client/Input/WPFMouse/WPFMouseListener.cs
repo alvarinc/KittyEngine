@@ -61,7 +61,6 @@ namespace KittyEngine.Core.Client.Input.WPFMouse
                     if (cmd != null)
                     {
                         results.Add(cmd);
-                        break;
                     }
                 }
             }

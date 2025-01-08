@@ -1,7 +1,6 @@
 ﻿using KittyEngine.Core.Client.Behaviors;
 using KittyEngine.Core.Client.Outputs;
 using KittyEngine.Core.Server;
-using KittyEngine.Core.Services.IoC;
 using KittyEngine.Core.State;
 using System.Windows.Input;
 
@@ -62,11 +61,12 @@ namespace KittyEngine.Core.Client.Input.WPFKeyboard
                     inputs.Add(new KeyboardInput
                     {
                         Type = KeyboardInputType.KeyPressedMap,
-                        PressedKeys = _keyboadPressedKeyMap.GetPressedKeys()
+                        PressedKeys = keyPressed
                     });
                 }
             }
 
+            // Send inputs to behaviors
             var clientBehaviors = _behaviorContainer.GetBehaviors();
             foreach (var keyboardInput in inputs)
             {
