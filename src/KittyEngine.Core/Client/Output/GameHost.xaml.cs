@@ -1,4 +1,5 @@
-﻿using KittyEngine.Core.Client.Input.WPFKeyboard;
+﻿using KittyEngine.Core.Client.Input;
+using KittyEngine.Core.Client.Input.WPFKeyboard;
 using KittyEngine.Core.Client.Input.WPFMouse;
 using KittyEngine.Core.State;
 using System.Windows;
@@ -18,11 +19,9 @@ namespace KittyEngine.Core.Client.Outputs
         //private IOutputFactory OutputFactory
         //    => Container.Get<IOutputFactory>();
 
-        private IWPFKeyboardListener _keyboardListener;
-
-        private IWPFMouseListener _mouseListener;
-
         //private GameMode? _previousGameMode;
+
+        private IInputHandler _inputHandler;
 
         private ISynchronizableOutput _hud;
 
@@ -41,12 +40,11 @@ namespace KittyEngine.Core.Client.Outputs
 
         public UserControl HostControl => this;
 
-        public GameHost(IWPFKeyboardListener keyboardListener, IWPFMouseListener mouseListener, ClientState clientState)
+        public GameHost(IInputHandler inputHandler, ClientState clientState)
         {
             InitializeComponent();
 
-            _keyboardListener = keyboardListener;
-            _mouseListener = mouseListener;
+            _inputHandler = inputHandler;
             _clientState = clientState;
 
             Focusable = true;
@@ -187,17 +185,16 @@ namespace KittyEngine.Core.Client.Outputs
                 var parentWindow = Window.GetWindow(this);
                 if (_clientState.ClientWindow.IsInFullScreenMode)
                 {
-                    _mouseListener.IsEnabled = false;
+                    _inputHandler.Disable();
                     parentWindow.WindowStyle = _clientState.ClientWindow.NormalWindowsStyle;
                     parentWindow.Topmost = _clientState.ClientWindow.NormalTopmost;
                     parentWindow.WindowState = _clientState.ClientWindow.NormalWindowsState;
                     _clientState.ClientWindow.IsInFullScreenMode = false;
-                    _mouseListener.Reset();
-                    _mouseListener.IsEnabled = true;
+                    _inputHandler.Enable();
                 }
                 else
                 {
-                    _mouseListener.IsEnabled = false;
+                    _inputHandler.Disable();
                     _clientState.ClientWindow.NormalWindowsStyle = parentWindow.WindowStyle;
                     _clientState.ClientWindow.NormalWindowsState = parentWindow.WindowState;
                     _clientState.ClientWindow.NormalTopmost = parentWindow.Topmost;
@@ -206,8 +203,7 @@ namespace KittyEngine.Core.Client.Outputs
                     parentWindow.WindowState = WindowState.Normal;
                     parentWindow.WindowState = WindowState.Maximized;
                     _clientState.ClientWindow.IsInFullScreenMode = true;
-                    _mouseListener.Reset();
-                    _mouseListener.IsEnabled = true;
+                    _inputHandler.Enable();
                 }
             }
             //else if (e.Key == System.Windows.Input.Key.F12)

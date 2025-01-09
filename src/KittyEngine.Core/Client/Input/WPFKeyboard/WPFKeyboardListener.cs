@@ -1,46 +1,48 @@
-﻿using KittyEngine.Core.Client.Behaviors;
-using KittyEngine.Core.Client.Outputs;
-using KittyEngine.Core.Server;
-using KittyEngine.Core.State;
+﻿using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace KittyEngine.Core.Client.Input.WPFKeyboard
 {
-    public class WPFKeyboardListener : IWPFKeyboardListener
+    public class WPFKeyboardListener
     {
         private Queue<KeyboardInput> _inputs = new Queue<KeyboardInput>();
         private object padlock = new object();
 
-        private IClientBehaviorContainer _behaviorContainer;
-        private IKeyboadPressedKeyMap _keyboadPressedKeyMap;
+        private KeyboadPressedKeyMap _keyboadPressedKeyMap = new KeyboadPressedKeyMap();
 
-        private bool _isEnabled;
+        private bool _isEnabled = true;
 
-        public bool IsEnabled 
+        public bool IsEnabled => _isEnabled;
+
+        public void Disable()
         {
-            get { return _isEnabled; }
-            set 
+            _isEnabled = false;
+        }
+
+        public void Enable()
+        {
+            _isEnabled = true;
+            Reset();
+        }
+
+        public void Reset()
+        {
+            _keyboadPressedKeyMap.Reset();
+        }
+
+        public void RegisterKeyboardEvents(Func<UserControl> hostControlAccessor)
+        {
+            hostControlAccessor().KeyDown += UserControl_KeyEvents;
+            hostControlAccessor().KeyUp += UserControl_KeyEvents;
+        }
+
+        public void HandleEvents(Action<KeyboardInput> handler)
+        {
+            if (!IsEnabled)
             {
-                _keyboadPressedKeyMap.Reset();
-                _isEnabled = value;
+                return;
             }
-        }
 
-        public WPFKeyboardListener(IKeyboadPressedKeyMap keyboadPressedKeyMap, IClientBehaviorContainer behaviorContainer)
-        {
-            _behaviorContainer = behaviorContainer;
-            _keyboadPressedKeyMap = keyboadPressedKeyMap;
-            IsEnabled = true;
-        }
-
-        public void RegisterKeyboardEvents(IGameHost host)
-        {
-            host.HostControl.KeyDown += UserControl_KeyEvents;
-            host.HostControl.KeyUp += UserControl_KeyEvents;
-        }
-
-        public List<GameCommandInput> HandleEvents(GameState gameState, string playerId)
-        {
             var inputs = new List<KeyboardInput>();
             lock (padlock)
             {
@@ -64,23 +66,17 @@ namespace KittyEngine.Core.Client.Input.WPFKeyboard
                 }
             }
 
-            // Send inputs to behaviors
-            var results = new List<GameCommandInput>();
-            var clientBehaviors = _behaviorContainer.GetBehaviors();
-            foreach (var keyboardInput in inputs)
+            // If no handler, still catch events and do nothing
+            if (handler == null)
             {
-                foreach (var clientBehavior in clientBehaviors)
-                {
-                    var cmd = clientBehavior.OnKeyboardEvent(gameState, playerId, keyboardInput);
-
-                    if (cmd != null)
-                    {
-                        results.Add(cmd);
-                    }
-                }
+                return;
             }
 
-            return results;
+            // Send inputs to behaviors
+            foreach (var keyboardInput in inputs)
+            {
+                handler(keyboardInput);
+            }
         }
 
         private void UserControl_KeyEvents(object sender, KeyEventArgs e)
@@ -89,6 +85,10 @@ namespace KittyEngine.Core.Client.Input.WPFKeyboard
             //{
             //    return;
             //}
+            if (!IsEnabled)
+            {
+                return;
+            }
 
             if (e.RoutedEvent.Name == "KeyDown")
             {

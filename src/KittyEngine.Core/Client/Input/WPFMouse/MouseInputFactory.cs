@@ -4,16 +4,11 @@ using System.Windows.Input;
 
 namespace KittyEngine.Core.Client.Input.WPFMouse
 {
-    public class MouseInputFactory : IMouseInputFactory
+    public class MouseInputFactory
     {
-        private IMouseControllerInterop _mouseControllerInterop;
+        private MouseControllerInterop _mouseControllerInterop = new MouseControllerInterop();
 
         private Point? _mousePosition;
-
-        public MouseInputFactory(IMouseControllerInterop mouseControllerInterop)
-        {
-            _mouseControllerInterop = mouseControllerInterop;
-        }
 
         public MouseInput CreateMouseButtonInput(Viewport3D viewport, MouseButtonEventArgs e)
         {

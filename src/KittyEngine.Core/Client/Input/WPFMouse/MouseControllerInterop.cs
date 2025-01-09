@@ -3,7 +3,7 @@ using System.Windows;
 
 namespace KittyEngine.Core.Client.Input.WPFMouse
 {
-    public class MouseControllerInterop : IMouseControllerInterop
+    public class MouseControllerInterop
     {
         [StructLayout(LayoutKind.Sequential)]
         public struct POINT

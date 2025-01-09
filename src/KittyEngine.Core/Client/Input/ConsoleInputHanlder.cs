@@ -19,6 +19,28 @@ namespace KittyEngine.Core.Client.Input
             _converter = new ConsoleKeyToWindowsKeyConverter();
         }
 
+        public bool IsEnabled => _keyboardListener.IsEnabled;
+
+        public void Disable()
+        {
+            _keyboardListener.Disable();
+        }
+
+        public void Enable()
+        {
+            _keyboardListener.Enable();
+        }
+
+        public void Reset()
+        {
+            _keyboardListener.Reset();
+        }
+
+        public void RegisterEvents(object gameHost)
+        {
+
+        }
+
         public List<GameCommandInput> HandleEvents(GameState gameState, string playerId)
         {
             var results = new List<GameCommandInput>();
@@ -26,6 +48,7 @@ namespace KittyEngine.Core.Client.Input
 
             _keyboardListener.HandleEvents(input =>
             {
+                // Convert in order to have a unified clientBehavior for input events for Console and WPF
                 var keyboardInput = Convert(input);
                 var commands = clientBehaviors
                     .Select(behavior => behavior.OnKeyboardEvent(gameState, playerId, keyboardInput))
