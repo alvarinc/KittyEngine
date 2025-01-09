@@ -72,7 +72,6 @@ namespace KittyEngine.Core.Client.Behaviors.Compositions
         private void OnConsoleStartup(IServiceContainer container)
         {
             // Console Input
-            container.Register<Input.ConsoleKeyboard.ConsoleKeyboardListener>(ServiceBehavior.Scoped);
             container.Register<IInputHandler, ConsoleInputHanlder>(ServiceBehavior.Scoped);
 
             // Console Output

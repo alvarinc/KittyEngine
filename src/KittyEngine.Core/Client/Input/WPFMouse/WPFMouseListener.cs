@@ -42,8 +42,6 @@ namespace KittyEngine.Core.Client.Input.WPFMouse
 
         public List<GameCommandInput> HandleEvents(GameState gameState, string playerId)
         {
-            var results = new List<GameCommandInput>();
-
             var inputs = new List<MouseInput>();
             lock (padlock)
             {
@@ -51,6 +49,7 @@ namespace KittyEngine.Core.Client.Input.WPFMouse
                 _inputs.Clear();
             }
 
+            var results = new List<GameCommandInput>();
             var clientBehaviors = _behaviorContainer.GetBehaviors();
             foreach (var mouseInput in inputs)
             {

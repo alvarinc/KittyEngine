@@ -12,15 +12,13 @@ namespace KittyEngine.Core.Server.Behaviors.Compositions
 
         public static List<CompositionBehavior> AddFpsServerBehaviors(this List<CompositionBehavior> compositionBehaviors)
         {
-            compositionBehaviors
+            return compositionBehaviors
                 .AddServerBehavior<Commands.ExitBehavior>()
                 .AddServerBehavior<Commands.JoinBehavior>()
                 .AddServerBehavior<Commands.JumpBehavior>()
                 .AddServerBehavior<Commands.LoadMapBehavior>()
                 .AddServerBehavior<Commands.MoveBehavior>()
                 .AddServerBehavior<Commands.RotateBehavior>();
-
-            return compositionBehaviors;
         }
     }
 }

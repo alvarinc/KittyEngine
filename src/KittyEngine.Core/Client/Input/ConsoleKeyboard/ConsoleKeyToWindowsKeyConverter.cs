@@ -58,8 +58,29 @@ namespace KittyEngine.Core.Client.Input.ConsoleKeyboard
             return null;
         }
 
+        /// <summary>
+        /// Converts a set of Windows Key to a set of ConsoleKey.
+        /// </summary>
+        public List<ConsoleKey> Convert(IEnumerable<Key> keys)
+        {
+            var consoleKeys = new List<ConsoleKey>();
+
+            foreach (var key in keys)
+            {
+                var consoleKey = Convert(key);
+                if (consoleKey.HasValue)
+                {
+                    consoleKeys.Add(consoleKey.Value);
+                }
+            }
+
+            return consoleKeys;
+        }
+
         private void PopulateMappings()
         {
+            AddMapping(ConsoleKey.None, Key.None);
+
             // Letters (A-Z)
             for (char c = 'A'; c <= 'Z'; c++)
             {
