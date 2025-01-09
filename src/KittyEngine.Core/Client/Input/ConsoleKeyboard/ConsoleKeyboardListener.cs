@@ -1,11 +1,8 @@
-﻿
-using KittyEngine.Core.Client.Input.WPFKeyboard;
-
-namespace KittyEngine.Core.Client.Input.ConsoleKeyboard
+﻿namespace KittyEngine.Core.Client.Input.ConsoleKeyboard
 {
     public class ConsoleKeyboardListener
     {
-        private ConsoleKeyboardController _keyboardController = new ConsoleKeyboardController();
+        private ConsoleKeyboardControllerInterop _keyboardController = new ConsoleKeyboardControllerInterop();
         
         private bool _isEnabled = true;
         
