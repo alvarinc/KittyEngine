@@ -4,7 +4,6 @@ using KittyEngine.Core.Client.Input.WPFMouse;
 using KittyEngine.Core.Client.Outputs;
 using KittyEngine.Core.Server;
 using KittyEngine.Core.State;
-using System.Windows.Controls;
 
 namespace KittyEngine.Core.Client.Input
 {

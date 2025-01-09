@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 
 namespace KittyEngine.Core.Client.Input.ConsoleKeyboard
 {
-    public class ConsoleKeyboardController
+    public class ConsoleKeyboardControllerInterop
     {
         [DllImport("user32.dll")]
         static extern int GetKeyState(int key);
@@ -16,7 +16,7 @@ namespace KittyEngine.Core.Client.Input.ConsoleKeyboard
         private Dictionary<int, bool> _currentKeyBoardState;
         private Dictionary<int, bool> _previousKeyBoardState;
 
-        public ConsoleKeyboardController()
+        public ConsoleKeyboardControllerInterop()
         {
             _currentKeyBoardState = new Dictionary<int, bool>();
             _previousKeyBoardState = new Dictionary<int, bool>();
