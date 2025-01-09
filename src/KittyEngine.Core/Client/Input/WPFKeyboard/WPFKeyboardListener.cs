@@ -41,8 +41,6 @@ namespace KittyEngine.Core.Client.Input.WPFKeyboard
 
         public List<GameCommandInput> HandleEvents(GameState gameState, string playerId)
         {
-            var results = new List<GameCommandInput>();
-            
             var inputs = new List<KeyboardInput>();
             lock (padlock)
             {
@@ -67,6 +65,7 @@ namespace KittyEngine.Core.Client.Input.WPFKeyboard
             }
 
             // Send inputs to behaviors
+            var results = new List<GameCommandInput>();
             var clientBehaviors = _behaviorContainer.GetBehaviors();
             foreach (var keyboardInput in inputs)
             {

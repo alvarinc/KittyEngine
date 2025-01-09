@@ -1,50 +1,36 @@
-﻿using KittyEngine.Core.Client.Behaviors;
-using KittyEngine.Core.Client.Input.WPFKeyboard;
-using KittyEngine.Core.Server;
-using KittyEngine.Core.State;
-using System.Windows.Input;
-
+﻿
 namespace KittyEngine.Core.Client.Input.ConsoleKeyboard
 {
-    public class ConsoleKeyboardListener : IInputHandler
+    public class ConsoleKeyboardListener
     {
         private ConsoleKeyboardController _keyboardController = new ConsoleKeyboardController();
-        private ConsoleKeyToWindowsKeyConverter _converter = new ConsoleKeyToWindowsKeyConverter();
-        private IClientBehaviorContainer _behaviorContainer;
 
-        public ConsoleKeyboardListener(IClientBehaviorContainer behaviorContainer)
+        public void HandleEvents(Action<ConsoleKeyboardInput> handler)
         {
-            _behaviorContainer = behaviorContainer;
-        }
-
-        public List<GameCommandInput> HandleEvents(GameState gameState, string playerId)
-        {
-            var results = new List<GameCommandInput>();
-            var inputs = new List<KeyboardInput>();
-
             _keyboardController.HandleInputs();
 
-            var pressedKeys = _converter.Convert(_keyboardController.GetPressedKeys());
+            var pressedKeys = _keyboardController.GetPressedKeys();
+            var inputs = new List<ConsoleKeyboardInput>();
 
             foreach (var key in pressedKeys)
             {
-                if (_keyboardController.IsKeyDown(_converter.Convert(key).Value))
+                if (_keyboardController.IsKeyDown(key))
                 {
-                    inputs.Add(new KeyboardInput
+                    inputs.Add(new ConsoleKeyboardInput
                     {
-                        Type = KeyboardInputType.KeyDown,
+                        Type = ConsoleKeyboardInputType.KeyDown,
                         KeyDown = key,
                         IsNewKeyDown = true,
-                        KeyUp = Key.None,
+                        KeyUp = ConsoleKey.None,
                         PressedKeys = pressedKeys.ToArray()
                     });
                 }
-                else if (_keyboardController.IsKeyUp(_converter.Convert(key).Value))
+                else if (_keyboardController.IsKeyUp(key))
                 {
-                    inputs.Add(new KeyboardInput
+                    inputs.Add(new ConsoleKeyboardInput
                     {
-                        Type = KeyboardInputType.KeyDown,
-                        KeyDown = Key.None,
+                        Type = ConsoleKeyboardInputType.KeyDown,
+                        KeyDown = ConsoleKey.None,
                         IsNewKeyDown = false,
                         KeyUp = key,
                         PressedKeys = pressedKeys.ToArray()
@@ -57,30 +43,25 @@ namespace KittyEngine.Core.Client.Input.ConsoleKeyboard
             {
                 if (pressedKeys.Count > 0)
                 {
-                    inputs.Add(new KeyboardInput
+                    inputs.Add(new ConsoleKeyboardInput
                     {
-                        Type = KeyboardInputType.KeyPressedMap,
+                        Type = ConsoleKeyboardInputType.KeyPressedMap,
                         PressedKeys = pressedKeys.ToArray()
                     });
                 }
             }
 
-            // Send inputs to behaviors
-            var clientBehaviors = _behaviorContainer.GetBehaviors();
-            foreach (var keyboardInput in inputs)
+            // If no handler, still catch events and do nothing
+            if (handler == null)
             {
-                foreach (var clientBehavior in clientBehaviors)
-                {
-                    var cmd = clientBehavior.OnKeyboardEvent(gameState, playerId, keyboardInput);
-
-                    if (cmd != null)
-                    {
-                        results.Add(cmd);
-                    }
-                }
+                return;
             }
 
-            return results;
+            // Send inputs to behaviors
+            foreach (var keyboardInput in inputs)
+            {
+                handler(keyboardInput);
+            }
         }
     }
 }
