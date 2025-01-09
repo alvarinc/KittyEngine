@@ -5,7 +5,6 @@
     using KittyEngine.Core.Client.Input;
     using KittyEngine.Core.Graphics;
     using KittyEngine.Core.Server;
-    using KittyEngine.Core.Services.IoC;
     using KittyEngine.Core.Services.Logging;
     using KittyEngine.Core.State;
     using System.Diagnostics;

@@ -161,6 +161,7 @@ namespace KittyEngine.Core
             var clientState = container.Get<ClientState>();
             var gameHost = new GameHost(inputHandler, clientState);
 
+            placeholder.Children.Clear();
             placeholder.Children.Add(gameHost);
 
             inputHandler.RegisterEvents(gameHost);
