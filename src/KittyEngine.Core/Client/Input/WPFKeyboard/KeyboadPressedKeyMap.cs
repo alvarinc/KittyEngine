@@ -2,7 +2,7 @@
 
 namespace KittyEngine.Core.Client.Input.WPFKeyboard
 {
-    public class KeyboadPressedKeyMap : IKeyboadPressedKeyMap
+    public class KeyboadPressedKeyMap
     {
         protected HashSet<Key> _keyboardPressedKeys = new HashSet<Key>();
 

@@ -1,47 +1,55 @@
-﻿using KittyEngine.Core.Client.Behaviors;
-using KittyEngine.Core.Client.Outputs;
-using KittyEngine.Core.Server;
-using KittyEngine.Core.Services.IoC;
-using KittyEngine.Core.State;
+﻿using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace KittyEngine.Core.Client.Input.WPFMouse
 {
-    public class WPFMouseListener : IWPFMouseListener
+    public class WPFMouseListener
     {
         private List<MouseInput> _inputs = new List<MouseInput>();
         private object padlock = new object();
 
-        private IClientBehaviorContainer _behaviorContainer;
-        private IMouseInputFactory _mouseInputFactory;
-        private IGameHost _gameHost;
+        private MouseInputFactory _mouseInputFactory = new MouseInputFactory();
+        private Func<UserControl> _hostControlAccessor;
+        private Func<Viewport3D> _viewport3DAccesor;
 
-        public WPFMouseListener(IMouseInputFactory mouseInputFactory, IClientBehaviorContainer behaviorContainer)
+        private bool _isEnabled = true;
+
+        public bool IsEnabled => _isEnabled;
+
+        public void Disable()
         {
-            _behaviorContainer = behaviorContainer;
-            _mouseInputFactory = mouseInputFactory;
-            IsEnabled = true;
+            _isEnabled = false;
         }
 
-        public void RegisterMouseEvents(IGameHost gameHost)
+        public void Enable()
         {
-            _gameHost = gameHost;
-            _gameHost.HostControl.MouseEnter += UserControl_MouseEvents;
-            _gameHost.HostControl.MouseMove += UserControl_MouseEvents;
-            _gameHost.HostControl.MouseDown += UserControl_MouseButtonEvents;
-            _gameHost.HostControl.MouseUp += UserControl_MouseButtonEvents;
-            _gameHost.HostControl.MouseWheel += UserControl_MouseWheel;
+            _isEnabled = true;
+            Reset();
         }
-
-        public bool IsEnabled { get; set; } = true;
 
         public void Reset()
         {
             _mouseInputFactory.Reset();
         }
 
-        public List<GameCommandInput> HandleEvents(GameState gameState, string playerId)
+        public void RegisterMouseEvents(Func<UserControl> hostControlAccessor, Func<Viewport3D> viewport3DAccesor)
         {
+            _hostControlAccessor = hostControlAccessor;
+            _viewport3DAccesor = viewport3DAccesor;
+            _hostControlAccessor().MouseEnter += UserControl_MouseEvents;
+            _hostControlAccessor().MouseMove += UserControl_MouseEvents;
+            _hostControlAccessor().MouseDown += UserControl_MouseButtonEvents;
+            _hostControlAccessor().MouseUp += UserControl_MouseButtonEvents;
+            _hostControlAccessor().MouseWheel += UserControl_MouseWheel;
+        }
+
+        public void HandleEvents(Action<MouseInput> handler)
+        {
+            if (!IsEnabled)
+            {
+                return;
+            }
+
             var inputs = new List<MouseInput>();
             lock (padlock)
             {
@@ -49,22 +57,17 @@ namespace KittyEngine.Core.Client.Input.WPFMouse
                 _inputs.Clear();
             }
 
-            var results = new List<GameCommandInput>();
-            var clientBehaviors = _behaviorContainer.GetBehaviors();
-            foreach (var mouseInput in inputs)
+            // If no handler, still catch events and do nothing
+            if (handler == null)
             {
-                foreach (var behavior in clientBehaviors)
-                {
-                    var cmd = behavior.OnMouseEvent(gameState, playerId, mouseInput);
-
-                    if (cmd != null)
-                    {
-                        results.Add(cmd);
-                    }
-                }
+                return;
             }
 
-            return results;
+            // Send inputs to behaviors
+            foreach (var keyboardInput in inputs)
+            {
+                handler(keyboardInput);
+            }
         }
 
         private void UserControl_MouseEvents(object sender, MouseEventArgs e)
@@ -74,7 +77,7 @@ namespace KittyEngine.Core.Client.Input.WPFMouse
             //    return;
             //}
 
-            var mouseEvent = _mouseInputFactory.CreateMouseMoveInput(_gameHost.Viewport3D, e);
+            var mouseEvent = _mouseInputFactory.CreateMouseMoveInput(_viewport3DAccesor(), e);
             if (IsEnabled && mouseEvent != null)
             {
                 _inputs.Add(mouseEvent);
@@ -88,7 +91,7 @@ namespace KittyEngine.Core.Client.Input.WPFMouse
             //    return;
             //}
 
-            var mouseEvent = _mouseInputFactory.CreateMouseButtonInput(_gameHost.Viewport3D, e);
+            var mouseEvent = _mouseInputFactory.CreateMouseButtonInput(_viewport3DAccesor(), e);
             if (IsEnabled && mouseEvent != null)
             {
                 _inputs.Add(mouseEvent);
@@ -102,7 +105,7 @@ namespace KittyEngine.Core.Client.Input.WPFMouse
             //    return;
             //}
 
-            var mouseEvent = _mouseInputFactory.CreateMouseWheelInput(_gameHost.Viewport3D, e);
+            var mouseEvent = _mouseInputFactory.CreateMouseWheelInput(_viewport3DAccesor(), e);
             if (IsEnabled && mouseEvent != null)
             {
                 _inputs.Add(mouseEvent);

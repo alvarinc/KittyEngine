@@ -21,15 +21,17 @@ namespace KittyEngine.Core.Client.Input.ConsoleKeyboard
             _currentKeyBoardState = new Dictionary<int, bool>();
             _previousKeyBoardState = new Dictionary<int, bool>();
 
+            Reset();
+        }
+
+        public void Reset()
+        {
             var allConsoleKeys = (ConsoleKey[])Enum.GetValues(typeof(ConsoleKey));
 
             foreach (var key in allConsoleKeys)
             {
-                if (!_currentKeyBoardState.ContainsKey((int)key))
-                {
-                    _currentKeyBoardState.Add((int)key, false);
-                    _previousKeyBoardState.Add((int)key, false);
-                }
+                _currentKeyBoardState[(int)key] = false;
+                _previousKeyBoardState[(int)key] = false;
             }
         }
 

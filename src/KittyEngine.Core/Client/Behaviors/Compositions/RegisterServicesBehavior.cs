@@ -80,15 +80,6 @@ namespace KittyEngine.Core.Client.Behaviors.Compositions
 
         private void OnWPFStartup(IServiceContainer container)
         {
-            // WPF Keyboard
-            container.Register<IKeyboadPressedKeyMap, KeyboadPressedKeyMap>(ServiceBehavior.Scoped);
-            container.Register<IWPFKeyboardListener, WPFKeyboardListener>(ServiceBehavior.Scoped);
-
-            // WPF Mouse
-            container.Register<Input.WPFMouse.IMouseControllerInterop, Input.WPFMouse.MouseControllerInterop>(ServiceBehavior.Scoped);
-            container.Register<Input.WPFMouse.IMouseInputFactory, Input.WPFMouse.MouseInputFactory>(ServiceBehavior.Scoped);
-            container.Register<Input.WPFMouse.IWPFMouseListener, Input.WPFMouse.WPFMouseListener>(ServiceBehavior.Scoped);
-
             // WPF Inputs
             container.Register<IInputHandler, WPFInputHanlder>(ServiceBehavior.Scoped);
 

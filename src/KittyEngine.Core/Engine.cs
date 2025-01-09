@@ -1,4 +1,5 @@
 ﻿using KittyEngine.Core.Client;
+using KittyEngine.Core.Client.Input;
 using KittyEngine.Core.Client.Input.WPFKeyboard;
 using KittyEngine.Core.Client.Input.WPFMouse;
 using KittyEngine.Core.Client.Model;
@@ -155,16 +156,15 @@ namespace KittyEngine.Core
             }
 
             // Configure game host
-            var keyboardListener = container.Get<IWPFKeyboardListener>();
-            var mouseListener = container.Get<IWPFMouseListener>();
             var renderer = container.Get<Graphics.IRenderer>();
+            var inputHandler = container.Get<IInputHandler>();
             var clientState = container.Get<ClientState>();
-            var gameHost = new GameHost(keyboardListener, mouseListener, clientState);
+            var gameHost = new GameHost(inputHandler, clientState);
 
             placeholder.Children.Add(gameHost);
 
-            keyboardListener.RegisterKeyboardEvents(gameHost);
-            mouseListener.RegisterMouseEvents(gameHost);
+            inputHandler.RegisterEvents(gameHost);
+
             renderer.RegisterGraphicOutput(gameHost);
 
             // Start client

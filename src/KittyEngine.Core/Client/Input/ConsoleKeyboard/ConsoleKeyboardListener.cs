@@ -1,12 +1,39 @@
 ﻿
+using KittyEngine.Core.Client.Input.WPFKeyboard;
+
 namespace KittyEngine.Core.Client.Input.ConsoleKeyboard
 {
     public class ConsoleKeyboardListener
     {
         private ConsoleKeyboardController _keyboardController = new ConsoleKeyboardController();
+        
+        private bool _isEnabled = true;
+        
+        public bool IsEnabled => _isEnabled;
 
+        public void Disable()
+        {
+            _isEnabled = false;
+        }
+
+        public void Enable()
+        {
+            _isEnabled = true;
+            Reset();
+        }
+
+        public void Reset()
+        {
+            _keyboardController.Reset();
+
+        }
         public void HandleEvents(Action<ConsoleKeyboardInput> handler)
         {
+            if (!IsEnabled)
+            {
+                return;
+            }
+
             _keyboardController.HandleInputs();
 
             var pressedKeys = _keyboardController.GetPressedKeys();
