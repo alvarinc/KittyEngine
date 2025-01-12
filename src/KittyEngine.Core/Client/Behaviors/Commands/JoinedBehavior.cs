@@ -20,6 +20,7 @@ namespace KittyEngine.Core.Client.Behaviors.Commands
             player.Guid = guid;
             player.Name = name;
 
+            context.State.Mode = State.ClientMode.InGame;
             context.State.ConnectedUser = player;
             context.StateUpdated = true;
         }

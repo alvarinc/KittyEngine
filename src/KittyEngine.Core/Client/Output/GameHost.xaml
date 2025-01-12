@@ -11,7 +11,7 @@
     <Canvas x:Name="canvas">
         <Grid x:Name="menuHost" Width="{Binding ActualWidth, ElementName=canvas}" Height="{Binding ActualHeight, ElementName=canvas}"/>
 
-        <Grid x:Name="gameViewportHost" Width="{Binding ActualWidth, ElementName=canvas}" Height="{Binding ActualHeight, ElementName=canvas}" />
+        <Grid x:Name="gameViewportHost" Width="{Binding ActualWidth, ElementName=canvas}" Height="{Binding ActualHeight, ElementName=canvas}"/>
 
         <Grid x:Name="gameHeadUpDisplayHost" Width="{Binding ActualWidth, ElementName=canvas}" Height="{Binding ActualHeight, ElementName=canvas}" />
 

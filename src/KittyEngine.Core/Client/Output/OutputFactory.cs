@@ -11,7 +11,7 @@ namespace KittyEngine.Core.Client.Outputs
         { 
             ClipToBounds = true, 
             Focusable = true, 
-            Cursor = Cursors.None 
+            Cursor = Cursors.None,
         };
 
         public Viewport3D CreateViewport3D()
