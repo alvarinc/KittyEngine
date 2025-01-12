@@ -26,7 +26,7 @@ namespace KittyEngine.Core.Client.Outputs
 
         void timer_Tick(object sender, EventArgs e)
         {
-            _clientState.Mode = ClientMode.OutGameMenu;
+            _clientState.Mode = ClientMode.InGame;
             ((DispatcherTimer)sender).Stop();
         }
     }

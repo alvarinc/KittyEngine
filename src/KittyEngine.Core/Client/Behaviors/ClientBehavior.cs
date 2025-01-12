@@ -8,9 +8,7 @@ namespace KittyEngine.Core.Client.Behaviors
 {
     public abstract class ClientBehavior
     {
-        public virtual void OnStartGame()
-        {
-        }
+        public virtual void OnRenderOutput() { }
 
         public virtual void OnCommandReceived(GameCommandContext context, GameCommandInput input)
         {
@@ -24,10 +22,6 @@ namespace KittyEngine.Core.Client.Behaviors
         public virtual GameCommandInput OnKeyboardEvent(GameState gameState, string playerId, KeyboardInput input)
         {
             return null;
-        }
-
-        public virtual void OnStopGame()
-        {
         }
     }
 }

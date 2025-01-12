@@ -6,7 +6,7 @@ namespace KittyEngine.Core.State
     {
         public ClientState()
         {
-            Mode = ClientMode.InGame;
+            Mode = ClientMode.Startup;
             ConnectedUser = null;
             GameState = new GameState();
             Graphics = new GraphicState();

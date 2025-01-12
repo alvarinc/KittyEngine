@@ -93,7 +93,7 @@
                 var cmd = new GameCommandInput("join")
                     .AddArgument("guid", _player.Guid)
                     .AddArgument("name", _player.Name);
-
+                
                 _networkAdapter.SendMessage(cmd);
             };
 

@@ -3,6 +3,7 @@
     using KittyEngine.Core.Client.Behaviors;
     using KittyEngine.Core.Client.Commands;
     using KittyEngine.Core.Client.Input;
+    using KittyEngine.Core.Client.Outputs;
     using KittyEngine.Core.Graphics;
     using KittyEngine.Core.Server;
     using KittyEngine.Core.Services.Logging;
@@ -30,15 +31,17 @@
         private IRenderer _renderer;
         private IInputHandler _inputHandler;
         private IClientBehaviorContainer _behaviorContainer;
+        private IGameHost _gameHost;
         private ClientState _clientState;
 
-        public ClientGameLogic(ILogger logger, IRenderer renderer, IInputHandler inputHandler, ClientState clientState, IClientBehaviorContainer behaviorContainer)
+        public ClientGameLogic(ILogger logger, IRenderer renderer, IInputHandler inputHandler, ClientState clientState, IClientBehaviorContainer behaviorContainer, IGameHost gameHost)
         {
             _logger = logger;
             _renderer = renderer;
             _inputHandler = inputHandler;
             _behaviorContainer = behaviorContainer;
             _clientState = clientState;
+            _gameHost = gameHost;
         }
 
         public void Bind(NetworkAdapter networkAdapter)
@@ -115,6 +118,8 @@
 
         private void RenderOutput()
         {
+            _gameHost.Dispatcher.Invoke(() => _gameHost.Synchronize());
+
             if (_clientState.ConnectedUser != null && _gameStateUpdated)
             {
                 _renderer.RenderFrame(_clientState.GameState, _clientState.ConnectedUser.Guid);
