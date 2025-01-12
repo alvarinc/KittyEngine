@@ -20,6 +20,7 @@ namespace KittyEngine.Core.Client.Outputs
         private ClientMode? _previousClientMode;
 
         private IInputHandler _inputHandler;
+
         private IRenderer _renderer;
 
         private ISynchronizableOutput _hud;
@@ -72,23 +73,23 @@ namespace KittyEngine.Core.Client.Outputs
         {
             if (_previousClientMode.HasValue && _previousClientMode == _clientState.Mode)
             {
-            //    if (State.Shared.Mode == GameMode.ServerLoading || State.Shared.Mode == GameMode.ServerLoaded)
-            //    {
-            //        var synchronizable = menuHost.Children[0] as ISynchronizableOutput;
-            //        if (synchronizable != null)
-            //        {
-            //            synchronizable.Synchronize();
-            //        }
-            //    }
+                if (_clientState.Mode == ClientMode.ServerLoading || _clientState.Mode == ClientMode.ServerLoaded)
+                {
+                    var synchronizable = menuHost.Children[0] as ISynchronizableOutput;
+                    if (synchronizable != null)
+                    {
+                        synchronizable.Synchronize();
+                    }
+                }
 
                 return;
             }
 
-            //ImageSource inGameScreenshot = null;
-            //if (State.Shared.Mode == GameMode.InGameMenu)
-            //{
-            //    inGameScreenshot = TakeScreenshot();
-            //}
+            ImageSource inGameScreenshot = null;
+            if (_clientState.Mode == ClientMode.InGameMenu)
+            {
+                inGameScreenshot = TakeScreenshot();
+            }
 
             menuHost.Visibility = Visibility.Collapsed;
             gameViewportHost.Visibility = Visibility.Collapsed;
