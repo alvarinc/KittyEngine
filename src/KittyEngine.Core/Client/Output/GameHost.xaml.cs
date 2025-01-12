@@ -100,8 +100,7 @@ namespace KittyEngine.Core.Client.Outputs
                 case ClientMode.Startup:
                     _hud = null;
                     menuHost.Children.Clear();
-                    menuHost.Children.Add(new StartupScreen(_clientState));
-                    //menuHost.Children.Add(OutputFactory.CreateOutput(OutputTypes.StartupScreen));
+                    menuHost.Children.Add(_outputFactory.CreateOutput(OutputTypes.StartupScreen));
                     menuHost.Visibility = Visibility.Visible;
                     break;
                 //    case GameMode.OutGameMenu:
@@ -145,23 +144,23 @@ namespace KittyEngine.Core.Client.Outputs
                     //}
                     //Focus();
                     break;
-            //    case GameMode.InGameMenu:
-            //        menuHost.Children.Clear();
-            //        var inGameMenu = OutputFactory.CreateOutput(OutputTypes.InGameMenu);
-            //        var imageMenu = inGameMenu as Menus.InGameMenu.IImageMenu;
-            //        if (imageMenu != null)
-            //        {
-            //            imageMenu.InGameScreenShot = inGameScreenshot;
-            //        }
+                //    case GameMode.InGameMenu:
+                //        menuHost.Children.Clear();
+                //        var inGameMenu = OutputFactory.CreateOutput(OutputTypes.InGameMenu);
+                //        var imageMenu = inGameMenu as Menus.InGameMenu.IImageMenu;
+                //        if (imageMenu != null)
+                //        {
+                //            imageMenu.InGameScreenShot = inGameScreenshot;
+                //        }
 
-            //        menuHost.Children.Add(inGameMenu);
-            //        menuHost.Visibility = Visibility.Visible;
-            //        break;
-            //    case GameMode.Exit:
-            //        _hud = null;
-            //        menuHost.Children.Clear();
-            //        menuHost.Children.Add(OutputFactory.CreateOutput(OutputTypes.ExitScreen));
-            //        break;
+                //        menuHost.Children.Add(inGameMenu);
+                //        menuHost.Visibility = Visibility.Visible;
+                //        break;
+                case ClientMode.Exit:
+                    _hud = null;
+                    menuHost.Children.Clear();
+                    menuHost.Children.Add(_outputFactory.CreateOutput(OutputTypes.ExitScreen));
+                    break;
             }
 
             //State.HUD.Control = _hud;

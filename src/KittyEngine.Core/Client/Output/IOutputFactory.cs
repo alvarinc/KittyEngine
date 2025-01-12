@@ -8,5 +8,7 @@ namespace KittyEngine.Core.Client.Outputs
         Viewport3D CreateViewport3D();
 
         void RegisterViewport(Func<Viewport3D> builder);
+
+        UserControl CreateOutput(OutputTypes type);
     }
 }
