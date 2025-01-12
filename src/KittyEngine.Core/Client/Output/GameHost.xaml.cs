@@ -1,6 +1,5 @@
 ﻿using KittyEngine.Core.Client.Input;
-using KittyEngine.Core.Client.Input.WPFKeyboard;
-using KittyEngine.Core.Client.Input.WPFMouse;
+using KittyEngine.Core.Graphics;
 using KittyEngine.Core.State;
 using System.Windows;
 using System.Windows.Controls;
@@ -16,12 +15,12 @@ namespace KittyEngine.Core.Client.Outputs
     {
         private ClientState _clientState;
 
-        //private IOutputFactory OutputFactory
-        //    => Container.Get<IOutputFactory>();
+        private IOutputFactory _outputFactory;
 
         //private GameMode? _previousGameMode;
 
         private IInputHandler _inputHandler;
+        private IRenderer _renderer;
 
         private ISynchronizableOutput _hud;
 
@@ -40,11 +39,20 @@ namespace KittyEngine.Core.Client.Outputs
 
         public UserControl HostControl => this;
 
-        public GameHost(IInputHandler inputHandler, ClientState clientState)
+        public GameHost(IOutputFactory outputFactory, IInputHandler inputHandler, IRenderer renderer, ClientState clientState)
         {
             InitializeComponent();
 
+            _outputFactory = outputFactory;
+            gameViewportHost.Children.Clear();
+            gameViewportHost.Children.Add(_outputFactory.CreateViewport3D());
+
             _inputHandler = inputHandler;
+            _inputHandler.RegisterEvents(this);
+
+            _renderer = renderer;
+            _renderer.RegisterOutput(this);
+
             _clientState = clientState;
 
             Focusable = true;
@@ -60,13 +68,13 @@ namespace KittyEngine.Core.Client.Outputs
             };
         }
 
-        public void AttachViewport(Viewport3D viewport)
-        {
-            gameViewportHost.Children.Clear();
-            gameViewportHost.Children.Add(viewport);
+        //public void AttachViewport(Viewport3D viewport)
+        //{
+        //    gameViewportHost.Children.Clear();
+        //    gameViewportHost.Children.Add(viewport);
 
-            Synchronize();
-        }
+        //    Synchronize();
+        //}
 
         public void Synchronize()
         {

@@ -3,11 +3,11 @@ using KittyEngine.Core.Graphics.Models.Builders;
 
 namespace KittyEngine.Core.Graphics.Renderer
 {
-    public class MapBuilder : IMapBuilder
+    public class GameWorldBuilder : IGameWorldBuilder
     {
         private ILayeredModel3DFactory _layeredModel3DFactory;
 
-        public MapBuilder(ILayeredModel3DFactory layeredModel3DFactory)
+        public GameWorldBuilder(ILayeredModel3DFactory layeredModel3DFactory)
         {
             _layeredModel3DFactory = layeredModel3DFactory;
         }

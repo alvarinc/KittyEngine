@@ -5,8 +5,8 @@ namespace KittyEngine.Core.Graphics
 {
     public interface IRenderer
     {
-        void RegisterGraphicOutput(IGameHost host);
+        void RegisterOutput(IGameHost host);
 
-        void Render(GameState _gameState, string playerId);
+        void RenderFrame(GameState _gameState, string playerId);
     }
 }
