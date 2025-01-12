@@ -56,8 +56,6 @@
                 _gameLogic.RenderLoop();
             }
 
-            _gameLogic.Terminate(token);
-
             _client.Stop();
         }
 

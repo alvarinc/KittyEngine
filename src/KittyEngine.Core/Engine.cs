@@ -1,4 +1,5 @@
 ﻿using KittyEngine.Core.Client;
+using KittyEngine.Core.Client.Behaviors.Compositions;
 using KittyEngine.Core.Client.Input;
 using KittyEngine.Core.Client.Input.WPFKeyboard;
 using KittyEngine.Core.Client.Input.WPFMouse;
@@ -81,10 +82,8 @@ namespace KittyEngine.Core
         {
             var container = _containerBuilder();
             var compositionBehaviors = new List<CompositionBehavior>()
-            {
-                new Client.Behaviors.Compositions.RegisterServicesBehavior(ClientType.Console),
-                new Client.Behaviors.Compositions.RegisterAndConfigureFpsBehavior(),
-            };
+                .AddClientBehavior(new Client.Behaviors.Compositions.RegisterServicesBehavior(ClientType.Console))
+                .AddFpsClientBehaviors();
 
             // Update list of startup behaviors if needed
             if (onloadBehaviors != null)
@@ -132,10 +131,8 @@ namespace KittyEngine.Core
         {
             var container = _containerBuilder();
             var compositionBehaviors = new List<CompositionBehavior>()
-            {
-                new Client.Behaviors.Compositions.RegisterServicesBehavior(ClientType.Desktop),
-                new Client.Behaviors.Compositions.RegisterAndConfigureFpsBehavior(),
-            };
+                .AddClientBehavior(new Client.Behaviors.Compositions.RegisterServicesBehavior(ClientType.Desktop))
+                .AddFpsClientBehaviors();
 
             // Update list of startup behaviors if needed
             if (onloadBehaviors != null)
@@ -185,7 +182,7 @@ namespace KittyEngine.Core
         {
             var container = _containerBuilder();
             var compositionBehaviors = new List<CompositionBehavior>()
-                .AddComposer<RegisterServicesBehavior>()
+                .AddComposer<Server.Behaviors.Compositions.RegisterServicesBehavior>()
                 .AddFpsServerBehaviors();
 
             // Update list of startup behaviors if needed

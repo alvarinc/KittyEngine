@@ -16,8 +16,6 @@
         void HandleServerMessage(GameCommandInput input);
 
         void RenderLoop();
-
-        void Terminate(CancellationToken token);
     }
 
     internal class ClientGameLogic : IClientGameLogic
@@ -85,12 +83,15 @@
                 _networkAdapter.SendMessage(input);
             }
 
-            //_gameStateUpdated = inputs.Count > 0;
-
             _networkAdapter.HandleServerEvents();
 
             RenderOutput();
 
+            WaitForNextFrame(stopwatch);
+        }
+
+        private void WaitForNextFrame(Stopwatch stopwatch)
+        {
             stopwatch.Stop();
             if (stopwatch.ElapsedMilliseconds < _millisecondsPerUpdate)
             {
@@ -100,11 +101,6 @@
             {
                 _logger.Log(LogLevel.Warn, $"Client update took too long: {stopwatch.ElapsedMilliseconds}ms");
             }
-        }
-
-        public void Terminate(CancellationToken token)
-        {
-
         }
 
         private List<GameCommandInput> HandleInputEvents()

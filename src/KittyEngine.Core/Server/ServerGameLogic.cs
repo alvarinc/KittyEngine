@@ -113,7 +113,6 @@
             var commandResultByPeers = ExecuteCommands();
 
             // Update physics
-            //_serverState.GameTime.Mark();
             if (_physicsEngine.UpdatePhysics(_serverState.GameState, gameTime.DeltaTime.TotalMilliseconds))
             {
                 StateUpdatedByServer(commandResultByPeers);
@@ -122,6 +121,20 @@
             // Send updated state to clients
             SynchronizeClients(commandResultByPeers, synchronizer);
 
+            WaitForNextFrame(gameTime);
+        }
+
+        public void OnStopGame()
+        {
+            var behaviors = _serverBehaviorContainer.GetBehaviors();
+            foreach (var behavior in behaviors)
+            {
+                behavior.OnStopGame();
+            }
+        }
+
+        private void WaitForNextFrame(GameTime gameTime)
+        {
             var elapsed = gameTime.DeltaTime;
             gameTime.Mark();
             if (elapsed.TotalMilliseconds < _millisecondsPerUpdate)
@@ -131,15 +144,6 @@
             else if (elapsed.TotalMilliseconds > _millisecondsPerUpdate * 2)
             {
                 _logger.Log(LogLevel.Warn, $"Server update took too long: {elapsed.TotalMilliseconds}ms");
-            }
-        }
-
-        public void OnStopGame()
-        {
-            var behaviors = _serverBehaviorContainer.GetBehaviors();
-            foreach (var behavior in behaviors)
-            {
-                behavior.OnStopGame();
             }
         }
 
