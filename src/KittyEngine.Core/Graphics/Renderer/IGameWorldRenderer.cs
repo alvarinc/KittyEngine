@@ -4,10 +4,10 @@ using KittyEngine.Core.Physics;
 
 namespace KittyEngine.Core.Graphics.Renderer
 {
-    internal interface IMapRenderer
+    internal interface IGameWorldRenderer
     {
-        void BindGraphicsToViewport(IGameHost host);
-        void LoadMap(MapDefinition mapDefinition);
+        void RegisterOutput(IGameHost host);
+        void LoadGameWorld(MapDefinition mapDefinition);
         void UpdateCamera();
         void UpdatePlayers();
     }

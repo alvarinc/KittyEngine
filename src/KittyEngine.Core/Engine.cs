@@ -155,18 +155,9 @@ namespace KittyEngine.Core
                 behavior.OnConfigureServices(container);
             }
 
-            // Configure game host
-            var renderer = container.Get<Graphics.IRenderer>();
-            var inputHandler = container.Get<IInputHandler>();
-            var clientState = container.Get<ClientState>();
-            var gameHost = new GameHost(inputHandler, clientState);
-
+            // Attach game host to placeholder
             placeholder.Children.Clear();
-            placeholder.Children.Add(gameHost);
-
-            inputHandler.RegisterEvents(gameHost);
-
-            renderer.RegisterGraphicOutput(gameHost);
+            placeholder.Children.Add(container.Get<IGameHost>().HostControl);
 
             // Start client
             var configuration = container.Get<IConfigurationService>();

@@ -17,6 +17,7 @@ namespace KittyEngine.Core.Client.Input
         public WPFInputHanlder(IClientBehaviorContainer behaviorContainer)
         {
             _behaviorContainer = behaviorContainer;
+
             _keyboardListener = new WPFKeyboardListener();
             _mouseListener = new WPFMouseListener();
         }

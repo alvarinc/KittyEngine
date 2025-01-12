@@ -8,12 +8,12 @@ namespace KittyEngine.Core.Terminal.Renderer
     {
         private IGameHost _host;
 
-        public void RegisterGraphicOutput(IGameHost host)
+        public void RegisterOutput(IGameHost host)
         {
             _host = host;
         }
 
-        public void Render(GameState _gameState, string playerId)
+        public void RenderFrame(GameState _gameState, string playerId)
         {
             var player = _gameState.GetPlayer(playerId);
             if (player == null)

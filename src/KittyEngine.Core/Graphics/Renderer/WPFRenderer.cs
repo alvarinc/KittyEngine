@@ -8,19 +8,20 @@ namespace KittyEngine.Core.Graphics.Renderer
         private IGameHost _host;
         private bool _initialized = false;
 
-        private IMapRenderer _mapRenderer;
+        private IGameWorldRenderer _gameWorldRenderer;
 
-        public WPFRenderer(IMapRenderer mapRenderer)
+        public WPFRenderer(IGameWorldRenderer gameWorldRenderer)
         {
-            _mapRenderer = mapRenderer;
+            _gameWorldRenderer = gameWorldRenderer;
         }
 
-        public void RegisterGraphicOutput(IGameHost host)
+        public void RegisterOutput(IGameHost host)
         {
             _host = host;
+            _gameWorldRenderer.RegisterOutput(_host);
         }
 
-        public void Render(GameState _gameState, string playerId)
+        public void RenderFrame(GameState _gameState, string playerId)
         {
             var player = _gameState.GetPlayer(playerId);
             if (player == null)
@@ -32,8 +33,7 @@ namespace KittyEngine.Core.Graphics.Renderer
             {
                 _host.Dispatcher.Invoke(() =>
                 {
-                    _mapRenderer.BindGraphicsToViewport(_host);
-                    _mapRenderer.LoadMap(_gameState.Map);
+                    _gameWorldRenderer.LoadGameWorld(_gameState.Map);
                 });
 
                 _initialized = true;
@@ -41,8 +41,8 @@ namespace KittyEngine.Core.Graphics.Renderer
 
             _host.Dispatcher.Invoke(() =>
             {
-                _mapRenderer.UpdateCamera();
-                _mapRenderer.UpdatePlayers();
+                _gameWorldRenderer.UpdateCamera();
+                _gameWorldRenderer.UpdatePlayers();
             });
         }
     }

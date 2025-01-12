@@ -86,12 +86,15 @@ namespace KittyEngine.Core.Client.Behaviors.Compositions
             // WPF Renderer
             container.Register<IImageAssetProvider, ImageAssetProvider>(ServiceBehavior.Scoped);
             container.Register<ILayeredModel3DFactory, LayeredModel3DFactory>(ServiceBehavior.Scoped);
-            container.Register<IMapBuilder, MapBuilder>(ServiceBehavior.Scoped);
-            container.Register<IMapRenderer, MapRenderer>(ServiceBehavior.Scoped);
+            container.Register<IGameWorldBuilder, GameWorldBuilder>(ServiceBehavior.Scoped);
+            container.Register<IGameWorldRenderer, GameWorldRenderer>(ServiceBehavior.Scoped);
 
             // WPF Output
             container.Register<IOutputFactory, OutputFactory>(ServiceBehavior.Scoped);
             container.Register<IRenderer, WPFRenderer>(ServiceBehavior.Scoped);
+
+            // WPF Host
+            container.Register<IGameHost, GameHost>(ServiceBehavior.Scoped);
         }
     }
 }

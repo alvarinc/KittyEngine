@@ -8,41 +8,32 @@ using System.Windows.Media.Media3D;
 
 namespace KittyEngine.Core.Graphics.Renderer
 {
-    internal class MapRenderer : IMapRenderer
+    internal class GameWorldRenderer : IGameWorldRenderer
     {
-        private IOutputFactory _outputFactory;
-        private IMapBuilder _mapBuilder;
+        private IGameWorldBuilder _gameWorldBuilder;
         private ILayeredModel3DFactory _modelFactory;
 
         private ClientState _clientState;
         private Viewport3D _viewport3D;
         private PlayerCameraState _playerCameraState;
 
-        public MapRenderer(IOutputFactory outputFactory, IMapBuilder mapBuilder, ILayeredModel3DFactory modelFactory, ClientState clientState)
+        public GameWorldRenderer(IGameWorldBuilder gameWorldBuilder, ILayeredModel3DFactory modelFactory, ClientState clientState)
         {
-            _outputFactory = outputFactory;
-            _mapBuilder = mapBuilder;
+            _gameWorldBuilder = gameWorldBuilder;
             _modelFactory = modelFactory;
             _clientState = clientState;
         }
 
-        public void BindGraphicsToViewport(IGameHost host)
+        public void RegisterOutput(IGameHost host)
         {
-            // Ensure viewport is created
-            if (host.Viewport3D == null)
-            {
-                _viewport3D = _outputFactory.CreateViewport3D();
-                host.AttachViewport(_viewport3D);
-
-                _playerCameraState = InitializeCamera();
-            }
+            _viewport3D = host.Viewport3D;
         }
 
-        public void LoadMap(MapDefinition mapDefinition)
+        public void LoadGameWorld(MapDefinition mapDefinition)
         {
             // Create map
             _clientState.Graphics.Map.Clear();
-            _clientState.Graphics.Map.AddRange(_mapBuilder.Create(mapDefinition));
+            _clientState.Graphics.Map.AddRange(_gameWorldBuilder.Create(mapDefinition));
 
             // Attach world
             _viewport3D.Children.Clear();
@@ -53,6 +44,7 @@ namespace KittyEngine.Core.Graphics.Renderer
             }
 
             // Attach camera
+            _playerCameraState = CreateCamera();
             _viewport3D.Camera = _playerCameraState.Camera;
         }
 
@@ -105,7 +97,7 @@ namespace KittyEngine.Core.Graphics.Renderer
             return _modelFactory.Build(definition);
         }
 
-        private PlayerCameraState InitializeCamera()
+        private PlayerCameraState CreateCamera()
         {
             var cameraContext = new PlayerCameraState();
             cameraContext.Camera = new PerspectiveCamera

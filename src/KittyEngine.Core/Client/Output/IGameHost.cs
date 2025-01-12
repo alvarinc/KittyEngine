@@ -10,7 +10,5 @@ namespace KittyEngine.Core.Client.Outputs
         Viewport3D Viewport3D { get; }
 
         UserControl HostControl { get; }
-
-        void AttachViewport(Viewport3D viewport);
     }
 }

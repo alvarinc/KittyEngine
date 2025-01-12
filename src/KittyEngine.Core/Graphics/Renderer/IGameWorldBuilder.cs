@@ -3,7 +3,7 @@ using KittyEngine.Core.Graphics.Models.Builders;
 
 namespace KittyEngine.Core.Graphics.Renderer
 {
-    public interface IMapBuilder
+    public interface IGameWorldBuilder
     {
         List<LayeredModel3D> Create(MapDefinition mapDefinition);
     }

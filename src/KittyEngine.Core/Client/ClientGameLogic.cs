@@ -121,7 +121,7 @@
         {
             if (_clientState.ConnectedUser != null && _gameStateUpdated)
             {
-                _renderer.Render(_clientState.GameState, _clientState.ConnectedUser.Guid);
+                _renderer.RenderFrame(_clientState.GameState, _clientState.ConnectedUser.Guid);
                 _gameStateUpdated = false;
             }
         }
