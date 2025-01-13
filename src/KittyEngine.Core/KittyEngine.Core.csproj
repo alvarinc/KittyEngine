@@ -30,13 +30,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Client\Output\ConnectionDialog.xaml.cs">
+    <Compile Update="Client\Outputs\LoginDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
 
   <ItemGroup>
-    <Page Update="Client\Output\ConnectionDialog.xaml">
+    <Page Update="Client\Outputs\LoginDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>

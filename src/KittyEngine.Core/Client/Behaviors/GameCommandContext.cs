@@ -1,7 +1,7 @@
 ﻿using KittyEngine.Core.Server;
 using KittyEngine.Core.State;
 
-namespace KittyEngine.Core.Client.Commands
+namespace KittyEngine.Core.Client.Behaviors
 {
     public class GameCommandContext
     {

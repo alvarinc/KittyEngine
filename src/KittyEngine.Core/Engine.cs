@@ -39,6 +39,24 @@ namespace KittyEngine.Core
         }
 
         /// <summary>
+        /// Display the login dialog to connect to the Game server
+        /// </summary>
+        /// <param name="loginResult">login result</param>
+        /// <returns>returns true when login succeed</returns>
+        public static bool ShowLoginDialog(out LoginResult loginResult)
+        {
+            var dialog = new LoginDialog();
+            if (dialog.ShowDialog() == true)
+            {
+                loginResult = dialog.LoginResult;
+                return true;
+            }
+
+            loginResult = null;
+            return false;
+        }
+
+        /// <summary>
         /// Run Game Client thread
         /// </summary>
         /// <param name="player">Player informations</param>

@@ -1,7 +1,6 @@
 ﻿namespace KittyEngine.Core.Client
 {
     using KittyEngine.Core.Client.Behaviors;
-    using KittyEngine.Core.Client.Commands;
     using KittyEngine.Core.Client.Input;
     using KittyEngine.Core.Client.Outputs;
     using KittyEngine.Core.Graphics;
@@ -132,6 +131,11 @@
             if (_networkAdapter == null)
             {
                 throw new InvalidOperationException("No network adapter connected.");
+            }
+
+            if (_clientState.Mode == ClientMode.Exit)
+            {
+                _networkAdapter.SendMessage(new GameCommandInput("exit"));
             }
         }
     }

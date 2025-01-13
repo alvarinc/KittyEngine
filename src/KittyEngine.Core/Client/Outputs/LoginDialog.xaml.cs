@@ -6,32 +6,27 @@ namespace KittyEngine.Core.Client.Outputs
     /// <summary>
     /// Interaction logic for ServerInputDialog.xaml
     /// </summary>
-    public partial class ConnectionDialog : Window
+    public partial class LoginDialog : Window
     {
-        public ServerInput ServerInput { get; private set; }
+        public LoginResult LoginResult { get; private set; }
 
-        public PlayerInput PlayerInput { get; private set; }
-
-        public ConnectionDialog()
+        public LoginDialog()
         {
             InitializeComponent();
 
-            var guid = Guid.NewGuid();
-            PlayerInput = new PlayerInput(guid.ToString(), $"Player-{guid}");
-            UsernameTextBox.Text = PlayerInput.Name;
-
-            ServerInput = new ServerInput("localhost", 9050);
-            ServerAddressTextBox.Text = ServerInput.Address;
-            PortTextBox.Text = ServerInput.Port.ToString();
+            LoginResult = LoginResult.GetDefault();
+            UsernameTextBox.Text = LoginResult.PlayerInput.Name;
+            ServerAddressTextBox.Text = LoginResult.ServerInput.Address;
+            PortTextBox.Text = LoginResult.ServerInput.Port.ToString();
         }
 
         private void OkButton_Click(object sender, RoutedEventArgs e)
         {
-            PlayerInput = new PlayerInput(PlayerInput.Guid, UsernameTextBox.Text);
+            LoginResult.PlayerInput = new PlayerInput(LoginResult.PlayerInput.Guid, UsernameTextBox.Text);
 
             if (int.TryParse(PortTextBox.Text, out int port))
             {
-                ServerInput = new ServerInput(ServerAddressTextBox.Text, port);
+                LoginResult.ServerInput = new ServerInput(ServerAddressTextBox.Text, port);
                 DialogResult = true;
             }
             else

@@ -144,23 +144,33 @@ namespace KittyEngine.Core.Client.Outputs
                     //}
                     //Focus();
                     break;
-                //    case GameMode.InGameMenu:
-                //        menuHost.Children.Clear();
-                //        var inGameMenu = OutputFactory.CreateOutput(OutputTypes.InGameMenu);
-                //        var imageMenu = inGameMenu as Menus.InGameMenu.IImageMenu;
-                //        if (imageMenu != null)
-                //        {
-                //            imageMenu.InGameScreenShot = inGameScreenshot;
-                //        }
+                case ClientMode.InGameMenu:
+                    menuHost.Children.Clear();
+                    var inGameMenu = _outputFactory.CreateOutput(OutputTypes.InGameMenu);
+                    var imageMenu = inGameMenu as Menus.InGameMenu.IImageMenu;
+                    if (imageMenu != null)
+                    {
+                        imageMenu.InGameScreenShot = inGameScreenshot;
+                    }
 
-                //        menuHost.Children.Add(inGameMenu);
-                //        menuHost.Visibility = Visibility.Visible;
-                //        break;
+                    menuHost.Children.Add(inGameMenu);
+                    menuHost.Visibility = Visibility.Visible;
+                    break;
                 case ClientMode.Exit:
                     _hud = null;
                     menuHost.Children.Clear();
                     menuHost.Children.Add(_outputFactory.CreateOutput(OutputTypes.ExitScreen));
                     break;
+            }
+
+            if (_clientState.Mode == ClientMode.InGame)
+            {
+                _inputHandler.Enable();
+                _inputHandler.Reset();
+            }
+            else
+            {
+                _inputHandler.Disable();
             }
 
             //State.HUD.Control = _hud;
@@ -183,19 +193,22 @@ namespace KittyEngine.Core.Client.Outputs
         {
             if (e.Key == System.Windows.Input.Key.F11)
             {
+                var inputHandlerEnabled = _inputHandler.IsEnabled;
+                if (inputHandlerEnabled)
+                {
+                    _inputHandler.Disable();
+                }
+
                 var parentWindow = Window.GetWindow(this);
                 if (_clientState.ClientWindow.IsInFullScreenMode)
                 {
-                    _inputHandler.Disable();
                     parentWindow.WindowStyle = _clientState.ClientWindow.NormalWindowsStyle;
                     parentWindow.Topmost = _clientState.ClientWindow.NormalTopmost;
                     parentWindow.WindowState = _clientState.ClientWindow.NormalWindowsState;
                     _clientState.ClientWindow.IsInFullScreenMode = false;
-                    _inputHandler.Enable();
                 }
                 else
                 {
-                    _inputHandler.Disable();
                     _clientState.ClientWindow.NormalWindowsStyle = parentWindow.WindowStyle;
                     _clientState.ClientWindow.NormalWindowsState = parentWindow.WindowState;
                     _clientState.ClientWindow.NormalTopmost = parentWindow.Topmost;
@@ -204,6 +217,10 @@ namespace KittyEngine.Core.Client.Outputs
                     parentWindow.WindowState = WindowState.Normal;
                     parentWindow.WindowState = WindowState.Maximized;
                     _clientState.ClientWindow.IsInFullScreenMode = true;
+                }
+
+                if (inputHandlerEnabled)
+                {
                     _inputHandler.Enable();
                 }
             }

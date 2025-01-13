@@ -72,13 +72,13 @@ namespace KittyEngine.Core.Client.Input.WPFMouse
 
         private void UserControl_MouseEvents(object sender, MouseEventArgs e)
         {
-            //if (State.Shared.Mode != GameMode.Play)
-            //{
-            //    return;
-            //}
+            if (!IsEnabled)
+            {
+                return;
+            }
 
             var mouseEvent = _mouseInputFactory.CreateMouseMoveInput(_viewport3DAccesor(), e);
-            if (IsEnabled && mouseEvent != null)
+            if (mouseEvent != null)
             {
                 _inputs.Add(mouseEvent);
             }
@@ -86,13 +86,13 @@ namespace KittyEngine.Core.Client.Input.WPFMouse
 
         private void UserControl_MouseButtonEvents(object sender, MouseButtonEventArgs e)
         {
-            //if (State.Shared.Mode != GameMode.Play)
-            //{
-            //    return;
-            //}
+            if (!IsEnabled)
+            {
+                return;
+            }
 
             var mouseEvent = _mouseInputFactory.CreateMouseButtonInput(_viewport3DAccesor(), e);
-            if (IsEnabled && mouseEvent != null)
+            if (mouseEvent != null)
             {
                 _inputs.Add(mouseEvent);
             }
@@ -100,13 +100,13 @@ namespace KittyEngine.Core.Client.Input.WPFMouse
 
         private void UserControl_MouseWheel(object sender, MouseWheelEventArgs e)
         {
-            //if (State.Shared.Mode != GameMode.Play)
-            //{
-            //    return;
-            //}
+            if (!IsEnabled)
+            {
+                return;
+            }
 
             var mouseEvent = _mouseInputFactory.CreateMouseWheelInput(_viewport3DAccesor(), e);
-            if (IsEnabled && mouseEvent != null)
+            if (mouseEvent != null)
             {
                 _inputs.Add(mouseEvent);
             }

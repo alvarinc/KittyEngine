@@ -25,7 +25,7 @@ namespace KittyEngine.Core.Client.Outputs
                 { OutputTypes.StartupScreen, () => new StartupScreen(_clientState) },
                 //{ OutputTypes.OutGameMenu, () => new Menus.OutGameMenu.MainMenu() },
                 //{ OutputTypes.LoadScreen, () => new LoadScreen() },
-                //{ OutputTypes.InGameMenu, () => new Menus.InGameMenu.MainMenu() },
+                { OutputTypes.InGameMenu, () => new Menus.InGameMenu.MainMenu(_clientState) },
                 //{ OutputTypes.HeadUpDisplay, () => new HeadUpDisplay() },
                 { OutputTypes.ExitScreen, () => new ExitScreen() },
             };
