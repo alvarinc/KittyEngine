@@ -1,5 +1,4 @@
 ﻿using KittyEngine.Core;
-using KittyEngine.Core.Client.Outputs;
 using KittyEngine.SampleMaps;
 using System.Windows;
 
@@ -18,10 +17,9 @@ namespace KittyEngine.SampleGame
 
         private void StartGame()
         {
-            var dialog = new ConnectionDialog();
-            if (dialog.ShowDialog() == true)
+            if (Engine.ShowLoginDialog(out var loginResult) == true)
             {
-                Engine.StartWPFClient(dialog.PlayerInput, server:dialog.ServerInput, placeholder: gameView, onloadBehaviors: behaviors =>
+                Engine.StartWPFClient(loginResult.PlayerInput, server: loginResult.ServerInput, placeholder: gameView, onloadBehaviors: behaviors =>
                 {
                     behaviors.AddComposer(new RegisterSampleMapsBehavior(EngineRuntime.Client));
                 });

@@ -81,10 +81,6 @@ namespace KittyEngine.Core.Client.Input.WPFKeyboard
 
         private void UserControl_KeyEvents(object sender, KeyEventArgs e)
         {
-            //if (State.Shared.Mode != GameMode.Play || !IsEnabled)
-            //{
-            //    return;
-            //}
             if (!IsEnabled)
             {
                 return;

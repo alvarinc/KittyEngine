@@ -1,6 +1,4 @@
-﻿using KittyEngine.Core.Client.Commands;
-using KittyEngine.Core.Client.Input.WPFKeyboard;
-using KittyEngine.Core.Client.Input;
+﻿using KittyEngine.Core.Client.Input;
 using KittyEngine.Core.Client.Outputs;
 using KittyEngine.Core.GameEngine.Graphics.Assets;
 using KittyEngine.Core.Graphics.Models.Builders;

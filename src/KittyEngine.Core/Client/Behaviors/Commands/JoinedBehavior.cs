@@ -1,5 +1,4 @@
-﻿using KittyEngine.Core.Client.Commands;
-using KittyEngine.Core.Server;
+﻿using KittyEngine.Core.Server;
 using KittyEngine.Core.Server.Model;
 
 namespace KittyEngine.Core.Client.Behaviors.Commands

@@ -6,11 +6,19 @@ namespace KittyEngine.Core.Client.Behaviors.Inputs
 {
     public class ExitBehavior : ClientBehavior
     {
+        ClientState _clientState;
+
+        public ExitBehavior(ClientState clientState)
+        {
+            _clientState = clientState;
+        }
+
         public override GameCommandInput OnKeyboardEvent(GameState gameState, string playerId, KeyboardInput input)
         {
             if (input.PressedKeys.Contains(System.Windows.Input.Key.Escape))
             {
-                return new GameCommandInput("exit");
+                _clientState.Mode = ClientMode.InGameMenu;
+                //return new GameCommandInput("exit");
             }
 
             return null;
