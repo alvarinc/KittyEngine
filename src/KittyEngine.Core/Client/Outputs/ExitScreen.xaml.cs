@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using KittyEngine.Core.State;
+using System.Windows.Controls;
 
 namespace KittyEngine.Core.Client
 {
@@ -7,9 +8,19 @@ namespace KittyEngine.Core.Client
     /// </summary>
     public partial class ExitScreen : UserControl
     {
-        public ExitScreen()
+        private ClientState _clientState;
+
+        public ExitScreen(ClientState clientState)
         {
             InitializeComponent();
+            this.Loaded += ExitScreen_Loaded;
+
+            _clientState = clientState;
+        }
+
+        private void ExitScreen_Loaded(object sender, System.Windows.RoutedEventArgs e)
+        {
+            _clientState.Mode = ClientMode.Terminated;
         }
     }
 }
