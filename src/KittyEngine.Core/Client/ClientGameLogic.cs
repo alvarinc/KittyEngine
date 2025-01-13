@@ -133,7 +133,7 @@
                 throw new InvalidOperationException("No network adapter connected.");
             }
 
-            if (_clientState.Mode == ClientMode.Exit)
+            if (_clientState.Mode == ClientMode.Terminated)
             {
                 _networkAdapter.SendMessage(new GameCommandInput("exit"));
             }
