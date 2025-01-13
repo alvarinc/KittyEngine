@@ -1,5 +1,4 @@
-﻿
-namespace KittyEngine.Core.Server.Commands
+﻿namespace KittyEngine.Core.Server.Behaviors
 {
     public struct GameCommandResult
     {

@@ -1,5 +1,4 @@
-﻿using KittyEngine.Core.Server.Commands;
-using KittyEngine.Core.Services.Logging;
+﻿using KittyEngine.Core.Services.Logging;
 using System.Windows.Media.Media3D;
 
 namespace KittyEngine.Core.Server.Behaviors.Commands

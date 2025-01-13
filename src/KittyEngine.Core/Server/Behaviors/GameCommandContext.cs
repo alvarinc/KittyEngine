@@ -2,7 +2,7 @@
 using KittyEngine.Core.State;
 using LiteNetLib;
 
-namespace KittyEngine.Core.Server.Commands
+namespace KittyEngine.Core.Server.Behaviors
 {
     public class GameCommandContext
     {

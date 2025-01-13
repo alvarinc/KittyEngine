@@ -2,7 +2,6 @@
 {
     using KittyEngine.Core.Physics;
     using KittyEngine.Core.Server.Behaviors;
-    using KittyEngine.Core.Server.Commands;
     using KittyEngine.Core.Server.Model;
     using KittyEngine.Core.Services;
     using KittyEngine.Core.Services.Logging;

@@ -1,5 +1,4 @@
-﻿using KittyEngine.Core.Server.Commands;
-using KittyEngine.Core.Services.Logging;
+﻿using KittyEngine.Core.Services.Logging;
 using KittyEngine.Core.State;
 
 namespace KittyEngine.Core.Server.Behaviors.Commands
