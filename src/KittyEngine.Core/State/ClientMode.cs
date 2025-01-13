@@ -10,6 +10,7 @@ namespace KittyEngine.Core.State
         ServerLoaded,
         InGame,
         InEditor,
-        Exit
+        Exit,
+        Terminated
     }
 }

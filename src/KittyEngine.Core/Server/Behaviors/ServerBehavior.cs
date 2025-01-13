@@ -1,6 +1,4 @@
-﻿using KittyEngine.Core.Server.Commands;
-
-namespace KittyEngine.Core.Server.Behaviors
+﻿namespace KittyEngine.Core.Server.Behaviors
 {
     public class ServerBehavior
     {
