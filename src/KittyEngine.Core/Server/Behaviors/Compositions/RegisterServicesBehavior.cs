@@ -1,5 +1,4 @@
-﻿using KittyEngine.Core.Client.Behaviors;
-using KittyEngine.Core.GameEngine.Graphics.Assets;
+﻿using KittyEngine.Core.GameEngine.Graphics.Assets;
 using KittyEngine.Core.Graphics.Assets.Maps;
 using KittyEngine.Core.Graphics.Models.Builders;
 using KittyEngine.Core.Physics;
