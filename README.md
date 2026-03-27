@@ -2,7 +2,7 @@
 
 ### How to use
 
-For explore maps, change `KittyEngine.SampleMaps.MapNames` value in file `src\KittyEngine.Server\StartupBehavior.cs`
+For use an other map, change `KittyEngine.SampleMaps.MapNames` value in file `src\KittyEngine.Server\StartupBehavior.cs`
 
 Start `KittyEngine.Server`. Then start `KittyEngine.SampleGame`
 
