@@ -1,6 +1,22 @@
 # client-server 3D Engine in dotnet WPF
 
-for explore maps, change `KittyEngine.SampleMaps.MapNames` value in file `src\KittyEngine.Server\StartupBehavior.cs`
+### How to use
+
+For explore maps, change `KittyEngine.SampleMaps.MapNames` value in file `src\KittyEngine.Server\StartupBehavior.cs`
+
+Start `KittyEngine.Server`. Then start `KittyEngine.SampleGame`
+
+### Commands
+
+- Full screen is available by press `F11`
+
+- Move with mouse en keyboard `Q`, `S`, `D`, `Z`
+
+- Jump by press `Space`
+
+- Quit by press `Esc` to open the in-game menu.
+
+### Screenshoots
 
 ![Logon screen](docs/sample-01.png)
 
