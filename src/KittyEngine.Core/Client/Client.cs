@@ -91,8 +91,8 @@
 
                 _logger.Log(LogLevel.Info, $"Join game as {_player.Name}");
                 var cmd = new GameCommandInput("join")
-                    .AddArgument("guid", _player.Guid)
-                    .AddArgument("name", _player.Name);
+                    .WithArgument("guid", _player.Guid)
+                    .WithArgument("name", _player.Name);
                 
                 _networkAdapter.SendMessage(cmd);
             };

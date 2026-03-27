@@ -238,14 +238,14 @@
             }
 
             var patchCmd = new GameCommandInput("sync")
-                .AddArgument("entity", "gamestate")
-                .AddArgument("mode", "patch")
-                .AddArgument("value", synchronizer.GetJsonPatch());
+                .WithArgument("entity", "gamestate")
+                .WithArgument("mode", "patch")
+                .WithArgument("value", synchronizer.GetJsonPatch());
 
             var fullCmd = new GameCommandInput("sync")
-                .AddArgument("entity", "gamestate")
-                .AddArgument("mode", "full")
-                .AddArgument("value", synchronizer.GetJson());
+                .WithArgument("entity", "gamestate")
+                .WithArgument("mode", "full")
+                .WithArgument("value", synchronizer.GetJson());
 
             ApplyServerResults(commandResultByPeers);
 

@@ -54,7 +54,7 @@ namespace KittyEngine.Core.Client.Behaviors.Inputs
                 player.LookDirection = body.LookDirection;
 
                 return new GameCommandInput("rotate3d")
-                    .AddArgument("direction", body.LookDirection.ToString());
+                    .WithArgument("direction", body.LookDirection.ToString());
             }
 
             return null;

@@ -5,6 +5,7 @@ using KittyEngine.Core.Client.Input.WPFKeyboard;
 using KittyEngine.Core.Client.Input.WPFMouse;
 using KittyEngine.Core.Client.Model;
 using KittyEngine.Core.Client.Outputs;
+using KittyEngine.Core.Graphics.Assets.Maps;
 using KittyEngine.Core.Server.Behaviors.Compositions;
 using KittyEngine.Core.Services.Configuration;
 using KittyEngine.Core.Services.IoC;
@@ -220,6 +221,9 @@ namespace KittyEngine.Core
             {
                 behavior.OnConfigureServices(container);
             }
+
+            // Register maps from loaded assets
+            container.Get<IMapBuilderFactory>().RegisterMapsFromAssets();
 
             // Start server
             var server = container.Get<Core.Server.Server>();

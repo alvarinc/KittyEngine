@@ -1,6 +1,7 @@
 ﻿using System.Drawing;
 using System.Windows.Media.Imaging;
 using System.IO;
+using System.Reflection;
 
 namespace KittyEngine.Core.GameEngine.Graphics.Assets
 {
@@ -11,7 +12,7 @@ namespace KittyEngine.Core.GameEngine.Graphics.Assets
         {
             _sources = new List<IContentSource>();
 
-            RegisterSource(new EmbeddedContentSource());
+            RegisterSource(new EmbeddedContentSource(Assembly.GetExecutingAssembly()));
             RegisterSource(new FolderContentSource("Content"));
         }
 

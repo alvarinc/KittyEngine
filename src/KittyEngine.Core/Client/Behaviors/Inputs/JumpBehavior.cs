@@ -49,7 +49,7 @@ namespace KittyEngine.Core.Client.Behaviors.Inputs
                 }
 
                 return new GameCommandInput("jump")
-                        .AddArgument("direction", direction.ToString());
+                        .WithArgument("direction", direction.ToString());
             }
 
             return null;

@@ -28,8 +28,7 @@ namespace KittyEngine.Core.Graphics.Assets.Maps
             var maps = _contentService.GetResources(AssetType.Map);
             foreach (var map in maps)
             {
-                var mapBuilder = new MapBuilderFromAsset(_contentService, map);
-                _mapBuilders.Add(mapBuilder.MapName, mapBuilder);
+                RegisterMap(new MapBuilderFromAsset(_contentService, map));
             }
         }
 

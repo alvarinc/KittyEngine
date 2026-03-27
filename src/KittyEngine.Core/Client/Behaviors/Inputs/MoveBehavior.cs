@@ -53,7 +53,7 @@ namespace KittyEngine.Core.Client.Behaviors.Inputs
                     direction.Normalize();
 
                     return new GameCommandInput("move3d")
-                        .AddArgument("direction", direction.ToString());
+                        .WithArgument("direction", direction.ToString());
                 }
             }
 
