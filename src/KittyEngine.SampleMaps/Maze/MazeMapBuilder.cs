@@ -34,6 +34,9 @@ namespace KittyEngine.SampleMaps.Maze
         public MapDefinition CreateMap()
         {
             var level = new MapDefinition();
+            level.Name = MapName;
+            level.PlayerPosition = PlayerPosition;
+            level.PlayerLookDirection = PlayerLookDirection;
 
             // Lights
             level.Lights = new List<LightDefinition>();
