@@ -15,6 +15,9 @@ namespace KittyEngine.Core.Graphics.Assets.Maps.Predefined
         public MapDefinition CreateMap()
         {
             var level = new MapDefinition();
+            level.Name = MapName;
+            level.PlayerPosition = PlayerPosition;
+            level.PlayerLookDirection = PlayerLookDirection;
 
             level.Skyboxes = new List<SkyboxDefinition>();
             level.Lights = new List<LightDefinition>();
