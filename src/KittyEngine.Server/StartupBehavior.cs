@@ -14,8 +14,9 @@ namespace KittyEngine.Server
 
         public override void OnStartGame()
         {
-            _server.SendMessage(new GameCommandInput("loadmap")
-                .AddArgument("name", "<Default Test Map>"));
+            _server.SendMessage(
+                new GameCommandInput("loadmap")
+                .WithArgument("name", KittyEngine.SampleMaps.MapNames.DefaultTestMap));
         }
     }
 }

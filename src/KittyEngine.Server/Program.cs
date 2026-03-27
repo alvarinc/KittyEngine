@@ -14,7 +14,8 @@ namespace KittyEngine.Server
             Engine.RunServer(onloadBehaviors: behaviors =>
             {
                 behaviors
-                    .AddComposer(new RegisterSampleMapsBehavior(EngineRuntime.Server))
+                    .AddComposer(new RegisterSampleAssetsBehavior())
+                    .AddComposer(new RegisterSampleMapsBehavior())
                     .AddServerBehavior<StartupBehavior>();
             });
         }

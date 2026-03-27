@@ -37,8 +37,8 @@ namespace KittyEngine.Core.Server.Behaviors.Commands
             _logger.Log(LogLevel.Info, $"[Server] Player {player.PeerId} : {player.Name} joined the game");
 
             var command = new GameCommandInput("joined")
-              .AddArgument("guid", player.Guid)
-              .AddArgument("name", player.Name);
+              .WithArgument("guid", player.Guid)
+              .WithArgument("name", player.Name);
 
             context.SendMessage(player.PeerId, command);
 

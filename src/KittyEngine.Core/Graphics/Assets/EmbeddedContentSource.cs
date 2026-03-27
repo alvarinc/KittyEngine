@@ -14,14 +14,9 @@ namespace KittyEngine.Core.GameEngine.Graphics.Assets
         private Dictionary<string, Bitmap> _bitmapCache = new Dictionary<string, Bitmap>();
         private Assembly _targetAssembly;
 
-        public EmbeddedContentSource()
+        public EmbeddedContentSource(Assembly targetAssembly)
         {
-            _targetAssembly = typeof(EmbeddedContentSource).Assembly;
-        }
-
-        public EmbeddedContentSource(Type type)
-        {
-            _targetAssembly = type.Assembly;
+            _targetAssembly = targetAssembly;
         }
 
         public ContentSourceDescription Description
