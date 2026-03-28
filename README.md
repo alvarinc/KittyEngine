@@ -2,15 +2,15 @@
 
 ### How to use
 
-For use an other map, change `KittyEngine.SampleMaps.MapNames` value in file `src\KittyEngine.Server\StartupBehavior.cs`
-
 Start `KittyEngine.Server`. Then start `KittyEngine.SampleGame`
+
+For use an other map, change `KittyEngine.SampleMaps.MapNames` value in file `src\KittyEngine.Server\StartupBehavior.cs`
 
 ### Commands
 
 - Full screen is available by press `F11`
 
-- Move with mouse en keyboard `Q`, `S`, `D`, `Z`
+- Move with mouse and keyboard `Q`, `S`, `D`, `Z`
 
 - Jump by press `Space`
 
