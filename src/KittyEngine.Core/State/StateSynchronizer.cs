@@ -1,4 +1,5 @@
 ﻿using KittyEngine.Core.Common;
+using Microsoft.AspNetCore.JsonPatch;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -15,15 +16,14 @@ namespace KittyEngine.Core.State
             _synchronized = initial;
         }
 
-        public string GetJsonPatch()
+        public JsonPatchDocument GetJsonPatch()
         {
             var updated = JObject.FromObject(_synchronized);
             var patch = JsonDiffPatch.Diff(_initial, updated);
-            var jsonPatch = JsonConvert.SerializeObject(patch);
-            return jsonPatch;
+            return patch;
         }
 
-        public string GetJson()
+        public string GetJsonSerializedState()
         {
             var json = JsonConvert.SerializeObject(_synchronized);
             return json;

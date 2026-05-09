@@ -7,6 +7,9 @@
     using KittyEngine.Core.Services.Logging;
     using KittyEngine.Core.State;
     using LiteNetLib;
+    using Microsoft.AspNetCore.JsonPatch;
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Serialization;
     using System;
     using System.Collections.Generic;
 
@@ -140,7 +143,7 @@
             {
                 System.Threading.Thread.Sleep((int)(_millisecondsPerUpdate - elapsed.TotalMilliseconds));
             }
-            else if (elapsed.TotalMilliseconds > _millisecondsPerUpdate * 2)
+            else if (elapsed.TotalMilliseconds > _millisecondsPerUpdate * 4)
             {
                 _logger.Log(LogLevel.Warn, $"Server update took too long: {elapsed.TotalMilliseconds}ms");
             }
@@ -237,15 +240,12 @@
                 return;
             }
 
-            var patchCmd = new GameCommandInput("sync")
-                .WithArgument("entity", "gamestate")
-                .WithArgument("mode", "patch")
-                .WithArgument("value", synchronizer.GetJsonPatch());
+            var patchState = synchronizer.GetJsonPatch();
 
-            var fullCmd = new GameCommandInput("sync")
+            var fullStateSynchronizeCmd = new GameCommandInput("sync")
                 .WithArgument("entity", "gamestate")
                 .WithArgument("mode", "full")
-                .WithArgument("value", synchronizer.GetJson());
+                .WithArgument("value", synchronizer.GetJsonSerializedState());
 
             ApplyServerResults(commandResultByPeers);
 
@@ -261,8 +261,24 @@
                     }
                 }
 
+                var stateSynchronizeCmd = fullStateSynchronizeCmd;
+                if (mode == PeerSynchronizationMode.Patch)
+                {
+                    //var patchOperations = patchState.Operations;
+                    var patchOperations = patchState.Operations.Where(p => !p.path.Equals($"/Players/{connectedPeer.Id}/{nameof(PlayerState.LookDirection)}")).ToList();
+
+                    var patchStateForPeer = new JsonPatchDocument(patchOperations, new DefaultContractResolver());
+
+                    var patchCmd = new GameCommandInput("sync")
+                        .WithArgument("entity", "gamestate")
+                        .WithArgument("mode", "patch")
+                        .WithArgument("value", JsonConvert.SerializeObject(patchStateForPeer));
+
+                    stateSynchronizeCmd = patchCmd;
+                }
+
                 _logger.Log(LogLevel.Info, $"[Server] Player {connectedPeer.Id} : {mode} synchronize");
-                _networkAdapter.SendMessage(connectedPeer, mode == PeerSynchronizationMode.Full ? fullCmd : patchCmd);
+                _networkAdapter.SendMessage(connectedPeer, stateSynchronizeCmd);
 
                 if (!_serverState.GameState.Players.ContainsKey(connectedPeer.Id))
                 {

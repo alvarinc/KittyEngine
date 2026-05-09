@@ -5,8 +5,10 @@
     using KittyEngine.Core.Client.Outputs;
     using KittyEngine.Core.Graphics;
     using KittyEngine.Core.Server;
+    using KittyEngine.Core.Server.Model;
     using KittyEngine.Core.Services.Logging;
     using KittyEngine.Core.State;
+    using Newtonsoft.Json;
     using System.Diagnostics;
 
     public interface IClientGameLogic
@@ -20,7 +22,7 @@
 
     internal class ClientGameLogic : IClientGameLogic
     {
-        private static double _millisecondsPerUpdate = 10;
+        private static double _millisecondsPerUpdate = 5;
 
         private bool _gameStateUpdated = false;
 
@@ -80,6 +82,7 @@
             EnsureIsConnected();
 
             var inputs = HandleInputEvents();
+
             foreach (var input in inputs)
             {
                 _networkAdapter.SendMessage(input);
@@ -112,7 +115,18 @@
                 return new List<GameCommandInput>();
             }
 
-            return _inputHandler.HandleEvents(_clientState.GameState, _clientState.ConnectedUser.Guid);
+            var playerId = _clientState.ConnectedUser.Guid;
+            
+            var playerStateBeforeEvents = JsonConvert.SerializeObject(_clientState.GameState.GetPlayer(playerId));
+            var inputs = _inputHandler.HandleEvents(_clientState.GameState, playerId);
+            var playerStateAfterEvents = JsonConvert.SerializeObject(_clientState.GameState.GetPlayer(playerId));
+
+            // If the player's state has changed as a result of input handling,
+            // we need to re-render the frame to reflect those changes.
+            // Other changes to the game state will be handled when server messages are processed.
+            _gameStateUpdated |= playerStateBeforeEvents != playerStateAfterEvents;
+
+            return inputs;
         }
 
         private void RenderOutput()

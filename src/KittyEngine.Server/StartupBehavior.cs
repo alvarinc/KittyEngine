@@ -16,7 +16,7 @@ namespace KittyEngine.Server
         {
             _server.SendMessage(
                 new GameCommandInput("loadmap")
-                .WithArgument("name", KittyEngine.SampleMaps.MapNames.DefaultTestMap));
+                .WithArgument("name", KittyEngine.SampleMaps.MapNames.DarkCastleM2));
         }
     }
 }

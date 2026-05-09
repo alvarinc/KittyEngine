@@ -33,14 +33,8 @@ namespace KittyEngine.Core.Client.Behaviors.Commands
             }
             else if (mode == "patch")
             {
-                var currentPlayer = context.State.GameState.GetPlayer(context.State.ConnectedUser.Guid);
-                var lookDirection = currentPlayer.LookDirection;
-
                 var jsonPatch = JsonConvert.DeserializeObject<JsonPatchDocument>(value);
                 jsonPatch.ApplyTo(context.State.GameState);
-
-                // HACK : Keep player's LookDirection because actually, it is refreshed only by the client
-                currentPlayer.LookDirection = lookDirection;
 
                 context.StateUpdated = true;
             }
