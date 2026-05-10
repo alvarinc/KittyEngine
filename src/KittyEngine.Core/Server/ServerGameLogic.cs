@@ -264,7 +264,6 @@
                 var stateSynchronizeCmd = fullStateSynchronizeCmd;
                 if (mode == PeerSynchronizationMode.Patch)
                 {
-                    //var patchOperations = patchState.Operations;
                     var patchOperations = patchState.Operations.Where(p => !p.path.Equals($"/Players/{connectedPeer.Id}/{nameof(PlayerState.LookDirection)}")).ToList();
 
                     var patchStateForPeer = new JsonPatchDocument(patchOperations, new DefaultContractResolver());

@@ -19,10 +19,12 @@ namespace KittyEngine.SampleGame
         {
             if (Engine.ShowLoginDialog(out var loginResult) == true)
             {
-                Engine.StartWPFClient(loginResult.PlayerInput, server: loginResult.ServerInput, placeholder: gameView, onloadBehaviors: behaviors =>
-                {
-                    behaviors.AddComposer(new RegisterSampleAssetsBehavior());
-                });
+                Engine.StartWPFClient(
+                    player: loginResult.PlayerInput, 
+                    server: loginResult.ServerInput, 
+                    placeholder: gameView, 
+                    onloadBehaviors: behaviors => behaviors.AddComposer(new RegisterSampleAssetsBehavior()),
+                    onTerminate: () => Close());
             }
             else
             {

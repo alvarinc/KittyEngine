@@ -146,7 +146,7 @@ namespace KittyEngine.Core
         /// <param name="placeholder">WPF grid for host game</param>
         /// <param name="onloadBehaviors">Custom behavior configuration</param>
         /// <returns>Client thread</returns>
-        public static Thread StartWPFClient(PlayerInput player, ServerInput server = null, Grid placeholder = null, Action<List<CompositionBehavior>> onloadBehaviors = null)
+        public static Thread StartWPFClient(PlayerInput player, ServerInput server = null, Grid placeholder = null, Action<List<CompositionBehavior>> onloadBehaviors = null, Action onTerminate = null)
         {
             var container = _containerBuilder();
             var compositionBehaviors = new List<CompositionBehavior>()
@@ -184,7 +184,16 @@ namespace KittyEngine.Core
                 server = configuration.GetDefaultServer();
             }
 
-            var thread = new Thread(() => client.Run(player, server));
+            var thread = new Thread(() => 
+            { 
+                client.Run(player, server); 
+                
+                if (onTerminate != null)
+                {
+                    placeholder.Dispatcher.Invoke(() => onTerminate());
+                }
+            });
+
             thread.Name = "GameClient";
             thread.Start();
 
